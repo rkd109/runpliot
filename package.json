@@ -1,0 +1,21 @@
+{
+  "name": "runpilot",
+  "version": "0.1.0",
+  "private": true,
+  "packageManager": "pnpm@9.15.4",
+  "scripts": {
+    "dev": "pnpm -r --parallel dev",
+    "dev:web": "pnpm --filter @runpilot/web dev",
+    "dev:api": "pnpm --filter @runpilot/api start:dev",
+    "build": "pnpm -r build",
+    "build:web": "pnpm --filter @runpilot/web build",
+    "build:api": "pnpm --filter @runpilot/api build",
+    "lint": "pnpm -r lint",
+    "db:up": "docker compose -f infra/docker/docker-compose.yml up -d",
+    "db:down": "docker compose -f infra/docker/docker-compose.yml down"
+  },
+  "devDependencies": {
+    "@types/node": "^20.17.10",
+    "typescript": "^5.7.2"
+  }
+}

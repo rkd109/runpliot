@@ -1,0 +1,16 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: runpilot-postgres
+    restart: unless-stopped
+    ports:
+      - "15432:5432"
+    environment:
+      POSTGRES_DB: runpilot
+      POSTGRES_USER: runpilot
+      POSTGRES_PASSWORD: runpilot1234
+    volumes:
+      - runpilot-postgres-data:/var/lib/postgresql/data
+
+volumes:
+  runpilot-postgres-data:
