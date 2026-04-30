@@ -1,0 +1,63 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id            String   @id @default(uuid())
+  email         String   @unique
+  passwordHash  String
+  nickname      String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  runningRecords RunningRecord[]
+  trainingPlans  TrainingPlan[]
+}
+
+model RunningRecord {
+  id              String   @id @default(uuid())
+  userId          String
+  distanceKm      Float
+  durationSec     Int
+  paceSecPerKm    Int
+  runDate         DateTime
+  memo            String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+model TrainingPlan {
+  id          String   @id @default(uuid())
+  userId      String
+  title       String
+  goalType    String
+  level       String
+  startDate   DateTime
+  endDate     DateTime
+  sourceType  String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user  User @relation(fields: [userId], references: [id])
+  items TrainingPlanItem[]
+}
+
+model TrainingPlanItem {
+  id                    String   @id @default(uuid())
+  trainingPlanId        String
+  planDate              DateTime
+  workoutType           String
+  distanceKm            Float?
+  targetPaceSecPerKm    Int?
+  description           String?
+  sortOrder             Int
+
+  trainingPlan TrainingPlan @relation(fields: [trainingPlanId], references: [id])
+}

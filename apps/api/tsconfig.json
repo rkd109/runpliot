@@ -10,8 +10,10 @@
     "allowSyntheticDefaultImports": true,
     "sourceMap": true,
     "rootDir": "./src",
-    "outDir": "./dist"
+    "outDir": "./dist",
+    "types": ["node", "jest"]
   },
+  // "include": ["src/**/*.ts", "prisma.config.ts"],
   "include": ["src/**/*.ts"],
   "exclude": ["node_modules", "dist"]
 }
