@@ -78,3 +78,29 @@ pnpm dev
 - `docs/architecture.md`
 - `docs/api-spec.md`
 - `docs/portfolio-summary.md`
+
+
+------
+# 1. prisma/schema.prisma 수정
+
+# 2. migration 생성 + DB 반영
+pnpm prisma migrate dev --name xx
+
+# 3. Prisma Client 재생성
+pnpm prisma generate
+
+//필요에 따라 디비 리셋이 필요한 경우에만 사용
+//pnpm prisma migrate reset
+
+---
+pnpm dlx @nestjs/cli generate module users
+pnpm dlx @nestjs/cli g mo users
+
+pnpm dlx @nestjs/cli generate controller users
+pnpm dlx @nestjs/cli g co users
+
+pnpm dlx @nestjs/cli generate service users
+pnpm dlx @nestjs/cli g s users
+**
+pnpm dlx @nestjs/cli g resource users
+----
