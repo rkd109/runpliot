@@ -8,10 +8,10 @@ datasource db {
 }
 
 model User {
-  id            String   @id @default(uuid())
+  id            Int      @id @default(autoincrement())
   email         String   @unique
   passwordHash  String
-  nickname      String?
+  nickname      String?  @unique
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
@@ -21,7 +21,7 @@ model User {
 
 model RunningRecord {
   id              String   @id @default(uuid())
-  userId          String
+  userId          Int
   distanceKm      Float
   durationSec     Int
   paceSecPerKm    Int
@@ -35,7 +35,7 @@ model RunningRecord {
 
 model TrainingPlan {
   id          String   @id @default(uuid())
-  userId      String
+  userId      Int
   title       String
   goalType    String
   level       String
