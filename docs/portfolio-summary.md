@@ -1,6 +1,6 @@
 # Portfolio Summary
 
-RunPilot은 러닝 계획과 활동 관리를 위한 포트폴리오 프로젝트입니다.
+RunPilot은 러닝 기록 기반 훈련계획 생성 서비스 입니다
 
 ## Highlight
 
