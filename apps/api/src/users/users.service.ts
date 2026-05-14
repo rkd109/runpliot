@@ -4,11 +4,25 @@ import { PrismaService } from '../prisma/prisma.service';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { toUserResponseDto } from './mapper/user.mapper';
 
+type PrismaKnownError = {
+  code: string;
+  meta?: unknown;
+};
+
+const isPrismaKnownError = (error: unknown): error is PrismaKnownError => {
+  return (
+    typeof error === 'object' &&
+    error !== null &&
+    'code' in error
+  );
+};
+
 @Injectable()
 export class UsersService {
     constructor(private readonly prisma: PrismaService) {}
 
     create = async (dto: CreateUserDto) => {
+
         const existsByEmail = await this.prisma.user.findUnique({
             where: {email: dto.email}
         });
@@ -16,6 +30,7 @@ export class UsersService {
         if(existsByEmail){
             throw new ConflictException('이미 사용중인 이메일입니다.');
         }
+
         if(dto.nickname){
             const existsByNickname = await this.prisma.user.findFirst({
                 where: {nickname: dto.nickname}
@@ -26,15 +41,22 @@ export class UsersService {
             }
         }
 
-        const user = await this.prisma.user.create({
-            data : {
-                email: dto.email,
-                nickname: dto.nickname,
-                passwordHash: dto.password
-            }
-        })
+        try{
+            const user = await this.prisma.user.create({
+                data : {
+                    email: dto.email,
+                    nickname: dto.nickname,
+                    passwordHash: dto.password
+                }
+            })
 
-        return toUserResponseDto(user);
+            return toUserResponseDto(user);
+        }catch(error: unknown){
+            if(isPrismaKnownError(error) && error.code === "P2002"){
+                throw new ConflictException('이미 사용중인 값입니다.');
+            }
+            throw error;
+        }
     }
 
     findAll = async () => {
