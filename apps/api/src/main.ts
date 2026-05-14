@@ -21,6 +21,7 @@ async function bootstrap() {
     .setDescription('RunPilot backend API documentation')
     .setVersion('0.1.0')
     .addTag('runpilot')
+    .addBearerAuth()
     .build();
 
   const document = SwaggerModule.createDocument(app, config);

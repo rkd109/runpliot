@@ -1,8 +1,16 @@
-import { Body, Controller, Post } from '@nestjs/common';
-import { ApiOkResponse, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
+import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
+import { ApiBearerAuth, ApiOkResponse, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 import { LoginResponseDto } from './dto/login-response.dto';
+import { JwtAuthGuard } from './guards/jwt-auth.guard';
+
+type AuthenticatedRequest = Request & {
+    user: {
+        userId: number;
+        email: string;
+    };
+}
 
 @ApiTags('auth')
 @Controller('auth')
@@ -19,6 +27,18 @@ export class AuthController {
     })
     async login(@Body() dto: LoginDto): Promise<LoginResponseDto>{
         return this.authService.login(dto);
+    }
+    @Get('me')
+    @UseGuards(JwtAuthGuard)
+    @ApiBearerAuth()
+    @ApiOkResponse({
+        description:'현재 로그인 사용자 정보'
+    })
+    @ApiUnauthorizedResponse({
+        description: '인증 실패'
+    })
+    async getMe(@Req() req: AuthenticatedRequest){
+        return req.user;
     }
 
 }
