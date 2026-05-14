@@ -1215,12 +1215,22 @@ export namespace Prisma {
 
   export type AggregateUser = {
     _count: UserCountAggregateOutputType | null
+    _avg: UserAvgAggregateOutputType | null
+    _sum: UserSumAggregateOutputType | null
     _min: UserMinAggregateOutputType | null
     _max: UserMaxAggregateOutputType | null
   }
 
+  export type UserAvgAggregateOutputType = {
+    id: number | null
+  }
+
+  export type UserSumAggregateOutputType = {
+    id: number | null
+  }
+
   export type UserMinAggregateOutputType = {
-    id: string | null
+    id: number | null
     email: string | null
     passwordHash: string | null
     nickname: string | null
@@ -1229,7 +1239,7 @@ export namespace Prisma {
   }
 
   export type UserMaxAggregateOutputType = {
-    id: string | null
+    id: number | null
     email: string | null
     passwordHash: string | null
     nickname: string | null
@@ -1247,6 +1257,14 @@ export namespace Prisma {
     _all: number
   }
 
+
+  export type UserAvgAggregateInputType = {
+    id?: true
+  }
+
+  export type UserSumAggregateInputType = {
+    id?: true
+  }
 
   export type UserMinAggregateInputType = {
     id?: true
@@ -1314,6 +1332,18 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
+     * Select which fields to average
+    **/
+    _avg?: UserAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: UserSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: UserMinAggregateInputType
@@ -1344,18 +1374,22 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: UserCountAggregateInputType | true
+    _avg?: UserAvgAggregateInputType
+    _sum?: UserSumAggregateInputType
     _min?: UserMinAggregateInputType
     _max?: UserMaxAggregateInputType
   }
 
   export type UserGroupByOutputType = {
-    id: string
+    id: number
     email: string
     passwordHash: string
     nickname: string | null
     createdAt: Date
     updatedAt: Date
     _count: UserCountAggregateOutputType | null
+    _avg: UserAvgAggregateOutputType | null
+    _sum: UserSumAggregateOutputType | null
     _min: UserMinAggregateOutputType | null
     _max: UserMaxAggregateOutputType | null
   }
@@ -1429,7 +1463,7 @@ export namespace Prisma {
       trainingPlans: Prisma.$TrainingPlanPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
-      id: string
+      id: number
       email: string
       passwordHash: string
       nickname: string | null
@@ -1860,7 +1894,7 @@ export namespace Prisma {
    * Fields of the User model
    */
   interface UserFieldRefs {
-    readonly id: FieldRef<"User", 'String'>
+    readonly id: FieldRef<"User", 'Int'>
     readonly email: FieldRef<"User", 'String'>
     readonly passwordHash: FieldRef<"User", 'String'>
     readonly nickname: FieldRef<"User", 'String'>
@@ -2338,12 +2372,14 @@ export namespace Prisma {
   }
 
   export type RunningRecordAvgAggregateOutputType = {
+    userId: number | null
     distanceKm: number | null
     durationSec: number | null
     paceSecPerKm: number | null
   }
 
   export type RunningRecordSumAggregateOutputType = {
+    userId: number | null
     distanceKm: number | null
     durationSec: number | null
     paceSecPerKm: number | null
@@ -2351,7 +2387,7 @@ export namespace Prisma {
 
   export type RunningRecordMinAggregateOutputType = {
     id: string | null
-    userId: string | null
+    userId: number | null
     distanceKm: number | null
     durationSec: number | null
     paceSecPerKm: number | null
@@ -2363,7 +2399,7 @@ export namespace Prisma {
 
   export type RunningRecordMaxAggregateOutputType = {
     id: string | null
-    userId: string | null
+    userId: number | null
     distanceKm: number | null
     durationSec: number | null
     paceSecPerKm: number | null
@@ -2388,12 +2424,14 @@ export namespace Prisma {
 
 
   export type RunningRecordAvgAggregateInputType = {
+    userId?: true
     distanceKm?: true
     durationSec?: true
     paceSecPerKm?: true
   }
 
   export type RunningRecordSumAggregateInputType = {
+    userId?: true
     distanceKm?: true
     durationSec?: true
     paceSecPerKm?: true
@@ -2524,7 +2562,7 @@ export namespace Prisma {
 
   export type RunningRecordGroupByOutputType = {
     id: string
-    userId: string
+    userId: number
     distanceKm: number
     durationSec: number
     paceSecPerKm: number
@@ -2622,7 +2660,7 @@ export namespace Prisma {
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
-      userId: string
+      userId: number
       distanceKm: number
       durationSec: number
       paceSecPerKm: number
@@ -3055,7 +3093,7 @@ export namespace Prisma {
    */
   interface RunningRecordFieldRefs {
     readonly id: FieldRef<"RunningRecord", 'String'>
-    readonly userId: FieldRef<"RunningRecord", 'String'>
+    readonly userId: FieldRef<"RunningRecord", 'Int'>
     readonly distanceKm: FieldRef<"RunningRecord", 'Float'>
     readonly durationSec: FieldRef<"RunningRecord", 'Int'>
     readonly paceSecPerKm: FieldRef<"RunningRecord", 'Int'>
@@ -3488,13 +3526,23 @@ export namespace Prisma {
 
   export type AggregateTrainingPlan = {
     _count: TrainingPlanCountAggregateOutputType | null
+    _avg: TrainingPlanAvgAggregateOutputType | null
+    _sum: TrainingPlanSumAggregateOutputType | null
     _min: TrainingPlanMinAggregateOutputType | null
     _max: TrainingPlanMaxAggregateOutputType | null
   }
 
+  export type TrainingPlanAvgAggregateOutputType = {
+    userId: number | null
+  }
+
+  export type TrainingPlanSumAggregateOutputType = {
+    userId: number | null
+  }
+
   export type TrainingPlanMinAggregateOutputType = {
     id: string | null
-    userId: string | null
+    userId: number | null
     title: string | null
     goalType: string | null
     level: string | null
@@ -3507,7 +3555,7 @@ export namespace Prisma {
 
   export type TrainingPlanMaxAggregateOutputType = {
     id: string | null
-    userId: string | null
+    userId: number | null
     title: string | null
     goalType: string | null
     level: string | null
@@ -3532,6 +3580,14 @@ export namespace Prisma {
     _all: number
   }
 
+
+  export type TrainingPlanAvgAggregateInputType = {
+    userId?: true
+  }
+
+  export type TrainingPlanSumAggregateInputType = {
+    userId?: true
+  }
 
   export type TrainingPlanMinAggregateInputType = {
     id?: true
@@ -3611,6 +3667,18 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
+     * Select which fields to average
+    **/
+    _avg?: TrainingPlanAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: TrainingPlanSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: TrainingPlanMinAggregateInputType
@@ -3641,13 +3709,15 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: TrainingPlanCountAggregateInputType | true
+    _avg?: TrainingPlanAvgAggregateInputType
+    _sum?: TrainingPlanSumAggregateInputType
     _min?: TrainingPlanMinAggregateInputType
     _max?: TrainingPlanMaxAggregateInputType
   }
 
   export type TrainingPlanGroupByOutputType = {
     id: string
-    userId: string
+    userId: number
     title: string
     goalType: string
     level: string
@@ -3657,6 +3727,8 @@ export namespace Prisma {
     createdAt: Date
     updatedAt: Date
     _count: TrainingPlanCountAggregateOutputType | null
+    _avg: TrainingPlanAvgAggregateOutputType | null
+    _sum: TrainingPlanSumAggregateOutputType | null
     _min: TrainingPlanMinAggregateOutputType | null
     _max: TrainingPlanMaxAggregateOutputType | null
   }
@@ -3753,7 +3825,7 @@ export namespace Prisma {
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
-      userId: string
+      userId: number
       title: string
       goalType: string
       level: string
@@ -4188,7 +4260,7 @@ export namespace Prisma {
    */
   interface TrainingPlanFieldRefs {
     readonly id: FieldRef<"TrainingPlan", 'String'>
-    readonly userId: FieldRef<"TrainingPlan", 'String'>
+    readonly userId: FieldRef<"TrainingPlan", 'Int'>
     readonly title: FieldRef<"TrainingPlan", 'String'>
     readonly goalType: FieldRef<"TrainingPlan", 'String'>
     readonly level: FieldRef<"TrainingPlan", 'String'>
@@ -5885,6 +5957,20 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'Int'
+   */
+  export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
+    
+
+
+  /**
+   * Reference to a field of type 'Int[]'
+   */
+  export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+    
+
+
+  /**
    * Reference to a field of type 'String'
    */
   export type StringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'String'>
@@ -5924,20 +6010,6 @@ export namespace Prisma {
    */
   export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
     
-
-
-  /**
-   * Reference to a field of type 'Int'
-   */
-  export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
-    
-
-
-  /**
-   * Reference to a field of type 'Int[]'
-   */
-  export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
-    
   /**
    * Deep Input Types
    */
@@ -5947,7 +6019,7 @@ export namespace Prisma {
     AND?: UserWhereInput | UserWhereInput[]
     OR?: UserWhereInput[]
     NOT?: UserWhereInput | UserWhereInput[]
-    id?: StringFilter<"User"> | string
+    id?: IntFilter<"User"> | number
     email?: StringFilter<"User"> | string
     passwordHash?: StringFilter<"User"> | string
     nickname?: StringNullableFilter<"User"> | string | null
@@ -5969,18 +6041,18 @@ export namespace Prisma {
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
-    id?: string
+    id?: number
     email?: string
+    nickname?: string
     AND?: UserWhereInput | UserWhereInput[]
     OR?: UserWhereInput[]
     NOT?: UserWhereInput | UserWhereInput[]
     passwordHash?: StringFilter<"User"> | string
-    nickname?: StringNullableFilter<"User"> | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
     runningRecords?: RunningRecordListRelationFilter
     trainingPlans?: TrainingPlanListRelationFilter
-  }, "id" | "email">
+  }, "id" | "email" | "nickname">
 
   export type UserOrderByWithAggregationInput = {
     id?: SortOrder
@@ -5990,15 +6062,17 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: UserCountOrderByAggregateInput
+    _avg?: UserAvgOrderByAggregateInput
     _max?: UserMaxOrderByAggregateInput
     _min?: UserMinOrderByAggregateInput
+    _sum?: UserSumOrderByAggregateInput
   }
 
   export type UserScalarWhereWithAggregatesInput = {
     AND?: UserScalarWhereWithAggregatesInput | UserScalarWhereWithAggregatesInput[]
     OR?: UserScalarWhereWithAggregatesInput[]
     NOT?: UserScalarWhereWithAggregatesInput | UserScalarWhereWithAggregatesInput[]
-    id?: StringWithAggregatesFilter<"User"> | string
+    id?: IntWithAggregatesFilter<"User"> | number
     email?: StringWithAggregatesFilter<"User"> | string
     passwordHash?: StringWithAggregatesFilter<"User"> | string
     nickname?: StringNullableWithAggregatesFilter<"User"> | string | null
@@ -6011,7 +6085,7 @@ export namespace Prisma {
     OR?: RunningRecordWhereInput[]
     NOT?: RunningRecordWhereInput | RunningRecordWhereInput[]
     id?: StringFilter<"RunningRecord"> | string
-    userId?: StringFilter<"RunningRecord"> | string
+    userId?: IntFilter<"RunningRecord"> | number
     distanceKm?: FloatFilter<"RunningRecord"> | number
     durationSec?: IntFilter<"RunningRecord"> | number
     paceSecPerKm?: IntFilter<"RunningRecord"> | number
@@ -6040,7 +6114,7 @@ export namespace Prisma {
     AND?: RunningRecordWhereInput | RunningRecordWhereInput[]
     OR?: RunningRecordWhereInput[]
     NOT?: RunningRecordWhereInput | RunningRecordWhereInput[]
-    userId?: StringFilter<"RunningRecord"> | string
+    userId?: IntFilter<"RunningRecord"> | number
     distanceKm?: FloatFilter<"RunningRecord"> | number
     durationSec?: IntFilter<"RunningRecord"> | number
     paceSecPerKm?: IntFilter<"RunningRecord"> | number
@@ -6073,7 +6147,7 @@ export namespace Prisma {
     OR?: RunningRecordScalarWhereWithAggregatesInput[]
     NOT?: RunningRecordScalarWhereWithAggregatesInput | RunningRecordScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"RunningRecord"> | string
-    userId?: StringWithAggregatesFilter<"RunningRecord"> | string
+    userId?: IntWithAggregatesFilter<"RunningRecord"> | number
     distanceKm?: FloatWithAggregatesFilter<"RunningRecord"> | number
     durationSec?: IntWithAggregatesFilter<"RunningRecord"> | number
     paceSecPerKm?: IntWithAggregatesFilter<"RunningRecord"> | number
@@ -6088,7 +6162,7 @@ export namespace Prisma {
     OR?: TrainingPlanWhereInput[]
     NOT?: TrainingPlanWhereInput | TrainingPlanWhereInput[]
     id?: StringFilter<"TrainingPlan"> | string
-    userId?: StringFilter<"TrainingPlan"> | string
+    userId?: IntFilter<"TrainingPlan"> | number
     title?: StringFilter<"TrainingPlan"> | string
     goalType?: StringFilter<"TrainingPlan"> | string
     level?: StringFilter<"TrainingPlan"> | string
@@ -6121,7 +6195,7 @@ export namespace Prisma {
     AND?: TrainingPlanWhereInput | TrainingPlanWhereInput[]
     OR?: TrainingPlanWhereInput[]
     NOT?: TrainingPlanWhereInput | TrainingPlanWhereInput[]
-    userId?: StringFilter<"TrainingPlan"> | string
+    userId?: IntFilter<"TrainingPlan"> | number
     title?: StringFilter<"TrainingPlan"> | string
     goalType?: StringFilter<"TrainingPlan"> | string
     level?: StringFilter<"TrainingPlan"> | string
@@ -6146,8 +6220,10 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: TrainingPlanCountOrderByAggregateInput
+    _avg?: TrainingPlanAvgOrderByAggregateInput
     _max?: TrainingPlanMaxOrderByAggregateInput
     _min?: TrainingPlanMinOrderByAggregateInput
+    _sum?: TrainingPlanSumOrderByAggregateInput
   }
 
   export type TrainingPlanScalarWhereWithAggregatesInput = {
@@ -6155,7 +6231,7 @@ export namespace Prisma {
     OR?: TrainingPlanScalarWhereWithAggregatesInput[]
     NOT?: TrainingPlanScalarWhereWithAggregatesInput | TrainingPlanScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"TrainingPlan"> | string
-    userId?: StringWithAggregatesFilter<"TrainingPlan"> | string
+    userId?: IntWithAggregatesFilter<"TrainingPlan"> | number
     title?: StringWithAggregatesFilter<"TrainingPlan"> | string
     goalType?: StringWithAggregatesFilter<"TrainingPlan"> | string
     level?: StringWithAggregatesFilter<"TrainingPlan"> | string
@@ -6239,7 +6315,6 @@ export namespace Prisma {
   }
 
   export type UserCreateInput = {
-    id?: string
     email: string
     passwordHash: string
     nickname?: string | null
@@ -6250,7 +6325,7 @@ export namespace Prisma {
   }
 
   export type UserUncheckedCreateInput = {
-    id?: string
+    id?: number
     email: string
     passwordHash: string
     nickname?: string | null
@@ -6261,7 +6336,6 @@ export namespace Prisma {
   }
 
   export type UserUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
     nickname?: NullableStringFieldUpdateOperationsInput | string | null
@@ -6272,7 +6346,7 @@ export namespace Prisma {
   }
 
   export type UserUncheckedUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
+    id?: IntFieldUpdateOperationsInput | number
     email?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
     nickname?: NullableStringFieldUpdateOperationsInput | string | null
@@ -6283,7 +6357,7 @@ export namespace Prisma {
   }
 
   export type UserCreateManyInput = {
-    id?: string
+    id?: number
     email: string
     passwordHash: string
     nickname?: string | null
@@ -6292,7 +6366,6 @@ export namespace Prisma {
   }
 
   export type UserUpdateManyMutationInput = {
-    id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
     nickname?: NullableStringFieldUpdateOperationsInput | string | null
@@ -6301,7 +6374,7 @@ export namespace Prisma {
   }
 
   export type UserUncheckedUpdateManyInput = {
-    id?: StringFieldUpdateOperationsInput | string
+    id?: IntFieldUpdateOperationsInput | number
     email?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
     nickname?: NullableStringFieldUpdateOperationsInput | string | null
@@ -6323,7 +6396,7 @@ export namespace Prisma {
 
   export type RunningRecordUncheckedCreateInput = {
     id?: string
-    userId: string
+    userId: number
     distanceKm: number
     durationSec: number
     paceSecPerKm: number
@@ -6347,7 +6420,7 @@ export namespace Prisma {
 
   export type RunningRecordUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
+    userId?: IntFieldUpdateOperationsInput | number
     distanceKm?: FloatFieldUpdateOperationsInput | number
     durationSec?: IntFieldUpdateOperationsInput | number
     paceSecPerKm?: IntFieldUpdateOperationsInput | number
@@ -6359,7 +6432,7 @@ export namespace Prisma {
 
   export type RunningRecordCreateManyInput = {
     id?: string
-    userId: string
+    userId: number
     distanceKm: number
     durationSec: number
     paceSecPerKm: number
@@ -6382,7 +6455,7 @@ export namespace Prisma {
 
   export type RunningRecordUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
+    userId?: IntFieldUpdateOperationsInput | number
     distanceKm?: FloatFieldUpdateOperationsInput | number
     durationSec?: IntFieldUpdateOperationsInput | number
     paceSecPerKm?: IntFieldUpdateOperationsInput | number
@@ -6408,7 +6481,7 @@ export namespace Prisma {
 
   export type TrainingPlanUncheckedCreateInput = {
     id?: string
-    userId: string
+    userId: number
     title: string
     goalType: string
     level: string
@@ -6436,7 +6509,7 @@ export namespace Prisma {
 
   export type TrainingPlanUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
+    userId?: IntFieldUpdateOperationsInput | number
     title?: StringFieldUpdateOperationsInput | string
     goalType?: StringFieldUpdateOperationsInput | string
     level?: StringFieldUpdateOperationsInput | string
@@ -6450,7 +6523,7 @@ export namespace Prisma {
 
   export type TrainingPlanCreateManyInput = {
     id?: string
-    userId: string
+    userId: number
     title: string
     goalType: string
     level: string
@@ -6475,7 +6548,7 @@ export namespace Prisma {
 
   export type TrainingPlanUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
+    userId?: IntFieldUpdateOperationsInput | number
     title?: StringFieldUpdateOperationsInput | string
     goalType?: StringFieldUpdateOperationsInput | string
     level?: StringFieldUpdateOperationsInput | string
@@ -6562,6 +6635,17 @@ export namespace Prisma {
     sortOrder?: IntFieldUpdateOperationsInput | number
   }
 
+  export type IntFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntFilter<$PrismaModel> | number
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -6637,6 +6721,10 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
+  export type UserAvgOrderByAggregateInput = {
+    id?: SortOrder
+  }
+
   export type UserMaxOrderByAggregateInput = {
     id?: SortOrder
     email?: SortOrder
@@ -6653,6 +6741,26 @@ export namespace Prisma {
     nickname?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+  }
+
+  export type UserSumOrderByAggregateInput = {
+    id?: SortOrder
+  }
+
+  export type IntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
   }
 
   export type StringWithAggregatesFilter<$PrismaModel = never> = {
@@ -6716,17 +6824,6 @@ export namespace Prisma {
     not?: NestedFloatFilter<$PrismaModel> | number
   }
 
-  export type IntFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntFilter<$PrismaModel> | number
-  }
-
   export type UserScalarRelationFilter = {
     is?: UserWhereInput
     isNot?: UserWhereInput
@@ -6745,6 +6842,7 @@ export namespace Prisma {
   }
 
   export type RunningRecordAvgOrderByAggregateInput = {
+    userId?: SortOrder
     distanceKm?: SortOrder
     durationSec?: SortOrder
     paceSecPerKm?: SortOrder
@@ -6775,6 +6873,7 @@ export namespace Prisma {
   }
 
   export type RunningRecordSumOrderByAggregateInput = {
+    userId?: SortOrder
     distanceKm?: SortOrder
     durationSec?: SortOrder
     paceSecPerKm?: SortOrder
@@ -6794,22 +6893,6 @@ export namespace Prisma {
     _sum?: NestedFloatFilter<$PrismaModel>
     _min?: NestedFloatFilter<$PrismaModel>
     _max?: NestedFloatFilter<$PrismaModel>
-  }
-
-  export type IntWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
-    _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedFloatFilter<$PrismaModel>
-    _sum?: NestedIntFilter<$PrismaModel>
-    _min?: NestedIntFilter<$PrismaModel>
-    _max?: NestedIntFilter<$PrismaModel>
   }
 
   export type TrainingPlanItemListRelationFilter = {
@@ -6833,6 +6916,10 @@ export namespace Prisma {
     sourceType?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+  }
+
+  export type TrainingPlanAvgOrderByAggregateInput = {
+    userId?: SortOrder
   }
 
   export type TrainingPlanMaxOrderByAggregateInput = {
@@ -6859,6 +6946,10 @@ export namespace Prisma {
     sourceType?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+  }
+
+  export type TrainingPlanSumOrderByAggregateInput = {
+    userId?: SortOrder
   }
 
   export type FloatNullableFilter<$PrismaModel = never> = {
@@ -7033,6 +7124,14 @@ export namespace Prisma {
     deleteMany?: TrainingPlanScalarWhereInput | TrainingPlanScalarWhereInput[]
   }
 
+  export type IntFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
   export type RunningRecordUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<RunningRecordCreateWithoutUserInput, RunningRecordUncheckedCreateWithoutUserInput> | RunningRecordCreateWithoutUserInput[] | RunningRecordUncheckedCreateWithoutUserInput[]
     connectOrCreate?: RunningRecordCreateOrConnectWithoutUserInput | RunningRecordCreateOrConnectWithoutUserInput[]
@@ -7068,14 +7167,6 @@ export namespace Prisma {
   }
 
   export type FloatFieldUpdateOperationsInput = {
-    set?: number
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
-  }
-
-  export type IntFieldUpdateOperationsInput = {
     set?: number
     increment?: number
     decrement?: number
@@ -7177,6 +7268,17 @@ export namespace Prisma {
     update?: XOR<XOR<TrainingPlanUpdateToOneWithWhereWithoutItemsInput, TrainingPlanUpdateWithoutItemsInput>, TrainingPlanUncheckedUpdateWithoutItemsInput>
   }
 
+  export type NestedIntFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntFilter<$PrismaModel> | number
+  }
+
   export type NestedStringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -7216,6 +7318,33 @@ export namespace Prisma {
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
   }
 
+  export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
+  }
+
+  export type NestedFloatFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatFilter<$PrismaModel> | number
+  }
+
   export type NestedStringWithAggregatesFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -7231,17 +7360,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedStringFilter<$PrismaModel>
     _max?: NestedStringFilter<$PrismaModel>
-  }
-
-  export type NestedIntFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntFilter<$PrismaModel> | number
   }
 
   export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -7286,17 +7404,6 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
-  export type NestedFloatFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel>
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatFilter<$PrismaModel> | number
-  }
-
   export type NestedFloatWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | FloatFieldRefInput<$PrismaModel>
     in?: number[] | ListFloatFieldRefInput<$PrismaModel>
@@ -7311,22 +7418,6 @@ export namespace Prisma {
     _sum?: NestedFloatFilter<$PrismaModel>
     _min?: NestedFloatFilter<$PrismaModel>
     _max?: NestedFloatFilter<$PrismaModel>
-  }
-
-  export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
-    _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedFloatFilter<$PrismaModel>
-    _sum?: NestedIntFilter<$PrismaModel>
-    _min?: NestedIntFilter<$PrismaModel>
-    _max?: NestedIntFilter<$PrismaModel>
   }
 
   export type NestedFloatNullableFilter<$PrismaModel = never> = {
@@ -7461,7 +7552,7 @@ export namespace Prisma {
     OR?: RunningRecordScalarWhereInput[]
     NOT?: RunningRecordScalarWhereInput | RunningRecordScalarWhereInput[]
     id?: StringFilter<"RunningRecord"> | string
-    userId?: StringFilter<"RunningRecord"> | string
+    userId?: IntFilter<"RunningRecord"> | number
     distanceKm?: FloatFilter<"RunningRecord"> | number
     durationSec?: IntFilter<"RunningRecord"> | number
     paceSecPerKm?: IntFilter<"RunningRecord"> | number
@@ -7492,7 +7583,7 @@ export namespace Prisma {
     OR?: TrainingPlanScalarWhereInput[]
     NOT?: TrainingPlanScalarWhereInput | TrainingPlanScalarWhereInput[]
     id?: StringFilter<"TrainingPlan"> | string
-    userId?: StringFilter<"TrainingPlan"> | string
+    userId?: IntFilter<"TrainingPlan"> | number
     title?: StringFilter<"TrainingPlan"> | string
     goalType?: StringFilter<"TrainingPlan"> | string
     level?: StringFilter<"TrainingPlan"> | string
@@ -7504,7 +7595,6 @@ export namespace Prisma {
   }
 
   export type UserCreateWithoutRunningRecordsInput = {
-    id?: string
     email: string
     passwordHash: string
     nickname?: string | null
@@ -7514,7 +7604,7 @@ export namespace Prisma {
   }
 
   export type UserUncheckedCreateWithoutRunningRecordsInput = {
-    id?: string
+    id?: number
     email: string
     passwordHash: string
     nickname?: string | null
@@ -7540,7 +7630,6 @@ export namespace Prisma {
   }
 
   export type UserUpdateWithoutRunningRecordsInput = {
-    id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
     nickname?: NullableStringFieldUpdateOperationsInput | string | null
@@ -7550,7 +7639,7 @@ export namespace Prisma {
   }
 
   export type UserUncheckedUpdateWithoutRunningRecordsInput = {
-    id?: StringFieldUpdateOperationsInput | string
+    id?: IntFieldUpdateOperationsInput | number
     email?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
     nickname?: NullableStringFieldUpdateOperationsInput | string | null
@@ -7560,7 +7649,6 @@ export namespace Prisma {
   }
 
   export type UserCreateWithoutTrainingPlansInput = {
-    id?: string
     email: string
     passwordHash: string
     nickname?: string | null
@@ -7570,7 +7658,7 @@ export namespace Prisma {
   }
 
   export type UserUncheckedCreateWithoutTrainingPlansInput = {
-    id?: string
+    id?: number
     email: string
     passwordHash: string
     nickname?: string | null
@@ -7626,7 +7714,6 @@ export namespace Prisma {
   }
 
   export type UserUpdateWithoutTrainingPlansInput = {
-    id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
     nickname?: NullableStringFieldUpdateOperationsInput | string | null
@@ -7636,7 +7723,7 @@ export namespace Prisma {
   }
 
   export type UserUncheckedUpdateWithoutTrainingPlansInput = {
-    id?: StringFieldUpdateOperationsInput | string
+    id?: IntFieldUpdateOperationsInput | number
     email?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
     nickname?: NullableStringFieldUpdateOperationsInput | string | null
@@ -7690,7 +7777,7 @@ export namespace Prisma {
 
   export type TrainingPlanUncheckedCreateWithoutItemsInput = {
     id?: string
-    userId: string
+    userId: number
     title: string
     goalType: string
     level: string
@@ -7732,7 +7819,7 @@ export namespace Prisma {
 
   export type TrainingPlanUncheckedUpdateWithoutItemsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
+    userId?: IntFieldUpdateOperationsInput | number
     title?: StringFieldUpdateOperationsInput | string
     goalType?: StringFieldUpdateOperationsInput | string
     level?: StringFieldUpdateOperationsInput | string

@@ -1,8 +1,12 @@
 import { ConflictException, Injectable } from '@nestjs/common';
+import * as bcrypt from 'bcrypt';
+
 import { CreateUserDto } from './dto/create-user.dto';
 import { PrismaService } from '../prisma/prisma.service';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { toUserResponseDto } from './mapper/user.mapper';
+
+const SALT_ROUNDS = 10;
 
 type PrismaKnownError = {
   code: string;
@@ -42,11 +46,13 @@ export class UsersService {
         }
 
         try{
+            const passwordHash = await bcrypt.hash(dto.password, SALT_ROUNDS);
+
             const user = await this.prisma.user.create({
                 data : {
                     email: dto.email,
                     nickname: dto.nickname,
-                    passwordHash: dto.password
+                    passwordHash
                 }
             })
 
