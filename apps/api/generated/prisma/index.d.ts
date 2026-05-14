@@ -2372,6 +2372,7 @@ export namespace Prisma {
   }
 
   export type RunningRecordAvgAggregateOutputType = {
+    id: number | null
     userId: number | null
     distanceKm: number | null
     durationSec: number | null
@@ -2379,6 +2380,7 @@ export namespace Prisma {
   }
 
   export type RunningRecordSumAggregateOutputType = {
+    id: number | null
     userId: number | null
     distanceKm: number | null
     durationSec: number | null
@@ -2386,7 +2388,7 @@ export namespace Prisma {
   }
 
   export type RunningRecordMinAggregateOutputType = {
-    id: string | null
+    id: number | null
     userId: number | null
     distanceKm: number | null
     durationSec: number | null
@@ -2398,7 +2400,7 @@ export namespace Prisma {
   }
 
   export type RunningRecordMaxAggregateOutputType = {
-    id: string | null
+    id: number | null
     userId: number | null
     distanceKm: number | null
     durationSec: number | null
@@ -2424,6 +2426,7 @@ export namespace Prisma {
 
 
   export type RunningRecordAvgAggregateInputType = {
+    id?: true
     userId?: true
     distanceKm?: true
     durationSec?: true
@@ -2431,6 +2434,7 @@ export namespace Prisma {
   }
 
   export type RunningRecordSumAggregateInputType = {
+    id?: true
     userId?: true
     distanceKm?: true
     durationSec?: true
@@ -2561,7 +2565,7 @@ export namespace Prisma {
   }
 
   export type RunningRecordGroupByOutputType = {
-    id: string
+    id: number
     userId: number
     distanceKm: number
     durationSec: number
@@ -2659,7 +2663,7 @@ export namespace Prisma {
       user: Prisma.$UserPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
-      id: string
+      id: number
       userId: number
       distanceKm: number
       durationSec: number
@@ -3092,7 +3096,7 @@ export namespace Prisma {
    * Fields of the RunningRecord model
    */
   interface RunningRecordFieldRefs {
-    readonly id: FieldRef<"RunningRecord", 'String'>
+    readonly id: FieldRef<"RunningRecord", 'Int'>
     readonly userId: FieldRef<"RunningRecord", 'Int'>
     readonly distanceKm: FieldRef<"RunningRecord", 'Float'>
     readonly durationSec: FieldRef<"RunningRecord", 'Int'>
@@ -3533,15 +3537,17 @@ export namespace Prisma {
   }
 
   export type TrainingPlanAvgAggregateOutputType = {
+    id: number | null
     userId: number | null
   }
 
   export type TrainingPlanSumAggregateOutputType = {
+    id: number | null
     userId: number | null
   }
 
   export type TrainingPlanMinAggregateOutputType = {
-    id: string | null
+    id: number | null
     userId: number | null
     title: string | null
     goalType: string | null
@@ -3554,7 +3560,7 @@ export namespace Prisma {
   }
 
   export type TrainingPlanMaxAggregateOutputType = {
-    id: string | null
+    id: number | null
     userId: number | null
     title: string | null
     goalType: string | null
@@ -3582,10 +3588,12 @@ export namespace Prisma {
 
 
   export type TrainingPlanAvgAggregateInputType = {
+    id?: true
     userId?: true
   }
 
   export type TrainingPlanSumAggregateInputType = {
+    id?: true
     userId?: true
   }
 
@@ -3716,7 +3724,7 @@ export namespace Prisma {
   }
 
   export type TrainingPlanGroupByOutputType = {
-    id: string
+    id: number
     userId: number
     title: string
     goalType: string
@@ -3824,7 +3832,7 @@ export namespace Prisma {
       items: Prisma.$TrainingPlanItemPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
-      id: string
+      id: number
       userId: number
       title: string
       goalType: string
@@ -4259,7 +4267,7 @@ export namespace Prisma {
    * Fields of the TrainingPlan model
    */
   interface TrainingPlanFieldRefs {
-    readonly id: FieldRef<"TrainingPlan", 'String'>
+    readonly id: FieldRef<"TrainingPlan", 'Int'>
     readonly userId: FieldRef<"TrainingPlan", 'Int'>
     readonly title: FieldRef<"TrainingPlan", 'String'>
     readonly goalType: FieldRef<"TrainingPlan", 'String'>
@@ -4725,20 +4733,24 @@ export namespace Prisma {
   }
 
   export type TrainingPlanItemAvgAggregateOutputType = {
+    id: number | null
+    trainingPlanId: number | null
     distanceKm: number | null
     targetPaceSecPerKm: number | null
     sortOrder: number | null
   }
 
   export type TrainingPlanItemSumAggregateOutputType = {
+    id: number | null
+    trainingPlanId: number | null
     distanceKm: number | null
     targetPaceSecPerKm: number | null
     sortOrder: number | null
   }
 
   export type TrainingPlanItemMinAggregateOutputType = {
-    id: string | null
-    trainingPlanId: string | null
+    id: number | null
+    trainingPlanId: number | null
     planDate: Date | null
     workoutType: string | null
     distanceKm: number | null
@@ -4748,8 +4760,8 @@ export namespace Prisma {
   }
 
   export type TrainingPlanItemMaxAggregateOutputType = {
-    id: string | null
-    trainingPlanId: string | null
+    id: number | null
+    trainingPlanId: number | null
     planDate: Date | null
     workoutType: string | null
     distanceKm: number | null
@@ -4772,12 +4784,16 @@ export namespace Prisma {
 
 
   export type TrainingPlanItemAvgAggregateInputType = {
+    id?: true
+    trainingPlanId?: true
     distanceKm?: true
     targetPaceSecPerKm?: true
     sortOrder?: true
   }
 
   export type TrainingPlanItemSumAggregateInputType = {
+    id?: true
+    trainingPlanId?: true
     distanceKm?: true
     targetPaceSecPerKm?: true
     sortOrder?: true
@@ -4904,8 +4920,8 @@ export namespace Prisma {
   }
 
   export type TrainingPlanItemGroupByOutputType = {
-    id: string
-    trainingPlanId: string
+    id: number
+    trainingPlanId: number
     planDate: Date
     workoutType: string
     distanceKm: number | null
@@ -4997,8 +5013,8 @@ export namespace Prisma {
       trainingPlan: Prisma.$TrainingPlanPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
-      id: string
-      trainingPlanId: string
+      id: number
+      trainingPlanId: number
       planDate: Date
       workoutType: string
       distanceKm: number | null
@@ -5429,8 +5445,8 @@ export namespace Prisma {
    * Fields of the TrainingPlanItem model
    */
   interface TrainingPlanItemFieldRefs {
-    readonly id: FieldRef<"TrainingPlanItem", 'String'>
-    readonly trainingPlanId: FieldRef<"TrainingPlanItem", 'String'>
+    readonly id: FieldRef<"TrainingPlanItem", 'Int'>
+    readonly trainingPlanId: FieldRef<"TrainingPlanItem", 'Int'>
     readonly planDate: FieldRef<"TrainingPlanItem", 'DateTime'>
     readonly workoutType: FieldRef<"TrainingPlanItem", 'String'>
     readonly distanceKm: FieldRef<"TrainingPlanItem", 'Float'>
@@ -6084,7 +6100,7 @@ export namespace Prisma {
     AND?: RunningRecordWhereInput | RunningRecordWhereInput[]
     OR?: RunningRecordWhereInput[]
     NOT?: RunningRecordWhereInput | RunningRecordWhereInput[]
-    id?: StringFilter<"RunningRecord"> | string
+    id?: IntFilter<"RunningRecord"> | number
     userId?: IntFilter<"RunningRecord"> | number
     distanceKm?: FloatFilter<"RunningRecord"> | number
     durationSec?: IntFilter<"RunningRecord"> | number
@@ -6110,7 +6126,7 @@ export namespace Prisma {
   }
 
   export type RunningRecordWhereUniqueInput = Prisma.AtLeast<{
-    id?: string
+    id?: number
     AND?: RunningRecordWhereInput | RunningRecordWhereInput[]
     OR?: RunningRecordWhereInput[]
     NOT?: RunningRecordWhereInput | RunningRecordWhereInput[]
@@ -6146,7 +6162,7 @@ export namespace Prisma {
     AND?: RunningRecordScalarWhereWithAggregatesInput | RunningRecordScalarWhereWithAggregatesInput[]
     OR?: RunningRecordScalarWhereWithAggregatesInput[]
     NOT?: RunningRecordScalarWhereWithAggregatesInput | RunningRecordScalarWhereWithAggregatesInput[]
-    id?: StringWithAggregatesFilter<"RunningRecord"> | string
+    id?: IntWithAggregatesFilter<"RunningRecord"> | number
     userId?: IntWithAggregatesFilter<"RunningRecord"> | number
     distanceKm?: FloatWithAggregatesFilter<"RunningRecord"> | number
     durationSec?: IntWithAggregatesFilter<"RunningRecord"> | number
@@ -6161,7 +6177,7 @@ export namespace Prisma {
     AND?: TrainingPlanWhereInput | TrainingPlanWhereInput[]
     OR?: TrainingPlanWhereInput[]
     NOT?: TrainingPlanWhereInput | TrainingPlanWhereInput[]
-    id?: StringFilter<"TrainingPlan"> | string
+    id?: IntFilter<"TrainingPlan"> | number
     userId?: IntFilter<"TrainingPlan"> | number
     title?: StringFilter<"TrainingPlan"> | string
     goalType?: StringFilter<"TrainingPlan"> | string
@@ -6191,7 +6207,7 @@ export namespace Prisma {
   }
 
   export type TrainingPlanWhereUniqueInput = Prisma.AtLeast<{
-    id?: string
+    id?: number
     AND?: TrainingPlanWhereInput | TrainingPlanWhereInput[]
     OR?: TrainingPlanWhereInput[]
     NOT?: TrainingPlanWhereInput | TrainingPlanWhereInput[]
@@ -6230,7 +6246,7 @@ export namespace Prisma {
     AND?: TrainingPlanScalarWhereWithAggregatesInput | TrainingPlanScalarWhereWithAggregatesInput[]
     OR?: TrainingPlanScalarWhereWithAggregatesInput[]
     NOT?: TrainingPlanScalarWhereWithAggregatesInput | TrainingPlanScalarWhereWithAggregatesInput[]
-    id?: StringWithAggregatesFilter<"TrainingPlan"> | string
+    id?: IntWithAggregatesFilter<"TrainingPlan"> | number
     userId?: IntWithAggregatesFilter<"TrainingPlan"> | number
     title?: StringWithAggregatesFilter<"TrainingPlan"> | string
     goalType?: StringWithAggregatesFilter<"TrainingPlan"> | string
@@ -6246,8 +6262,8 @@ export namespace Prisma {
     AND?: TrainingPlanItemWhereInput | TrainingPlanItemWhereInput[]
     OR?: TrainingPlanItemWhereInput[]
     NOT?: TrainingPlanItemWhereInput | TrainingPlanItemWhereInput[]
-    id?: StringFilter<"TrainingPlanItem"> | string
-    trainingPlanId?: StringFilter<"TrainingPlanItem"> | string
+    id?: IntFilter<"TrainingPlanItem"> | number
+    trainingPlanId?: IntFilter<"TrainingPlanItem"> | number
     planDate?: DateTimeFilter<"TrainingPlanItem"> | Date | string
     workoutType?: StringFilter<"TrainingPlanItem"> | string
     distanceKm?: FloatNullableFilter<"TrainingPlanItem"> | number | null
@@ -6270,11 +6286,11 @@ export namespace Prisma {
   }
 
   export type TrainingPlanItemWhereUniqueInput = Prisma.AtLeast<{
-    id?: string
+    id?: number
     AND?: TrainingPlanItemWhereInput | TrainingPlanItemWhereInput[]
     OR?: TrainingPlanItemWhereInput[]
     NOT?: TrainingPlanItemWhereInput | TrainingPlanItemWhereInput[]
-    trainingPlanId?: StringFilter<"TrainingPlanItem"> | string
+    trainingPlanId?: IntFilter<"TrainingPlanItem"> | number
     planDate?: DateTimeFilter<"TrainingPlanItem"> | Date | string
     workoutType?: StringFilter<"TrainingPlanItem"> | string
     distanceKm?: FloatNullableFilter<"TrainingPlanItem"> | number | null
@@ -6304,8 +6320,8 @@ export namespace Prisma {
     AND?: TrainingPlanItemScalarWhereWithAggregatesInput | TrainingPlanItemScalarWhereWithAggregatesInput[]
     OR?: TrainingPlanItemScalarWhereWithAggregatesInput[]
     NOT?: TrainingPlanItemScalarWhereWithAggregatesInput | TrainingPlanItemScalarWhereWithAggregatesInput[]
-    id?: StringWithAggregatesFilter<"TrainingPlanItem"> | string
-    trainingPlanId?: StringWithAggregatesFilter<"TrainingPlanItem"> | string
+    id?: IntWithAggregatesFilter<"TrainingPlanItem"> | number
+    trainingPlanId?: IntWithAggregatesFilter<"TrainingPlanItem"> | number
     planDate?: DateTimeWithAggregatesFilter<"TrainingPlanItem"> | Date | string
     workoutType?: StringWithAggregatesFilter<"TrainingPlanItem"> | string
     distanceKm?: FloatNullableWithAggregatesFilter<"TrainingPlanItem"> | number | null
@@ -6383,7 +6399,6 @@ export namespace Prisma {
   }
 
   export type RunningRecordCreateInput = {
-    id?: string
     distanceKm: number
     durationSec: number
     paceSecPerKm: number
@@ -6395,7 +6410,7 @@ export namespace Prisma {
   }
 
   export type RunningRecordUncheckedCreateInput = {
-    id?: string
+    id?: number
     userId: number
     distanceKm: number
     durationSec: number
@@ -6407,7 +6422,6 @@ export namespace Prisma {
   }
 
   export type RunningRecordUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
     distanceKm?: FloatFieldUpdateOperationsInput | number
     durationSec?: IntFieldUpdateOperationsInput | number
     paceSecPerKm?: IntFieldUpdateOperationsInput | number
@@ -6419,7 +6433,7 @@ export namespace Prisma {
   }
 
   export type RunningRecordUncheckedUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
+    id?: IntFieldUpdateOperationsInput | number
     userId?: IntFieldUpdateOperationsInput | number
     distanceKm?: FloatFieldUpdateOperationsInput | number
     durationSec?: IntFieldUpdateOperationsInput | number
@@ -6431,7 +6445,7 @@ export namespace Prisma {
   }
 
   export type RunningRecordCreateManyInput = {
-    id?: string
+    id?: number
     userId: number
     distanceKm: number
     durationSec: number
@@ -6443,7 +6457,6 @@ export namespace Prisma {
   }
 
   export type RunningRecordUpdateManyMutationInput = {
-    id?: StringFieldUpdateOperationsInput | string
     distanceKm?: FloatFieldUpdateOperationsInput | number
     durationSec?: IntFieldUpdateOperationsInput | number
     paceSecPerKm?: IntFieldUpdateOperationsInput | number
@@ -6454,7 +6467,7 @@ export namespace Prisma {
   }
 
   export type RunningRecordUncheckedUpdateManyInput = {
-    id?: StringFieldUpdateOperationsInput | string
+    id?: IntFieldUpdateOperationsInput | number
     userId?: IntFieldUpdateOperationsInput | number
     distanceKm?: FloatFieldUpdateOperationsInput | number
     durationSec?: IntFieldUpdateOperationsInput | number
@@ -6466,7 +6479,6 @@ export namespace Prisma {
   }
 
   export type TrainingPlanCreateInput = {
-    id?: string
     title: string
     goalType: string
     level: string
@@ -6480,7 +6492,7 @@ export namespace Prisma {
   }
 
   export type TrainingPlanUncheckedCreateInput = {
-    id?: string
+    id?: number
     userId: number
     title: string
     goalType: string
@@ -6494,7 +6506,6 @@ export namespace Prisma {
   }
 
   export type TrainingPlanUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     goalType?: StringFieldUpdateOperationsInput | string
     level?: StringFieldUpdateOperationsInput | string
@@ -6508,7 +6519,7 @@ export namespace Prisma {
   }
 
   export type TrainingPlanUncheckedUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
+    id?: IntFieldUpdateOperationsInput | number
     userId?: IntFieldUpdateOperationsInput | number
     title?: StringFieldUpdateOperationsInput | string
     goalType?: StringFieldUpdateOperationsInput | string
@@ -6522,7 +6533,7 @@ export namespace Prisma {
   }
 
   export type TrainingPlanCreateManyInput = {
-    id?: string
+    id?: number
     userId: number
     title: string
     goalType: string
@@ -6535,7 +6546,6 @@ export namespace Prisma {
   }
 
   export type TrainingPlanUpdateManyMutationInput = {
-    id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     goalType?: StringFieldUpdateOperationsInput | string
     level?: StringFieldUpdateOperationsInput | string
@@ -6547,7 +6557,7 @@ export namespace Prisma {
   }
 
   export type TrainingPlanUncheckedUpdateManyInput = {
-    id?: StringFieldUpdateOperationsInput | string
+    id?: IntFieldUpdateOperationsInput | number
     userId?: IntFieldUpdateOperationsInput | number
     title?: StringFieldUpdateOperationsInput | string
     goalType?: StringFieldUpdateOperationsInput | string
@@ -6560,7 +6570,6 @@ export namespace Prisma {
   }
 
   export type TrainingPlanItemCreateInput = {
-    id?: string
     planDate: Date | string
     workoutType: string
     distanceKm?: number | null
@@ -6571,8 +6580,8 @@ export namespace Prisma {
   }
 
   export type TrainingPlanItemUncheckedCreateInput = {
-    id?: string
-    trainingPlanId: string
+    id?: number
+    trainingPlanId: number
     planDate: Date | string
     workoutType: string
     distanceKm?: number | null
@@ -6582,7 +6591,6 @@ export namespace Prisma {
   }
 
   export type TrainingPlanItemUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
     planDate?: DateTimeFieldUpdateOperationsInput | Date | string
     workoutType?: StringFieldUpdateOperationsInput | string
     distanceKm?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -6593,8 +6601,8 @@ export namespace Prisma {
   }
 
   export type TrainingPlanItemUncheckedUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    trainingPlanId?: StringFieldUpdateOperationsInput | string
+    id?: IntFieldUpdateOperationsInput | number
+    trainingPlanId?: IntFieldUpdateOperationsInput | number
     planDate?: DateTimeFieldUpdateOperationsInput | Date | string
     workoutType?: StringFieldUpdateOperationsInput | string
     distanceKm?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -6604,8 +6612,8 @@ export namespace Prisma {
   }
 
   export type TrainingPlanItemCreateManyInput = {
-    id?: string
-    trainingPlanId: string
+    id?: number
+    trainingPlanId: number
     planDate: Date | string
     workoutType: string
     distanceKm?: number | null
@@ -6615,7 +6623,6 @@ export namespace Prisma {
   }
 
   export type TrainingPlanItemUpdateManyMutationInput = {
-    id?: StringFieldUpdateOperationsInput | string
     planDate?: DateTimeFieldUpdateOperationsInput | Date | string
     workoutType?: StringFieldUpdateOperationsInput | string
     distanceKm?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -6625,8 +6632,8 @@ export namespace Prisma {
   }
 
   export type TrainingPlanItemUncheckedUpdateManyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    trainingPlanId?: StringFieldUpdateOperationsInput | string
+    id?: IntFieldUpdateOperationsInput | number
+    trainingPlanId?: IntFieldUpdateOperationsInput | number
     planDate?: DateTimeFieldUpdateOperationsInput | Date | string
     workoutType?: StringFieldUpdateOperationsInput | string
     distanceKm?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -6842,6 +6849,7 @@ export namespace Prisma {
   }
 
   export type RunningRecordAvgOrderByAggregateInput = {
+    id?: SortOrder
     userId?: SortOrder
     distanceKm?: SortOrder
     durationSec?: SortOrder
@@ -6873,6 +6881,7 @@ export namespace Prisma {
   }
 
   export type RunningRecordSumOrderByAggregateInput = {
+    id?: SortOrder
     userId?: SortOrder
     distanceKm?: SortOrder
     durationSec?: SortOrder
@@ -6919,6 +6928,7 @@ export namespace Prisma {
   }
 
   export type TrainingPlanAvgOrderByAggregateInput = {
+    id?: SortOrder
     userId?: SortOrder
   }
 
@@ -6949,6 +6959,7 @@ export namespace Prisma {
   }
 
   export type TrainingPlanSumOrderByAggregateInput = {
+    id?: SortOrder
     userId?: SortOrder
   }
 
@@ -6991,6 +7002,8 @@ export namespace Prisma {
   }
 
   export type TrainingPlanItemAvgOrderByAggregateInput = {
+    id?: SortOrder
+    trainingPlanId?: SortOrder
     distanceKm?: SortOrder
     targetPaceSecPerKm?: SortOrder
     sortOrder?: SortOrder
@@ -7019,6 +7032,8 @@ export namespace Prisma {
   }
 
   export type TrainingPlanItemSumOrderByAggregateInput = {
+    id?: SortOrder
+    trainingPlanId?: SortOrder
     distanceKm?: SortOrder
     targetPaceSecPerKm?: SortOrder
     sortOrder?: SortOrder
@@ -7464,7 +7479,6 @@ export namespace Prisma {
   }
 
   export type RunningRecordCreateWithoutUserInput = {
-    id?: string
     distanceKm: number
     durationSec: number
     paceSecPerKm: number
@@ -7475,7 +7489,7 @@ export namespace Prisma {
   }
 
   export type RunningRecordUncheckedCreateWithoutUserInput = {
-    id?: string
+    id?: number
     distanceKm: number
     durationSec: number
     paceSecPerKm: number
@@ -7496,7 +7510,6 @@ export namespace Prisma {
   }
 
   export type TrainingPlanCreateWithoutUserInput = {
-    id?: string
     title: string
     goalType: string
     level: string
@@ -7509,7 +7522,7 @@ export namespace Prisma {
   }
 
   export type TrainingPlanUncheckedCreateWithoutUserInput = {
-    id?: string
+    id?: number
     title: string
     goalType: string
     level: string
@@ -7551,7 +7564,7 @@ export namespace Prisma {
     AND?: RunningRecordScalarWhereInput | RunningRecordScalarWhereInput[]
     OR?: RunningRecordScalarWhereInput[]
     NOT?: RunningRecordScalarWhereInput | RunningRecordScalarWhereInput[]
-    id?: StringFilter<"RunningRecord"> | string
+    id?: IntFilter<"RunningRecord"> | number
     userId?: IntFilter<"RunningRecord"> | number
     distanceKm?: FloatFilter<"RunningRecord"> | number
     durationSec?: IntFilter<"RunningRecord"> | number
@@ -7582,7 +7595,7 @@ export namespace Prisma {
     AND?: TrainingPlanScalarWhereInput | TrainingPlanScalarWhereInput[]
     OR?: TrainingPlanScalarWhereInput[]
     NOT?: TrainingPlanScalarWhereInput | TrainingPlanScalarWhereInput[]
-    id?: StringFilter<"TrainingPlan"> | string
+    id?: IntFilter<"TrainingPlan"> | number
     userId?: IntFilter<"TrainingPlan"> | number
     title?: StringFilter<"TrainingPlan"> | string
     goalType?: StringFilter<"TrainingPlan"> | string
@@ -7673,7 +7686,6 @@ export namespace Prisma {
   }
 
   export type TrainingPlanItemCreateWithoutTrainingPlanInput = {
-    id?: string
     planDate: Date | string
     workoutType: string
     distanceKm?: number | null
@@ -7683,7 +7695,7 @@ export namespace Prisma {
   }
 
   export type TrainingPlanItemUncheckedCreateWithoutTrainingPlanInput = {
-    id?: string
+    id?: number
     planDate: Date | string
     workoutType: string
     distanceKm?: number | null
@@ -7752,8 +7764,8 @@ export namespace Prisma {
     AND?: TrainingPlanItemScalarWhereInput | TrainingPlanItemScalarWhereInput[]
     OR?: TrainingPlanItemScalarWhereInput[]
     NOT?: TrainingPlanItemScalarWhereInput | TrainingPlanItemScalarWhereInput[]
-    id?: StringFilter<"TrainingPlanItem"> | string
-    trainingPlanId?: StringFilter<"TrainingPlanItem"> | string
+    id?: IntFilter<"TrainingPlanItem"> | number
+    trainingPlanId?: IntFilter<"TrainingPlanItem"> | number
     planDate?: DateTimeFilter<"TrainingPlanItem"> | Date | string
     workoutType?: StringFilter<"TrainingPlanItem"> | string
     distanceKm?: FloatNullableFilter<"TrainingPlanItem"> | number | null
@@ -7763,7 +7775,6 @@ export namespace Prisma {
   }
 
   export type TrainingPlanCreateWithoutItemsInput = {
-    id?: string
     title: string
     goalType: string
     level: string
@@ -7776,7 +7787,7 @@ export namespace Prisma {
   }
 
   export type TrainingPlanUncheckedCreateWithoutItemsInput = {
-    id?: string
+    id?: number
     userId: number
     title: string
     goalType: string
@@ -7805,7 +7816,6 @@ export namespace Prisma {
   }
 
   export type TrainingPlanUpdateWithoutItemsInput = {
-    id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     goalType?: StringFieldUpdateOperationsInput | string
     level?: StringFieldUpdateOperationsInput | string
@@ -7818,7 +7828,7 @@ export namespace Prisma {
   }
 
   export type TrainingPlanUncheckedUpdateWithoutItemsInput = {
-    id?: StringFieldUpdateOperationsInput | string
+    id?: IntFieldUpdateOperationsInput | number
     userId?: IntFieldUpdateOperationsInput | number
     title?: StringFieldUpdateOperationsInput | string
     goalType?: StringFieldUpdateOperationsInput | string
@@ -7831,7 +7841,7 @@ export namespace Prisma {
   }
 
   export type RunningRecordCreateManyUserInput = {
-    id?: string
+    id?: number
     distanceKm: number
     durationSec: number
     paceSecPerKm: number
@@ -7842,7 +7852,7 @@ export namespace Prisma {
   }
 
   export type TrainingPlanCreateManyUserInput = {
-    id?: string
+    id?: number
     title: string
     goalType: string
     level: string
@@ -7854,7 +7864,6 @@ export namespace Prisma {
   }
 
   export type RunningRecordUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
     distanceKm?: FloatFieldUpdateOperationsInput | number
     durationSec?: IntFieldUpdateOperationsInput | number
     paceSecPerKm?: IntFieldUpdateOperationsInput | number
@@ -7865,7 +7874,7 @@ export namespace Prisma {
   }
 
   export type RunningRecordUncheckedUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
+    id?: IntFieldUpdateOperationsInput | number
     distanceKm?: FloatFieldUpdateOperationsInput | number
     durationSec?: IntFieldUpdateOperationsInput | number
     paceSecPerKm?: IntFieldUpdateOperationsInput | number
@@ -7876,7 +7885,7 @@ export namespace Prisma {
   }
 
   export type RunningRecordUncheckedUpdateManyWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
+    id?: IntFieldUpdateOperationsInput | number
     distanceKm?: FloatFieldUpdateOperationsInput | number
     durationSec?: IntFieldUpdateOperationsInput | number
     paceSecPerKm?: IntFieldUpdateOperationsInput | number
@@ -7887,7 +7896,6 @@ export namespace Prisma {
   }
 
   export type TrainingPlanUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     goalType?: StringFieldUpdateOperationsInput | string
     level?: StringFieldUpdateOperationsInput | string
@@ -7900,7 +7908,7 @@ export namespace Prisma {
   }
 
   export type TrainingPlanUncheckedUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
+    id?: IntFieldUpdateOperationsInput | number
     title?: StringFieldUpdateOperationsInput | string
     goalType?: StringFieldUpdateOperationsInput | string
     level?: StringFieldUpdateOperationsInput | string
@@ -7913,7 +7921,7 @@ export namespace Prisma {
   }
 
   export type TrainingPlanUncheckedUpdateManyWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
+    id?: IntFieldUpdateOperationsInput | number
     title?: StringFieldUpdateOperationsInput | string
     goalType?: StringFieldUpdateOperationsInput | string
     level?: StringFieldUpdateOperationsInput | string
@@ -7925,7 +7933,7 @@ export namespace Prisma {
   }
 
   export type TrainingPlanItemCreateManyTrainingPlanInput = {
-    id?: string
+    id?: number
     planDate: Date | string
     workoutType: string
     distanceKm?: number | null
@@ -7935,7 +7943,6 @@ export namespace Prisma {
   }
 
   export type TrainingPlanItemUpdateWithoutTrainingPlanInput = {
-    id?: StringFieldUpdateOperationsInput | string
     planDate?: DateTimeFieldUpdateOperationsInput | Date | string
     workoutType?: StringFieldUpdateOperationsInput | string
     distanceKm?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -7945,7 +7952,7 @@ export namespace Prisma {
   }
 
   export type TrainingPlanItemUncheckedUpdateWithoutTrainingPlanInput = {
-    id?: StringFieldUpdateOperationsInput | string
+    id?: IntFieldUpdateOperationsInput | number
     planDate?: DateTimeFieldUpdateOperationsInput | Date | string
     workoutType?: StringFieldUpdateOperationsInput | string
     distanceKm?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -7955,7 +7962,7 @@ export namespace Prisma {
   }
 
   export type TrainingPlanItemUncheckedUpdateManyWithoutTrainingPlanInput = {
-    id?: StringFieldUpdateOperationsInput | string
+    id?: IntFieldUpdateOperationsInput | number
     planDate?: DateTimeFieldUpdateOperationsInput | Date | string
     workoutType?: StringFieldUpdateOperationsInput | string
     distanceKm?: NullableFloatFieldUpdateOperationsInput | number | null
