@@ -1,8 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateTrainingPlanDto } from './dto/create-training-plan.dto';
 import { UpdateTrainingPlanDto } from './dto/update-training-plan.dto';
 import { GenerateTrainingPlanDto } from './dto/generate-training-plan.dto';
 import { PrismaService } from '../prisma/prisma.service';
+import { NotFoundError } from 'rxjs';
 
 @Injectable()
 export class TrainingPlansService {
@@ -49,6 +50,44 @@ export class TrainingPlansService {
 
     return plan;
   }
+
+  async findMine(userId: number) {
+    return await this.prisma.trainingPlan.findMany({
+      where: { userId },
+      include: {
+        items: {
+          orderBy: {
+            sortOrder: 'asc'
+          }
+        }
+      },
+      orderBy: {
+        createdAt: 'desc'
+      }
+    });
+  }
+
+  async findOne(userId: number, id: number) {
+    const plan = await this.prisma.trainingPlan.findFirst({
+      where: {
+        id, userId
+      },
+      include: {
+        items: {
+          orderBy: {
+            sortOrder: 'asc'
+          }
+        }
+      }
+    });
+
+    if (!plan) {
+      throw new NotFoundException('training plan not found');
+    }
+
+    return plan;
+  }
+
   private createWeeklyItems(startDate: Date, averageDistance: number) {
     if (averageDistance < 3) {
       return [
@@ -184,25 +223,5 @@ export class TrainingPlansService {
     const result = new Date(date);
     result.setDate(result.getDate() + days);
     return result;
-  }
-
-  create(createTrainingPlanDto: CreateTrainingPlanDto) {
-    return 'This action adds a new trainingPlan';
-  }
-
-  findAll() {
-    return `This action returns all trainingPlans`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} trainingPlan`;
-  }
-
-  update(id: number, updateTrainingPlanDto: UpdateTrainingPlanDto) {
-    return `This action updates a #${id} trainingPlan`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} trainingPlan`;
   }
 }
