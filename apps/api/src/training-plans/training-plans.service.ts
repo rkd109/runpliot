@@ -1,9 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { CreateTrainingPlanDto } from './dto/create-training-plan.dto';
-import { UpdateTrainingPlanDto } from './dto/update-training-plan.dto';
 import { GenerateTrainingPlanDto } from './dto/generate-training-plan.dto';
 import { PrismaService } from '../prisma/prisma.service';
-import { NotFoundError } from 'rxjs';
 
 @Injectable()
 export class TrainingPlansService {

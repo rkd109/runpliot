@@ -4,7 +4,7 @@ import * as bcrypt from 'bcrypt';
 import { CreateUserDto } from './dto/create-user.dto';
 import { PrismaService } from '../prisma/prisma.service';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { toUserResponseDto } from './mapper/user.mapper';
+import { toUserResponseDto } from './mappers/user.mapper';
 
 const SALT_ROUNDS = 10;
 

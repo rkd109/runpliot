@@ -1,7 +1,5 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Req, UseGuards, ParseIntPipe } from '@nestjs/common';
 import { TrainingPlansService } from './training-plans.service';
-import { CreateTrainingPlanDto } from './dto/create-training-plan.dto';
-import { UpdateTrainingPlanDto } from './dto/update-training-plan.dto';
 import { GenerateTrainingPlanDto } from './dto/generate-training-plan.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { ApiBearerAuth } from '@nestjs/swagger';
