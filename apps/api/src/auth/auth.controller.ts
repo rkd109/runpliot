@@ -4,13 +4,7 @@ import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 import { LoginResponseDto } from './dto/login-response.dto';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
-
-type AuthenticatedRequest = Request & {
-    user: {
-        userId: number;
-        email: string;
-    };
-}
+import { AuthenticatedRequest } from './types/authenticated-request.type';
 
 @ApiTags('auth')
 @Controller('auth')

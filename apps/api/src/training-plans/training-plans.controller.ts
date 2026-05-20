@@ -5,13 +5,7 @@ import { UpdateTrainingPlanDto } from './dto/update-training-plan.dto';
 import { GenerateTrainingPlanDto } from './dto/generate-training-plan.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { ApiBearerAuth } from '@nestjs/swagger';
-
-type AuthenticatedRequest = Request & {
-  user: {
-    userId: number;
-    email: string;
-  }
-}
+import { AuthenticatedRequest } from '../auth/types/authenticated-request.type';
 
 @Controller('training-plans')
 @UseGuards(JwtAuthGuard)

@@ -4,13 +4,7 @@ import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RunningRecordsService } from './running-records.service';
 import { CreateRunningRecordDto } from './dto/create-running-record.dto';
 import { UpdateRunningRecordDto } from './dto/update-running-record.dto';
-
-type AuthenticatedRequest = Request & {
-    user: {
-        userId: number;
-        email: string;
-    }
-}
+import { AuthenticatedRequest } from '../auth/types/authenticated-request.type';
 
 @ApiTags('running-records')
 @ApiBearerAuth()
