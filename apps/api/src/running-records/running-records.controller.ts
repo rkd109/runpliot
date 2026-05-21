@@ -1,10 +1,11 @@
 import { Body, Controller, Delete, Get, Param, ParseArrayPipe, ParseIntPipe, Patch, Post, Req, UseGuards } from '@nestjs/common';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RunningRecordsService } from './running-records.service';
 import { CreateRunningRecordDto } from './dto/create-running-record.dto';
 import { UpdateRunningRecordDto } from './dto/update-running-record.dto';
 import { AuthenticatedRequest } from '../auth/types/authenticated-request.type';
+import { RunningRecordResponseDto } from './dto/running-record-response.dto';
 
 @ApiTags('running-records')
 @ApiBearerAuth()
@@ -14,6 +15,9 @@ export class RunningRecordsController {
     constructor(private readonly runningRecordsService: RunningRecordsService) {}
 
     @Post()
+    @ApiOkResponse({
+        type: RunningRecordResponseDto
+    })
     async create(
         @Req() req: AuthenticatedRequest,
         @Body() dto: CreateRunningRecordDto
@@ -21,11 +25,18 @@ export class RunningRecordsController {
         return this.runningRecordsService.create(req.user.userId, dto);
     }
     @Get('me')
+    @ApiOkResponse({
+        type: RunningRecordResponseDto,
+        isArray: true
+    })
     async findMine(@Req() req: AuthenticatedRequest){
         return this.runningRecordsService.findMine(req.user.userId);
     }
 
     @Patch(':id')
+    @ApiOkResponse({
+        type: RunningRecordResponseDto
+    })
     async update(
         @Req() req: AuthenticatedRequest,
         @Param('id', ParseIntPipe) id: number,
