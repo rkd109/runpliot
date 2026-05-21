@@ -224,11 +224,14 @@ Request
 
 Prisma Model을 직접 반환하지 않고, Response DTO + mapper 구조를 사용합니다.
 
+성공 응답은 Global Response Interceptor를 통해 공통 응답 형식으로 변환합니다.
+
 ### 이유
 
 - `passwordHash` 노출 방지
 - API Response / DB Model 분리
 - 유지보수성 향상
+- Frontend 응답 처리 단순화
 
 ### 구조
 
@@ -236,12 +239,84 @@ Prisma Model을 직접 반환하지 않고, Response DTO + mapper 구조를 사�
 Prisma Model
 → mapper
 → Response DTO
+→ ResponseInterceptor
+→ Common API Response
 ```
 
 ### 결과
 
 - 응답 구조 통일 가능
 - DB 변경과 API 응답 분리 가능
+- Controller 응답 코드 단순화
+
+## Response Interceptor Strategy
+
+### 결정
+
+Global Response Interceptor 기반 공통 성공 응답 구조를 사용합니다.
+
+### 이유
+
+- API 응답 구조 통일
+- Frontend 응답 처리 단순화
+- 성공/실패 응답 패턴 일관성 확보
+
+### 현재 구조
+
+```text
+Controller Response
+→ ResponseInterceptor
+→ 공통 응답 변환
+```
+
+현재 응답 형식:
+
+```json
+{
+  "success": true,
+  "data": {}
+}
+```
+
+### 결과
+
+- API 응답 구조 일관성 확보
+- Controller 응답 코드 단순화
+
+## Exception Filter Strategy
+
+### 결정
+
+Global `HttpExceptionFilter` 기반 공통 실패 응답 구조를 사용합니다.
+
+### 이유
+
+- 에러 응답 구조 통일
+- Validation / HttpException 일관 처리
+- Frontend 에러 처리 단순화
+
+### 현재 구조
+
+```text
+Exception 발생
+→ HttpExceptionFilter
+→ 공통 에러 응답 변환
+```
+
+현재 응답 형식:
+
+```json
+{
+  "success": false,
+  "statusCode": 400,
+  "message": "..."
+}
+```
+
+### 결과
+
+- `ValidationPipe` 에러 응답 통일 가능
+- `HttpException` 기반 응답 일관성 확보
 
 ## User Data Protection Strategy
 

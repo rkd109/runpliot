@@ -178,6 +178,7 @@ JWT `userId` 기반으로 사용자별 데이터 접근을 보호합니다.
 Prisma Model
 → mapper
 → Response DTO
+→ Response Interceptor
 ```
 
 원칙:
@@ -205,6 +206,17 @@ Request
 → DTO Validation
 → Controller
 ```
+## Current Error Handling Strategy
+
+현재 Global HttpExceptionFilter 기반 공통 에러 응답 구조를 적용했습니다.
+
+현재 흐름:
+
+```text
+Exception 발생
+→ HttpExceptionFilter
+→ 공통 에러 응답 변환
+```
 
 ## Current Swagger Status
 
@@ -214,6 +226,8 @@ Request
 
 - 회원가입 테스트
 - 로그인 테스트
+- Response DTO 기반 응답 schema 확인
+- JWT 보호 API 응답 구조 테스트
 - JWT Bearer 인증
 - RunningRecord CRUD 테스트
 - TrainingPlan 생성/조회 테스트
@@ -256,6 +270,10 @@ Swagger Authorize 기반으로 JWT 보호 API 테스트가 가능합니다.
 - TrainingPlan 생성
 - TrainingPlan 조회
 - Swagger 연동
+- Response DTO / mapper 적용
+- Global Response Interceptor 적용
+- Swagger Response DTO 적용
+- Global HttpExceptionFilter 적용
 
 ## Next Priorities
 
@@ -263,10 +281,10 @@ Swagger Authorize 기반으로 JWT 보호 API 테스트가 가능합니다.
 
 예정:
 
-- mapper / response dto 정리
 - pagination
-- exception handling 정리
-- 공통 response format 검토
+- Prisma exception handling 확장
+- Swagger 응답 문서 고도화
+- logging/interceptor 확장
 
 ### 2. Frontend 연동
 
