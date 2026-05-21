@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { GenerateTrainingPlanDto } from './dto/generate-training-plan.dto';
 import { PrismaService } from '../prisma/prisma.service';
+import { toTrainingPlanResponseDto } from './mappers/training-plan.mapper';
 
 @Injectable()
 export class TrainingPlansService {
@@ -45,11 +46,11 @@ export class TrainingPlansService {
       },
     });
 
-    return plan;
+    return toTrainingPlanResponseDto(plan);
   }
 
   async findMine(userId: number) {
-    return await this.prisma.trainingPlan.findMany({
+    const plans = await this.prisma.trainingPlan.findMany({
       where: { userId },
       include: {
         items: {
@@ -62,6 +63,8 @@ export class TrainingPlansService {
         createdAt: 'desc'
       }
     });
+
+    return plans.map(toTrainingPlanResponseDto);
   }
 
   async findOne(userId: number, id: number) {
@@ -82,7 +85,7 @@ export class TrainingPlansService {
       throw new NotFoundException('training plan not found');
     }
 
-    return plan;
+    return toTrainingPlanResponseDto(plan);
   }
 
   private createWeeklyItems(startDate: Date, averageDistance: number) {
