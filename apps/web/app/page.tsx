@@ -1,40 +1,45 @@
 import { APP_NAME, HEALTH_STATUS } from "@runpilot/shared";
 
-export default function Home() {
+export default function HomePage() {
   return (
-    <main className="min-h-screen px-6 py-10">
-      <section className="mx-auto flex max-w-5xl flex-col gap-8">
-        <div className="flex flex-col gap-3">
-          <p className="text-sm font-semibold uppercase tracking-wide text-emerald-700">
-            Portfolio Monorepo
-          </p>
-          <h1 className="text-4xl font-bold text-slate-950 sm:text-5xl">
-            {APP_NAME}
-          </h1>
-          <p className="max-w-2xl text-lg leading-8 text-slate-700">
-            Next.js, NestJS, PostgreSQL을 pnpm workspace로 묶은 실행 가능한
-            기본 껍데기입니다.
-          </p>
-        </div>
+    <main className="min-h-screen bg-slate-950 text-white">
+      <section className="mx-auto flex min-h-screen max-w-5xl flex-col justify-center px-6">
+        <p className="mb-4 text-sm font-semibold text-blue-400">
+          RunPilot
+        </p>
 
-        <div className="grid gap-4 sm:grid-cols-3">
-          {[
-            ["Web", "Next.js App Router"],
-            ["API", "NestJS on port 3001"],
-            ["DB", "PostgreSQL 16 on port 15432"]
-          ].map(([title, description]) => (
-            <article
-              className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm"
-              key={title}
-            >
-              <h2 className="text-lg font-semibold text-slate-950">{title}</h2>
-              <p className="mt-2 text-sm text-slate-600">{description}</p>
-            </article>
-          ))}
-        </div>
+        <h1 className="max-w-3xl text-4xl font-bold leading-tight md:text-6xl">
+          러닝 기록으로 만드는
+          <br />
+          나만의 훈련 계획
+        </h1>
 
-        <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-5 text-emerald-950">
-          Shared package status: {HEALTH_STATUS.OK}
+        <p className="mt-6 max-w-2xl text-lg text-slate-300">
+          RunPilot은 러닝 기록을 저장하고, 기록을 기반으로 훈련 계획을
+          생성하는 러닝 포트폴리오 서비스입니다.
+        </p>
+
+        <div className="mt-10 flex flex-col gap-3 sm:flex-row">
+          <a
+            href="/login"
+            className="rounded-xl bg-blue-500 px-6 py-3 text-center font-semibold text-white hover:bg-blue-400"
+          >
+            로그인하기
+          </a>
+
+          <a
+            href="/running-records"
+            className="rounded-xl border border-slate-700 px-6 py-3 text-center font-semibold text-slate-200 hover:bg-slate-900"
+          >
+            러닝 기록 보기
+          </a>
+
+          <a
+            href="/training-plans"
+            className="rounded-xl border border-slate-700 px-6 py-3 text-center font-semibold text-slate-200 hover:bg-slate-900"
+          >
+            훈련 계획 보기
+          </a>
         </div>
       </section>
     </main>
