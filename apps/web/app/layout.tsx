@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { AuthProvider } from "../src/context/auth-context";
+import { AuthProvider } from "../src/contexts";
+
 
 export const metadata: Metadata = {
   title: "RunPilot",

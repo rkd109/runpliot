@@ -1,10 +1,10 @@
 'use client';
 
 import { SubmitEvent, useState } from 'react';
-import { api } from '../../src/utils/api';
-import { setAccessToken } from '../../src/utils/session-storage';
+import { api } from '../../src/utils';
+import { setAccessToken } from '../../src/utils';
 import { useRouter } from 'next/navigation';
-import { useAuth } from '../../src/context/auth-context';
+import { useAuth } from '../../src/contexts';
 
 
 export default function LoginPage() {
