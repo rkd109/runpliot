@@ -163,6 +163,19 @@ Prisma ORM
 → PostgreSQL
 ```
 
+## Backend Structure
+
+```text
+src/
+├─ auth/
+├─ users/
+├─ running-records/
+├─ training-plans/
+├─ prisma/
+└─ common/
+```
+
+
 ## API Structure
 
 현재 API는 다음과 같은 도메인 구조로 분리되어 있습니다.
@@ -175,6 +188,32 @@ src/
 ├─ training-plans/
 ├─ prisma/
 └─ common/
+```
+
+## Current API Status
+
+### Public APIs
+
+```http
+POST /users
+POST /auth/login
+GET /
+GET /health
+```
+
+### Protected APIs
+
+```http
+GET /auth/me
+
+POST /running-records
+GET /running-records/me
+PATCH /running-records/:id
+DELETE /running-records/:id
+
+POST /training-plans/generate
+GET /training-plans/me
+GET /training-plans/:id
 ```
 
 ## Authentication Architecture
@@ -354,6 +393,12 @@ GET /training-plans/me
 GET /training-plans/:id
 ```
 
+현재 레벨 기준:
+
+- `BEGINNER`
+- `INTERMEDIATE`
+- `ADVANCED`
+
 ## TrainingPlan Generation Strategy
 
 현재 생성 로직은 Rule-Based 방식입니다.
@@ -479,12 +524,15 @@ const config = new DocumentBuilder()
 
 현재 지원:
 
-- DTO 기반 schema 자동 생성
-- Validation decorator 반영
-- JWT Bearer 인증 테스트
-- Swagger Authorize 연동
+- 회원가입 테스트
+- 로그인 테스트
+- Response DTO 기반 응답 schema 확인
+- JWT 보호 API 응답 구조 테스트
+- JWT Bearer 인증
+- RunningRecord CRUD 테스트
+- TrainingPlan 생성/조회 테스트
 
-현재 Swagger를 통해 회원가입, 로그인, RunningRecord CRUD, TrainingPlan 생성 및 조회 테스트가 가능합니다.
+Swagger Authorize 기반으로 JWT 보호 API 테스트가 가능합니다.
 
 ## Error Handling Strategy
 
@@ -512,6 +560,16 @@ email 중복 검사
 Service validation
 +
 DB unique constraint
+```
+
+현재 Global HttpExceptionFilter 기반 공통 에러 응답 구조를 적용했습니다.
+
+현재 흐름:
+
+```text
+Exception 발생
+→ HttpExceptionFilter
+→ 공통 에러 응답 변환
 ```
 
 ## Authorization Strategy
@@ -587,6 +645,8 @@ Controller
 - `prisma.config.ts` 사용
 - PrismaPg Adapter 사용
 - `generated/prisma` 경로 분리
+
+현재 `PrismaService` 기반으로 NestJS DI 구조 연결을 완료했습니다.
 
 현재 개발 단계에서는 `Prisma migrate reset`을 활용하여 스키마 변경을 빠르게 반복 적용하고 있습니다.
 
