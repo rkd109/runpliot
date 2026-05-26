@@ -1,8 +1,9 @@
 'use client';
 
+import { ProtectedRoute } from '@components';
+import { api } from '@utils';
 import { SubmitEvent, useEffect, useState } from 'react';
-import { api } from '../../src/utils';
-import { ProtectedRoute } from '../../src/components';
+
 
 
 type RunningRecord = {

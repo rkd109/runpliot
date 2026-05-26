@@ -1,5 +1,6 @@
 'use client';
 
+import { api, getAccessToken, removeAccessToken } from '@utils';
 import {
   createContext,
   ReactNode,
@@ -7,8 +8,7 @@ import {
   useEffect,
   useState,
 } from 'react';
-import { getAccessToken, removeAccessToken } from '../utils/session-storage';
-import { api } from '../utils';
+
 
 type AuthUser = {
   userId: number;

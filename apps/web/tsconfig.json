@@ -17,7 +17,18 @@
       "esnext"
     ],
     "resolveJsonModule": true,
-    "isolatedModules": true
+    "isolatedModules": true,
+    "paths": {
+      "@runpilot/shared": ["../../packages/shared/src"],
+      "@utils": ["./src/utils"],
+      "@components": ["./src/components"],
+      "@contexts": ["./src/contexts"],
+      "@utils/*": ["./src/utils/*"],
+      "@components/*": ["./src/components/*"],
+      "@contexts/*": ["./src/contexts/*"],
+      "@app/*": ["./app/*"],
+      "@/*": ["./src/*"]
+    }
   },
   "include": [
     "next-env.d.ts",
@@ -27,10 +38,5 @@
   ],
   "exclude": [
     "node_modules"
-  ],
-  "paths": {
-    "@runpilot/shared": [
-      "../../packages/shared/src"
-    ]
-  }
+  ]
 }

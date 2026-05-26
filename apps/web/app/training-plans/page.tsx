@@ -1,9 +1,9 @@
 'use client';
 
+import { ProtectedRoute } from '@components';
+import { api } from '@utils';
 import { useEffect, useState } from 'react';
 
-import { ProtectedRoute } from '../../src/components';
-import { api } from '../../src/utils';
 
 type TrainingPlan = {
   id: number;
