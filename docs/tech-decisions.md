@@ -459,26 +459,6 @@ auth/
 - JWT payload 구조 통일
 - 인증 관련 타입 관리
 
-## Frontend Authentication Strategy
-
-### 결정
-
-Frontend `accessToken` 저장은 `sessionStorage` 기반을 고려합니다.
-
-### 이유
-
-- localStorage 대비 세션 단위 관리
-- 포트폴리오 MVP 단계에서 단순한 구조
-
-### 예정 흐름
-
-```text
-로그인
-→ accessToken 저장
-→ Authorization Header 설정
-→ 보호 API 호출
-```
-
 ## Future Expansion Strategy
 
 ### 결정
@@ -848,3 +828,189 @@ RunPilot은 단순 CRUD 프로젝트보다 다음 경험을 목표로 합니다.
 ### 핵심 목표
 
 > "실제 서비스 형태의 포트폴리오" 구현 경험 확보
+
+## Frontend Framework Selection
+
+### 결정
+
+Frontend Framework로 Next.js App Router를 사용합니다.
+
+### 이유
+
+- React 기반 최신 구조 경험 목적
+- Server Component / Client Component 구조 학습
+- Vercel 배포와 궁합 우수
+- TypeScript 지원 우수
+
+### 현재 방향
+
+초기 MVP 단계에서는 단순 구조를 우선 유지합니다.
+
+예시:
+
+```text
+page.tsx
+→ 직접 구현
+
+복잡도 증가 이후
+→ component 분리
+```
+
+### 결과
+
+- 빠른 MVP 개발 가능
+- 점진적 구조 개선 가능
+
+## Frontend Authentication Strategy
+
+### 결정
+
+Frontend 인증은 JWT accessToken + sessionStorage 기반으로 구현합니다.
+
+### 이유
+
+- 포트폴리오 MVP 단계에서 단순한 구조
+- localStorage 대비 세션 단위 관리 가능
+- Authorization Header 기반 API 인증 가능
+
+### 현재 흐름
+
+```text
+로그인
+→ accessToken 저장
+→ Axios Interceptor Authorization Header 설정
+→ 보호 API 호출
+
+로그인 유지 흐름
+앱 시작
+→ sessionStorage accessToken 확인
+→ /auth/me 호출
+→ 사용자 상태 복구
+```
+
+### 결과
+
+- 새로고침 이후 로그인 유지 가능
+- Frontend 인증 흐름 단순화
+
+## Frontend State Management Strategy
+
+### 결정
+
+Frontend 인증 상태 관리는 Context API 기반으로 구현합니다.
+
+### 이유
+
+- 현재 상태 규모가 크지 않음
+- MVP 단계에서 단순한 구조 유지 목적
+- 외부 상태관리 라이브러리 의존성 최소화
+
+### 현재 관리 상태
+
+- 로그인 사용자 정보
+- 인증 초기화 상태
+
+### 현재 구조
+
+```text
+AuthProvider
+→ user 상태 관리
+
+ProtectedRoute
+→ 인증 보호
+```
+
+### 결과
+
+- 인증 상태 전역 관리 가능
+- 로그인 유지 흐름 구현 가능
+
+## Protected Route Strategy
+
+### 결정
+
+보호 페이지 접근은 `ProtectedRoute` 컴포넌트 기반으로 구현합니다.
+
+### 이유
+
+- 페이지 단위 인증 보호 가능
+- 인증 흐름 분리 가능
+- App Router 구조와 자연스럽게 연결 가능
+
+### 현재 흐름
+
+```text
+페이지 접근
+→ user 상태 확인
+→ 미인증 시 /login redirect
+
+현재 적용 대상
+→ RunningRecords Page
+→ TrainingPlans Page
+→ TrainingPlan Detail Page
+```
+
+### 결과
+
+- 보호 페이지 접근 제어 가능
+- 인증 흐름 재사용 가능
+
+## Axios Client Strategy
+
+### 결정
+
+Frontend API 통신은 Axios 기반으로 구성합니다.
+
+### 이유
+
+- Interceptor 기반 공통 처리 가능
+- Authorization Header 자동 설정 가능
+- 공통 에러 처리 확장 가능
+
+### 현재 구조
+
+```text
+Axios Instance
+→ Interceptor
+→ Authorization Header 설정
+```
+
+### 현재 처리
+JWT Bearer Token 자동 주입
+
+### 결과
+
+- API 호출 코드 단순화
+- 인증 처리 중복 제거
+
+## Duration Storage Strategy
+
+### 결정
+
+러닝 시간은 `durationSeconds` 기반으로 저장합니다.
+
+### 이유
+
+- pace 계산 정확성 확보
+- 시간 계산 단순화
+- 향후 러닝 데이터 분석 대응
+
+### Frontend 입력 구조
+
+```text
+시
+분
+초
+```
+
+```text
+현재 계산 방식
+(hours * 3600)
++ (minutes * 60)
++ seconds
+```
+
+### 결과
+
+- 평균 pace 계산 가능
+- 러닝 분석 로직 확장 가능

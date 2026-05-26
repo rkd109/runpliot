@@ -24,6 +24,9 @@
 
 - Next.js App Router
 - TypeScript
+- Tailwind CSS
+- Axios
+- Context API
 
 ### Backend
 
@@ -146,6 +149,25 @@ where: {
 
 JWT `userId` 기반으로 사용자별 데이터 접근을 보호합니다.
 
+현재 RunningRecord 구조:
+
+```json
+{
+  "runDate": "2026-05-14",
+  "distanceKm": 5.2,
+  "durationSeconds": 1800,
+  "memo": "가볍게 조깅 완료"
+}
+```
+현재 duration은 durationSeconds 기반으로 관리합니다.
+
+현재 Frontend 입력 UI는:
+```text
+시
+분
+초
+```
+
 ### TrainingPlan
 
 현재 구현 완료:
@@ -206,6 +228,7 @@ Request
 → DTO Validation
 → Controller
 ```
+
 ## Current Error Handling Strategy
 
 현재 Global HttpExceptionFilter 기반 공통 에러 응답 구조를 적용했습니다.
@@ -275,6 +298,47 @@ Swagger Authorize 기반으로 JWT 보호 API 테스트가 가능합니다.
 - Swagger Response DTO 적용
 - Global HttpExceptionFilter 적용
 
+- Next.js Frontend 초기 구성
+- Axios API Client 구성
+- Axios Interceptor 적용
+- Context API 기반 인증 상태 관리
+- 로그인 유지 처리
+- ProtectedRoute 기반 보호 페이지
+- RunningRecord Frontend CRUD
+- TrainingPlan Frontend 조회/생성
+- TrainingPlan Detail 화면 구현
+
+
+## Current Frontend Status
+
+현재 Frontend MVP 구현 완료:
+
+- 로그인 화면
+- JWT 기반 인증 흐름
+- sessionStorage accessToken 저장
+- Axios Interceptor 기반 Authorization Header 처리
+- 로그인 유지 처리
+- Context API 기반 인증 상태 관리
+- ProtectedRoute 기반 보호 페이지
+
+현재 RunningRecord Frontend 기능:
+
+- 러닝 기록 조회
+- 러닝 기록 생성
+- 러닝 기록 수정
+- 러닝 기록 삭제
+
+현재 TrainingPlan Frontend 기능:
+
+- TrainingPlan 목록 조회
+- TrainingPlan 생성
+- TrainingPlan 상세 조회
+
+현재 Frontend 스타일:
+
+- Tailwind CSS 기반 다크 테마 UI
+- 카드 기반 러닝 앱 스타일
+
 ## Next Priorities
 
 ### 1. API 완성도 향상
@@ -286,24 +350,27 @@ Swagger Authorize 기반으로 JWT 보호 API 테스트가 가능합니다.
 - Swagger 응답 문서 고도화
 - logging/interceptor 확장
 
-### 2. Frontend 연동
+### 2. Dashboard / 분석 기능
 
 예정:
 
-- 로그인 화면
-- accessToken 저장
-- API 연동
-- 러닝 기록 입력 화면
-- 훈련 계획 조회 화면
-
-### 3. 러닝 도메인 강화
-
-예정:
-
-- 평균 pace 계산
-- 주간 거리 분석
+- 총 러닝 거리
+- 평균 pace
+- 러닝 횟수
+- 최근 러닝 기록
+- 최근 7일 거리 분석
+- 월간 러닝 거리
 - 과훈련 감지
 - 추천 로직 고도화
+
+### 3. UI/UX 개선
+
+예정:
+
+- loading skeleton
+- error handling UI
+- form validation 강화
+- 차트 기반 시각화
 
 ## Current Direction
 

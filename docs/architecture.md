@@ -40,7 +40,9 @@ docs/
 
 - Next.js App Router
 - TypeScript
-- Tailwind CSS (예정)
+- Tailwind CSS
+- Axios
+- Context API
 
 ### Backend
 
@@ -67,6 +69,81 @@ docs/
 | API | `http://localhost:3001` |
 | Swagger | `http://localhost:3001/docs` |
 | PostgreSQL | `localhost:15432` |
+
+## Frontend Architecture
+
+현재 Frontend는 Next.js App Router 기반으로 구성되어 있습니다.
+
+현재 구조:
+
+```text
+app/
+├─ login/
+├─ running-records/
+├─ training-plans/
+│  └─ [id]/
+
+components/
+├─ protected-route.tsx
+
+contexts/
+├─ auth-context.tsx
+
+utils/
+├─ api.ts
+├─ session-storage.ts
+```
+
+현재 역할 분리:
+```text
+Context API
+→ 인증 상태 관리
+
+ProtectedRoute
+→ 인증 보호
+
+Axios Interceptor
+→ Authorization Header 처리
+```
+
+## Frontend Authentication Architecture
+
+현재 Frontend는 JWT accessToken 기반 인증 구조를 사용합니다.
+
+현재 흐름:
+
+```text
+로그인
+→ accessToken 발급
+→ sessionStorage 저장
+→ Axios Interceptor Authorization Header 설정
+→ 보호 API 호출
+
+앱 시작
+→ sessionStorage accessToken 확인
+→ /auth/me 호출
+→ 사용자 상태 복구
+```
+
+## TrainingPlan Frontend
+
+현재 Frontend에서 TrainingPlan 기능을 구현했습니다.
+
+현재 기능:
+
+- TrainingPlan 목록 조회
+- TrainingPlan 생성
+- TrainingPlan 상세 조회
+- TrainingPlanItem 목록 표시
+
+현재 흐름:
+
+```text
+러닝 기록 기반 생성
+→ TrainingPlan 생성 API 호출
+→ 목록 갱신
+→ 상세 페이지 조회
+```
 
 ## Backend Architecture
 
@@ -214,6 +291,18 @@ TrainingPlan
 
 사용자의 러닝 기록 저장 도메인입니다.
 
+현재 RunningRecord duration은 `durationSeconds` 기반으로 저장합니다.
+
+Frontend 입력 UI는 다음 구조를 사용합니다.
+
+```text
+시
+분
+초
+```
+
+현재 pace 계산 및 향후 러닝 데이터 분석 기반 구조를 고려하여 설계 중입니다.
+
 현재 기능:
 
 - 러닝 기록 생성
@@ -340,21 +429,38 @@ where: {
 - TrainingPlan 생성 / 조회
 - Swagger 연동
 
+- Next.js Frontend 초기 구성
+- Axios API Client 구성
+- Axios Interceptor 적용
+- Context API 기반 인증 상태 관리
+- 로그인 유지 처리
+- ProtectedRoute 기반 보호 페이지
+- RunningRecord Frontend CRUD
+- TrainingPlan Frontend 조회/생성
+- TrainingPlan Detail 화면 구현
+
 다음 예정 작업:
 
-1. API 완성도 향상
+1. Dashboard / 통계 기능
+   - 총 거리
+   - 평균 pace
+   - 러닝 횟수
+   - 최근 러닝 기록
+
+2. 러닝 데이터 분석 강화
+   - 최근 7일 거리 분석
+   - 월간 러닝 거리
+   - pace 통계
+
+3. UI/UX 개선
+   - loading skeleton
+   - error handling UI
+   - form validation 강화
+
+4. API 완성도 향상
    - mapper / response dto 정리
    - pagination
    - exception handling 정리
-2. Frontend 연동
-   - 로그인 페이지
-   - accessToken 저장
-   - 러닝 기록 입력 화면
-   - 훈련 계획 조회 화면
-3. 러닝 도메인 강화
-   - pace 계산
-   - 거리 분석
-   - 추천 로직 고도화
 
 ## Swagger Documentation
 
@@ -506,15 +612,14 @@ packages/shared
 
 ## Frontend Integration Plan
 
-현재 프론트엔드는 아직 최소 구조 단계입니다.
+현재 Frontend는 인증 및 주요 도메인 흐름 MVP 구현을 완료했습니다.
 
 예정 작업:
 
-1. 로그인 화면
-2. JWT accessToken 저장
-3. API 연동
-4. 러닝 기록 입력 화면
-5. 훈련 계획 조회 화면
+- Dashboard / 통계 기능
+- 러닝 분석 기능
+- UI/UX 개선
+- 차트 기반 시각화
 
 예정 인증 흐름:
 
@@ -525,7 +630,7 @@ packages/shared
 → 보호 API 호출
 ```
 
-현재 accessToken 저장 방식은 sessionStorage 기반을 고려 중입니다.
+현재 accessToken 저장은 sessionStorage 기반으로 구현했습니다.
 
 ## Future Expansion
 
@@ -576,5 +681,9 @@ packages/shared
 - Rule-Based TrainingPlan 생성
 - TrainingPlan 조회
 - Swagger 기반 API 테스트
+- Frontend 인증 상태 관리
+- RunningRecord Frontend CRUD
+- ProtectedRoute 기반 보호 페이지
+- TrainingPlan Frontend UI
 
 현재 구조는 단순 CRUD 튜토리얼 수준을 넘어서, 실무형 API 구조와 사용자 데이터 보호 흐름을 학습/구현하는 방향으로 발전 중입니다.
