@@ -1,3 +1,5 @@
+'use client';
+
 import { APP_NAME, HEALTH_STATUS } from "@runpilot/shared";
 
 export default function HomePage() {

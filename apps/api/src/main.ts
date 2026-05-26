@@ -22,6 +22,11 @@ async function bootstrap() {
 
   app.useGlobalFilters(new HttpExceptionFilter());
 
+  app.enableCors({
+    origin: process.env.FRONT_BASE_URL,
+    credentials: true,
+  });
+
   const config = new DocumentBuilder()
     .setTitle('RunPilot API')
     .setDescription('RunPilot backend API documentation')
