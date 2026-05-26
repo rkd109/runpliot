@@ -78,6 +78,9 @@ export default function TrainingPlansPage() {
                   <p className="mt-2 text-sm text-slate-400">
                     {new Date(plan.createdAt).toLocaleDateString('ko-KR')}
                   </p>
+                  <a href={`/training-plans/${plan.id}`}>
+                    상세 보기
+                  </a>
                 </div>
               ))}
             </div>
