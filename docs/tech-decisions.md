@@ -513,7 +513,6 @@ REST API 기반 구조를 사용합니다.
 ### 현재 API 스타일
 
 ```http
-POST   /users
 POST   /auth/login
 
 POST   /running-records

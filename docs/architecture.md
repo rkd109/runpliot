@@ -195,7 +195,6 @@ src/
 ### Public APIs
 
 ```http
-POST /users
 POST /auth/login
 GET /
 GET /health
