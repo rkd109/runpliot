@@ -5,122 +5,145 @@
 | 항목 | 내용 |
 | --- | --- |
 | 프로젝트명 | RunPilot |
-| 설명 | 러닝 기록 기반 훈련 계획 생성 서비스 |
-| 구조 | NestJS + Next.js 기반 TypeScript 모노레포 |
-| 목적 | 포트폴리오 목적의 개인 프로젝트 |
+| 설명 | 러닝 기록 기반 상태 확인 및 훈련 계획 생성 서비스 |
+| 구조 | Next.js + NestJS 기반 TypeScript 모노레포 |
+| 목적 | 실무형 API/프론트 흐름을 담은 포트폴리오 프로젝트 |
 
-현재 목표:
+현재 방향:
 
 ```text
 러닝 기록 저장
-→ 사용자 데이터 분석
+→ 러닝 상태 요약
 → Rule-Based 훈련 계획 생성
-→ 향후 AI/LLM 기반 추천 구조 확장
+→ 향후 분석/AI 추천 구조 확장
 ```
-## Frontend Style Context
-
-Frontend UI 스타일은 `docs/frontend-style-guide.md` 기준으로 유지한다.
 
 ## Current Development Status
 
 현재 완료:
 
-- pnpm monorepo 구성
-- Docker PostgreSQL 환경 구성
-- Prisma ORM 연결
-- 회원가입 / 로그인
-- JWT 인증
+- pnpm workspace 기반 monorepo 구성
+- Docker PostgreSQL 16 로컬 환경 구성
+- Prisma ORM 및 migration 구성
+- JWT 로그인 및 `/auth/me` 기반 사용자 상태 복구
+- sessionStorage 기반 accessToken 저장
+- Axios Interceptor 기반 Authorization Header 처리
+- ProtectedRoute 기반 보호 페이지
 - RunningRecord CRUD
-- TrainingPlan 생성
-- TrainingPlan 조회
+- RunningRecord `paceSecPerKm` 계산 및 응답 제공
+- Dashboard MVP
+- TrainingPlan Rule-Based 생성
+- TrainingPlan 목록/상세 조회
+- 목표 입력 기반 TrainingPlan 생성 UX
 - Swagger 연동
 - Response DTO / mapper 적용
 - Global Response Interceptor 적용
-- Swagger Response DTO 적용
 - Global HttpExceptionFilter 적용
+- Frontend format utility 분리
 
-- Next.js Frontend 초기 구성
-- Axios API Client 구성
-- Axios Interceptor 적용
-- Context API 기반 인증 상태 관리
-- 로그인 유지 처리
-- ProtectedRoute 기반 보호 페이지
-- RunningRecord Frontend CRUD
-- TrainingPlan Frontend 조회/생성
-- TrainingPlan Detail 화면 구현
+현재 제외/정리:
 
+- 공개 테스트용 Users API는 `AppModule`에서 제거되어 라우트로 노출되지 않는다.
+- `apps/api/src/users` 코드는 추후 회원가입/관리자 기능 재구성을 위해 남겨둔다.
 
-## Current Frontend Status
+## Frontend Status
 
-현재 Frontend MVP 구현 완료:
+현재 구현 페이지:
 
-- 로그인 화면
-- JWT 기반 인증 흐름
-- sessionStorage accessToken 저장
-- Axios Interceptor 기반 Authorization Header 처리
-- 로그인 유지 처리
-- Context API 기반 인증 상태 관리
-- ProtectedRoute 기반 보호 페이지
+```text
+/                  Landing
+/login             Login
+/dashboard         Running summary dashboard
+/running-records   RunningRecord CRUD
+/training-plans    TrainingPlan list/generate
+/training-plans/:id TrainingPlan detail
+```
 
-현재 RunningRecord Frontend 기능:
+현재 Dashboard MVP:
+
+- 총 러닝 거리
+- 러닝 횟수
+- 평균 페이스
+- 최근 7일 거리
+- 최근 러닝 기록 5개
+- 훈련 계획 CTA
+
+현재 RunningRecord UI:
 
 - 러닝 기록 조회
 - 러닝 기록 생성
 - 러닝 기록 수정
 - 러닝 기록 삭제
+- API 응답의 `paceSecPerKm` 기반 pace 표시
 
-현재 TrainingPlan Frontend 기능:
+현재 TrainingPlan UI:
 
-- TrainingPlan 목록 조회
-- TrainingPlan 생성
-- TrainingPlan 상세 조회
+- 훈련 계획 목록 조회
+- 목표 입력 후 훈련 계획 생성
+- 생성 중 상태 표시
+- 생성 실패 메시지 표시
+- 생성 성공 후 상세 페이지 이동
+- 훈련 계획 상세에서 날짜, 운동 타입, 거리, 목표 페이스 표시
 
-현재 Frontend 스타일:
+## Backend Status
 
-- Tailwind CSS 기반 다크 테마 UI
-- 카드 기반 러닝 앱 스타일
+현재 공개 API:
 
-## Next Priorities
+```http
+GET /
+GET /health
+POST /auth/login
+```
 
-### 1. API 완성도 향상
+현재 보호 API:
 
-예정:
+```http
+GET /auth/me
+
+POST /running-records
+GET /running-records/me
+PATCH /running-records/:id
+DELETE /running-records/:id
+
+POST /training-plans/generate
+GET /training-plans/me
+GET /training-plans/:id
+```
+
+## Current Priorities
+
+### 1. UX 보강
+
+- 러닝 기록 생성/수정 에러 UI
+- 저장/수정/삭제 중 상태
+- Dashboard empty/loading 상태 고도화
+
+### 2. 분석 기능 확장
+
+- 월간 러닝 거리
+- 최근 7일 거리 차트
+- pace 추세
+- 훈련 강도/과훈련 감지
+
+### 3. API 완성도 향상
 
 - pagination
-- Prisma exception handling 확장
-- Swagger 응답 문서 고도화
-- logging/interceptor 확장
+- Prisma 예외 처리 확장
+- 공통 에러 메시지 정리
+- 통계 전용 API 검토
 
-### 2. Dashboard / 분석 기능
+### 4. 문서/포트폴리오 정리
 
-예정:
-
-- 총 러닝 거리
-- 평균 pace
-- 러닝 횟수
-- 최근 러닝 기록
-- 최근 7일 거리 분석
-- 월간 러닝 거리
-- 과훈련 감지
-- 추천 로직 고도화
-
-### 3. UI/UX 개선
-
-예정:
-
-- loading skeleton
-- error handling UI
-- form validation 강화
-- 차트 기반 시각화
+- README와 docs 최신 상태 유지
+- 스크린샷/시연 플로우 추가
+- 배포 전략 정리
 
 ## Current Direction
 
-현재 RunPilot은 단순 CRUD 프로젝트보다 다음 경험을 목표로 합니다.
+RunPilot은 단순 CRUD 프로젝트보다 다음 경험을 목표로 한다.
 
-- 실제 서비스 형태의 포트폴리오 구축
-- 러닝 데이터 기반 도메인 분석 경험
-- Rule-Based → AI/LLM 확장 구조 준비
-
-현재 목표:
-
-> "실제 서비스 형태의 포트폴리오 구축"
+- 인증/인가가 있는 실제 서비스 형태
+- 사용자별 데이터 보호
+- 기록 기반 도메인 로직
+- 프론트와 API가 분리된 실무형 구조
+- Rule-Based 로직에서 분석/AI 추천으로 확장 가능한 기반

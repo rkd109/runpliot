@@ -18,6 +18,7 @@ RunPilot Frontend는 Tailwind CSS 기반 다크 테마 러닝 앱 스타일을 �
 
 - Page wrapper: `min-h-screen bg-slate-950 px-6 py-10 text-white`
 - Main content width: `mx-auto max-w-4xl`
+- Dashboard content width: `mx-auto max-w-5xl`
 - Card spacing: `space-y-4`
 - Form card: `rounded-2xl border border-slate-800 bg-slate-900 p-6`
 
@@ -56,3 +57,19 @@ text-center
 - 입력 폼은 카드 형태로 상단에 배치
 - 삭제 버튼은 red 계열
 - 주요 액션 버튼은 blue 계열
+
+## Current Pages
+
+- `/dashboard`: 요약 카드 + 최근 러닝 기록 + 훈련 계획 CTA
+- `/running-records`: 입력 폼 + 기록 카드 리스트 + inline edit
+- `/training-plans`: 목표 입력 폼 + 계획 카드 리스트
+- `/training-plans/[id]`: 계획 헤더 + TrainingPlanItem 카드 리스트
+
+## Shared Formatting
+
+표시용 formatting은 `apps/web/src/utils/format.ts`의 함수를 우선 사용한다.
+
+- `formatDate`
+- `formatDistance`
+- `formatDuration`
+- `formatPace`
