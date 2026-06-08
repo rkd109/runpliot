@@ -214,6 +214,7 @@ Response `data`:
   "runDate": "2026-05-14T00:00:00.000Z",
   "distanceKm": 5.2,
   "durationSeconds": 1800,
+  "paceSecPerKm": 346,
   "memo": "가볍게 조깅 완료",
   "createAt": "2026-05-14T00:00:00.000Z",
   "updateAt": "2026-05-14T00:00:00.000Z"
@@ -235,6 +236,7 @@ Response `data`:
     "runDate": "2026-05-14T00:00:00.000Z",
     "distanceKm": 5.2,
     "durationSeconds": 1800,
+    "paceSecPerKm": 346,
     "memo": "가볍게 조깅 완료",
     "createAt": "2026-05-14T00:00:00.000Z",
     "updateAt": "2026-05-14T00:00:00.000Z"

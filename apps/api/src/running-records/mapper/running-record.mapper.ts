@@ -7,6 +7,7 @@ export const toRunningRecordResponseDto = (record: RunningRecord):RunningRecordR
         runDate: record.runDate,
         distanceKm: record.distanceKm,
         durationSeconds: record.durationSec,
+        paceSecPerKm: record.paceSecPerKm,
         memo: record.memo,
         createAt: record.createdAt,
         updateAt: record.updatedAt

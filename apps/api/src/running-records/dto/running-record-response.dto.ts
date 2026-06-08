@@ -14,6 +14,9 @@ export class RunningRecordResponseDto {
     durationSeconds!: number;
 
     @ApiProperty()
+    paceSecPerKm!: number;
+
+    @ApiProperty()
     memo?: string | null;
 
     @ApiProperty()

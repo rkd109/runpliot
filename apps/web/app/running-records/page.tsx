@@ -11,6 +11,7 @@ type RunningRecord = {
     id: number;
     distanceKm: number;
     durationSeconds: number;
+    paceSecPerKm: number;
     createdAt: string;
     memo: string;
 };
@@ -91,12 +92,7 @@ export default function RunningRecordsPage() {
         return `${minutes}분 ${remainSeconds}초`;
     };
 
-    const formatPace = (distanceKm: number, durationSeconds: number) => {
-        if (distanceKm <= 0) {
-            return '-';
-        }
-
-        const paceSeconds = Math.floor(durationSeconds / distanceKm);
+    const formatPace = (paceSeconds: number) => {
         const minutes = Math.floor(paceSeconds / 60);
         const seconds = paceSeconds % 60;
 
@@ -363,7 +359,7 @@ export default function RunningRecordsPage() {
                                                 </p>
 
                                                 <p className="mt-1 text-sm text-blue-400">
-                                                    Pace {formatPace(record.distanceKm, record.durationSeconds)}
+                                                    Pace {formatPace(record.paceSecPerKm)}
                                                 </p>
                                             </div>
                                             <div className="flex gap-2">
