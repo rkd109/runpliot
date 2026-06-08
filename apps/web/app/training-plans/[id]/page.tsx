@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 
 import { ProtectedRoute } from '@/components/protected-route';
-import { api } from '@/utils/api';
+import { api, formatDate, formatPace } from '@/utils';
 
 type TrainingPlanItem = {
   id: number;
@@ -31,21 +31,6 @@ const workoutTypeLabels: Record<string, string> = {
   TEMPO_RUN: '템포런',
   LONG_RUN: '롱런',
   RECOVERY_RUN: '회복주',
-};
-
-const formatDate = (date: string) => {
-  return new Date(date).toLocaleDateString('ko-KR');
-};
-
-const formatPace = (paceSecPerKm: number | null) => {
-  if (paceSecPerKm === null) {
-    return null;
-  }
-
-  const minutes = Math.floor(paceSecPerKm / 60);
-  const seconds = paceSecPerKm % 60;
-
-  return `${minutes}'${seconds.toString().padStart(2, '0')}" /km`;
 };
 
 export default function TrainingPlanDetailPage() {
@@ -94,7 +79,10 @@ export default function TrainingPlanDetailPage() {
 
               <div className="mt-8 space-y-4">
                 {plan.items.map((item) => {
-                  const targetPace = formatPace(item.targetPaceSecPerKm);
+                  const targetPace =
+                    item.targetPaceSecPerKm === null
+                      ? null
+                      : formatPace(item.targetPaceSecPerKm);
 
                   return (
                     <div

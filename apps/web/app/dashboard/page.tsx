@@ -1,7 +1,13 @@
 'use client';
 
 import { ProtectedRoute } from '@components';
-import { api } from '@utils';
+import {
+  api,
+  formatDate,
+  formatDistance,
+  formatDuration,
+  formatPace,
+} from '@utils';
 import { useEffect, useMemo, useState } from 'react';
 
 type RunningRecord = {
@@ -11,36 +17,6 @@ type RunningRecord = {
   durationSeconds: number;
   paceSecPerKm: number;
   memo: string | null;
-};
-
-const formatDistance = (distanceKm: number) => {
-  return `${distanceKm.toFixed(1)} km`;
-};
-
-const formatDuration = (seconds: number) => {
-  const minutes = Math.floor(seconds / 60);
-  const remainSeconds = seconds % 60;
-
-  if (remainSeconds === 0) {
-    return `${minutes}분`;
-  }
-
-  return `${minutes}분 ${remainSeconds}초`;
-};
-
-const formatPace = (paceSecPerKm: number | null) => {
-  if (paceSecPerKm === null) {
-    return '-';
-  }
-
-  const minutes = Math.floor(paceSecPerKm / 60);
-  const seconds = paceSecPerKm % 60;
-
-  return `${minutes}'${seconds.toString().padStart(2, '0')}" /km`;
-};
-
-const formatDate = (date: string) => {
-  return new Date(date).toLocaleDateString('ko-KR');
 };
 
 export default function DashboardPage() {

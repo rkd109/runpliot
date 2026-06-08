@@ -1,7 +1,7 @@
 'use client';
 
 import { ProtectedRoute } from '@components';
-import { api } from '@utils';
+import { api, formatDuration, formatPace } from '@utils';
 import { SubmitEvent, useEffect, useState } from 'react';
 
 
@@ -79,24 +79,6 @@ export default function RunningRecordsPage() {
                 console.error(error);
             }
         }
-    };
-
-    const formatDuration = (seconds: number) => {
-        const minutes = Math.floor(seconds / 60);
-        const remainSeconds = seconds % 60;
-
-        if (remainSeconds === 0) {
-            return `${minutes}분`;
-        }
-
-        return `${minutes}분 ${remainSeconds}초`;
-    };
-
-    const formatPace = (paceSeconds: number) => {
-        const minutes = Math.floor(paceSeconds / 60);
-        const seconds = paceSeconds % 60;
-
-        return `${minutes}'${seconds.toString().padStart(2, '0')}" /km`;
     };
 
     const [editingRecordId, setEditingRecordId] = useState<number | null>(null);
