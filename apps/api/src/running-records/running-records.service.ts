@@ -9,6 +9,11 @@ export class RunningRecordsService {
     constructor(private readonly prisma: PrismaService){}
 
     create = async(userId: number, dto: CreateRunningRecordDto) => {
+        const paceSecPerKm = this.calculatePaceSecPerKm(
+            dto.durationSeconds,
+            dto.distanceKm,
+        );
+
         const record = await this.prisma.runningRecord.create({
             data: {
                 userId,
@@ -16,7 +21,7 @@ export class RunningRecordsService {
                 distanceKm: dto.distanceKm,
                 durationSec: dto.durationSeconds,
                 memo: dto.memo,
-                paceSecPerKm: 0
+                paceSecPerKm,
             }
         });
 
@@ -42,12 +47,20 @@ export class RunningRecordsService {
         }
 
 
+        const distanceKm = dto.distanceKm ?? records.distanceKm;
+        const durationSeconds = dto.durationSeconds ?? records.durationSec;
+        const paceSecPerKm = this.calculatePaceSecPerKm(
+            durationSeconds,
+            distanceKm,
+        );
+
         const updated = await this.prisma.runningRecord.update({
             where: { id },
             data : {
                 runDate: dto.runDate ? new Date(dto.runDate) : undefined,
                 distanceKm : dto.distanceKm,
                 durationSec : dto.durationSeconds,
+                paceSecPerKm,
                 memo : dto.memo
             }
         })
@@ -68,5 +81,9 @@ export class RunningRecordsService {
         });
 
         return { deleted : true };
+    }
+
+    private calculatePaceSecPerKm(durationSeconds: number, distanceKm: number): number {
+        return Math.floor(durationSeconds / distanceKm);
     }
 }

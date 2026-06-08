@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsDateString, IsInt, IsNumber, IsOptional, IsString } from "class-validator";
+import { IsDateString, IsInt, IsNumber, IsOptional, IsPositive, IsString, Min } from "class-validator";
 
 export class CreateRunningRecordDto {
     @IsDateString()
@@ -9,12 +9,14 @@ export class CreateRunningRecordDto {
     runDate!: string;
 
     @IsNumber()
+    @IsPositive()
     @ApiProperty({
         example: 5.2
     })
     distanceKm!: number;
 
     @IsInt()
+    @Min(1)
     @ApiProperty({
         example:1800
     })
