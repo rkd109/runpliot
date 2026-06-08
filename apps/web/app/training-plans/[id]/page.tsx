@@ -8,18 +8,44 @@ import { api } from '@/utils/api';
 
 type TrainingPlanItem = {
   id: number;
-  day: number;
-  title: string;
-  description: string;
-  distanceKm: number;
+  planDate: string;
+  workoutType: string;
+  distanceKm: number | null;
+  targetPaceSecPerKm: number | null;
+  description: string | null;
+  sortOrder: number;
 };
 
 type TrainingPlanDetail = {
   id: number;
   title: string;
   level: string;
-  createdAt: string;
+  startDate: string;
+  endDate: string;
   items: TrainingPlanItem[];
+};
+
+const workoutTypeLabels: Record<string, string> = {
+  REST: '휴식',
+  EASY_RUN: '이지런',
+  TEMPO_RUN: '템포런',
+  LONG_RUN: '롱런',
+  RECOVERY_RUN: '회복주',
+};
+
+const formatDate = (date: string) => {
+  return new Date(date).toLocaleDateString('ko-KR');
+};
+
+const formatPace = (paceSecPerKm: number | null) => {
+  if (paceSecPerKm === null) {
+    return null;
+  }
+
+  const minutes = Math.floor(paceSecPerKm / 60);
+  const seconds = paceSecPerKm % 60;
+
+  return `${minutes}'${seconds.toString().padStart(2, '0')}" /km`;
 };
 
 export default function TrainingPlanDetailPage() {
@@ -62,33 +88,51 @@ export default function TrainingPlanDetailPage() {
                 <h1 className="mt-2 text-4xl font-bold">{plan.title}</h1>
 
                 <p className="mt-3 text-sm text-slate-400">
-                  {new Date(plan.createdAt).toLocaleDateString('ko-KR')}
+                  {formatDate(plan.startDate)} - {formatDate(plan.endDate)}
                 </p>
               </div>
 
               <div className="mt-8 space-y-4">
-                {plan.items.map((item) => (
-                  <div
-                    key={item.id}
-                    className="rounded-2xl border border-slate-800 bg-slate-900 p-5"
-                  >
-                    <p className="text-sm font-semibold text-blue-400">
-                      Day {item.day}
-                    </p>
+                {plan.items.map((item) => {
+                  const targetPace = formatPace(item.targetPaceSecPerKm);
 
-                    <h2 className="mt-2 text-2xl font-bold">
-                      {item.title}
-                    </h2>
+                  return (
+                    <div
+                      key={item.id}
+                      className="rounded-2xl border border-slate-800 bg-slate-900 p-5"
+                    >
+                      <p className="text-sm font-semibold text-blue-400">
+                        Day {item.sortOrder} · {formatDate(item.planDate)}
+                      </p>
 
-                    <p className="mt-2 text-slate-300">
-                      {item.description}
-                    </p>
+                      <h2 className="mt-2 text-2xl font-bold">
+                        {workoutTypeLabels[item.workoutType] ??
+                          item.workoutType}
+                      </h2>
 
-                    <p className="mt-3 text-sm text-slate-400">
-                      목표 거리: {item.distanceKm}km
-                    </p>
-                  </div>
-                ))}
+                      {item.description && (
+                        <p className="mt-2 text-slate-300">
+                          {item.description}
+                        </p>
+                      )}
+
+                      <div className="mt-3 flex flex-wrap gap-3 text-sm text-slate-400">
+                        <span>
+                          목표 거리:{' '}
+                          {item.distanceKm === null
+                            ? '-'
+                            : `${item.distanceKm}km`}
+                        </span>
+
+                        {targetPace && (
+                          <span>
+                            목표 페이스: {targetPace}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
             </>
           )}
