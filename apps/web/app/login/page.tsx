@@ -28,9 +28,8 @@ export default function LoginPage() {
 
             const meResponse = await api.get('/auth/me');
 
-            console.log(meResponse.data);
             setUser(meResponse.data.data)
-            router.push('/running-records');
+            router.push('/dashboard');
         } catch (error) {
             console.error(error);
         }

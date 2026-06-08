@@ -30,10 +30,10 @@ export default function HomePage() {
           </a>
 
           <a
-            href="/running-records"
+            href="/dashboard"
             className="rounded-xl border border-slate-700 px-6 py-3 text-center font-semibold text-slate-200 hover:bg-slate-900"
           >
-            러닝 기록 보기
+            대시보드 보기
           </a>
 
           <a
