@@ -1,9 +1,4 @@
-import { api } from './api';
-
-type ApiResponse<T> = {
-  success: boolean;
-  data: T;
-};
+import { api, ApiResponse, PaginatedResponse } from './api';
 
 export type RunningRecord = {
   id: number;
@@ -24,9 +19,9 @@ export type RunningRecordPayload = {
 };
 
 export const getMyRunningRecords = async () => {
-  const response = await api.get<ApiResponse<RunningRecord[]>>('/running-records/me');
+  const response = await api.get<ApiResponse<PaginatedResponse<RunningRecord>>>('/running-records/me');
 
-  return response.data.data;
+  return response.data.data.items;
 };
 
 export const createRunningRecord = async (payload: RunningRecordPayload) => {

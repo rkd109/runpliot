@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { GenerateTrainingPlanDto } from './dto/generate-training-plan.dto';
 import { PrismaService } from '../prisma/prisma.service';
 import { toTrainingPlanResponseDto } from './mappers/training-plan.mapper';
+import { PaginationQueryDto } from '../common/dto/pagination-query.dto';
 
 @Injectable()
 export class TrainingPlansService {
@@ -49,22 +50,44 @@ export class TrainingPlansService {
     return toTrainingPlanResponseDto(plan);
   }
 
-  async findMine(userId: number) {
-    const plans = await this.prisma.trainingPlan.findMany({
-      where: { userId },
-      include: {
-        items: {
-          orderBy: {
-            sortOrder: 'asc'
+  async findMine(userId: number, query: PaginationQueryDto) {
+    const page = query.page;
+    const limit = query.limit;
+    const skip = (page - 1) * limit;
+    const where = { userId };
+    const [plans, total] = await this.prisma.$transaction([
+      this.prisma.trainingPlan.findMany({
+        where,
+        include: {
+          items: {
+            orderBy: {
+              sortOrder: 'asc'
+            }
           }
-        }
-      },
-      orderBy: {
-        createdAt: 'desc'
-      }
-    });
+        },
+        orderBy: {
+          createdAt: 'desc'
+        },
+        skip,
+        take: limit,
+      }),
+      this.prisma.trainingPlan.count({
+        where,
+      }),
+    ]);
+    const totalPages = Math.ceil(total / limit);
 
-    return plans.map(toTrainingPlanResponseDto);
+    return {
+      items: plans.map(toTrainingPlanResponseDto),
+      meta: {
+        page,
+        limit,
+        total,
+        totalPages,
+        hasNextPage: page < totalPages,
+        hasPreviousPage: page > 1,
+      },
+    };
   }
 
   async findOne(userId: number, id: number) {

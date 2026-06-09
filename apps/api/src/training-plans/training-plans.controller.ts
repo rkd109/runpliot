@@ -1,11 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Req, UseGuards, ParseIntPipe } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Req, UseGuards, ParseIntPipe, Query } from '@nestjs/common';
 import { TrainingPlansService } from './training-plans.service';
 import { GenerateTrainingPlanDto } from './dto/generate-training-plan.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AuthenticatedRequest } from '../auth/types/authenticated-request.type';
 import { TrainingPlanResponseDto } from './dto/training-plan-response.dto';
-import { TrainingPlanItemResponseDto } from './dto/training-plan-item-response.dto';
+import { PaginationQueryDto } from '../common/dto/pagination-query.dto';
+import { TrainingPlanListResponseDto } from './dto/training-plan-list-response.dto';
 
 @ApiTags('training-plans')
 @Controller('training-plans')
@@ -33,12 +34,14 @@ export class TrainingPlansController {
     summary: '내 훈련 계획 조회',
   })
   @ApiOkResponse({
-    type: TrainingPlanResponseDto,
-    isArray: true
+    type: TrainingPlanListResponseDto
   })
   @Get('me')
-  async findMine(@Req() req: AuthenticatedRequest) {
-    return await this.trainingPlansService.findMine(req.user.userId);
+  async findMine(
+    @Req() req: AuthenticatedRequest,
+    @Query() query: PaginationQueryDto
+  ) {
+    return await this.trainingPlansService.findMine(req.user.userId, query);
   }
 
   @ApiOperation({

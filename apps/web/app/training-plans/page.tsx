@@ -1,17 +1,9 @@
 'use client';
 
 import { ProtectedRoute } from '@components';
-import { api, formatDate } from '@utils';
+import { formatDate, generateTrainingPlan, getMyTrainingPlans, TrainingPlan } from '@utils';
 import { useRouter } from 'next/navigation';
 import { FormEvent, useEffect, useState } from 'react';
-
-
-type TrainingPlan = {
-  id: number;
-  level: string;
-  title: string;
-  createdAt: string;
-};
 
 export default function TrainingPlansPage() {
   const router = useRouter();
@@ -23,8 +15,8 @@ export default function TrainingPlansPage() {
 
   const fetchPlans = async () => {
     try {
-      const response = await api.get('/training-plans/me');
-      setPlans(response.data.data);
+      const nextPlans = await getMyTrainingPlans();
+      setPlans(nextPlans);
     } finally {
       setIsLoading(false);
     }
@@ -38,11 +30,10 @@ export default function TrainingPlansPage() {
       setErrorMessage('');
 
       const trimmedGoal = goal.trim();
-      const response = await api.post('/training-plans/generate', {
+      const createdPlan = await generateTrainingPlan({
         ...(trimmedGoal ? { goal: trimmedGoal } : {}),
       });
 
-      const createdPlan = response.data.data as TrainingPlan;
       router.push(`/training-plans/${createdPlan.id}`);
     } catch (error) {
       console.error(error);

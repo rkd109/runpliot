@@ -3,6 +3,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { CreateRunningRecordDto } from './dto/create-running-record.dto';
 import { UpdateRunningRecordDto } from './dto/update-running-record.dto';
 import { toRunningRecordResponseDto } from './mapper/running-record.mapper';
+import { PaginationQueryDto } from '../common/dto/pagination-query.dto';
 
 @Injectable()
 export class RunningRecordsService {
@@ -28,13 +29,35 @@ export class RunningRecordsService {
         return toRunningRecordResponseDto(record);
     }
 
-    findMine = async(userId: number) => {
-        const records = await this.prisma.runningRecord.findMany({
-            where: { userId },
-            orderBy: { runDate : 'desc'}
-        })
+    findMine = async(userId: number, query: PaginationQueryDto) => {
+        const page = query.page;
+        const limit = query.limit;
+        const skip = (page - 1) * limit;
+        const where = { userId };
+        const [records, total] = await this.prisma.$transaction([
+            this.prisma.runningRecord.findMany({
+                where,
+                orderBy: { runDate : 'desc'},
+                skip,
+                take: limit,
+            }),
+            this.prisma.runningRecord.count({
+                where,
+            }),
+        ]);
+        const totalPages = Math.ceil(total / limit);
 
-        return records.map(toRunningRecordResponseDto);
+        return {
+            items: records.map(toRunningRecordResponseDto),
+            meta: {
+                page,
+                limit,
+                total,
+                totalPages,
+                hasNextPage: page < totalPages,
+                hasPreviousPage: page > 1,
+            },
+        };
     }
 
     update = async(userId: number, id: number, dto: UpdateRunningRecordDto) => {

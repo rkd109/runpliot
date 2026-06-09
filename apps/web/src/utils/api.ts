@@ -7,6 +7,23 @@ type ApiErrorResponse = {
   message?: string | string[];
 };
 
+export type ApiResponse<T> = {
+  success: boolean;
+  data: T;
+};
+
+export type PaginatedResponse<T> = {
+  items: T[];
+  meta: {
+    page: number;
+    limit: number;
+    total: number;
+    totalPages: number;
+    hasNextPage: boolean;
+    hasPreviousPage: boolean;
+  };
+};
+
 export const api = axios.create({
   baseURL: API_BASE_URL,
   headers: {

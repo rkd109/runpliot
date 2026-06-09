@@ -157,21 +157,38 @@ Response `data`:
 
 Auth: Required
 
+Query:
+
+```text
+page=1
+limit=20
+```
+
 Response `data`:
 
 ```json
-[
-  {
-    "id": 1,
-    "runDate": "2026-05-14T00:00:00.000Z",
-    "distanceKm": 5.2,
-    "durationSeconds": 1800,
-    "paceSecPerKm": 346,
-    "memo": "가볍게 조깅 완료",
-    "createAt": "2026-05-14T00:00:00.000Z",
-    "updateAt": "2026-05-14T00:00:00.000Z"
+{
+  "items": [
+    {
+      "id": 1,
+      "runDate": "2026-05-14T00:00:00.000Z",
+      "distanceKm": 5.2,
+      "durationSeconds": 1800,
+      "paceSecPerKm": 346,
+      "memo": "가볍게 조깅 완료",
+      "createAt": "2026-05-14T00:00:00.000Z",
+      "updateAt": "2026-05-14T00:00:00.000Z"
+    }
+  ],
+  "meta": {
+    "page": 1,
+    "limit": 20,
+    "total": 1,
+    "totalPages": 1,
+    "hasNextPage": false,
+    "hasPreviousPage": false
   }
-]
+}
 ```
 
 ### PATCH /running-records/:id
@@ -260,7 +277,41 @@ Response `data`:
 
 Auth: Required
 
-Response `data`: `TrainingPlan[]`
+Query:
+
+```text
+page=1
+limit=20
+```
+
+Response `data`:
+
+```json
+{
+  "items": [
+    {
+      "id": 1,
+      "title": "10km 완주 준비",
+      "goalType": "GENERAL",
+      "level": "INTERMEDIATE",
+      "startDate": "2026-05-14T00:00:00.000Z",
+      "endDate": "2026-05-20T00:00:00.000Z",
+      "sourceType": "RULE_BASED",
+      "createdAt": "2026-05-14T00:00:00.000Z",
+      "updatedAt": "2026-05-14T00:00:00.000Z",
+      "items": []
+    }
+  ],
+  "meta": {
+    "page": 1,
+    "limit": 20,
+    "total": 1,
+    "totalPages": 1,
+    "hasNextPage": false,
+    "hasPreviousPage": false
+  }
+}
+```
 
 ### GET /training-plans/:id
 
