@@ -3,6 +3,10 @@ import { getAccessToken } from './session-storage';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
+type ApiErrorResponse = {
+  message?: string | string[];
+};
+
 export const api = axios.create({
   baseURL: API_BASE_URL,
   headers: {
@@ -19,3 +23,19 @@ api.interceptors.request.use((config) => {
 
   return config;
 });
+
+export const getApiErrorMessage = (error: unknown, fallbackMessage: string) => {
+  if (axios.isAxiosError<ApiErrorResponse>(error)) {
+    const message = error.response?.data?.message;
+
+    if (Array.isArray(message)) {
+      return message.join(' ');
+    }
+
+    if (message) {
+      return message;
+    }
+  }
+
+  return fallbackMessage;
+};
