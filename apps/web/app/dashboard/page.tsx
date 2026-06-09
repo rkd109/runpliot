@@ -17,7 +17,19 @@ type DashboardStats = {
   totalDistanceKm: number;
   recordCount: number;
   averagePaceSecPerKm: number | null;
-  recentSevenDaysDistanceKm: number;
+  monthlyDistanceKm: number;
+};
+
+type DailyDistance = {
+  date: string;
+  label: string;
+  distanceKm: number;
+};
+
+type PaceTrendItem = {
+  id: number;
+  label: string;
+  paceSecPerKm: number;
 };
 
 const DashboardSkeleton = () => {
@@ -62,6 +74,148 @@ const StatCard = ({ label, value }: { label: string; value: string }) => {
       <p className="text-sm text-slate-400">{label}</p>
       <p className="mt-3 text-3xl font-bold">{value}</p>
     </div>
+  );
+};
+
+const getDateKey = (date: Date) => {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+
+  return `${year}-${month}-${day}`;
+};
+
+const getSevenDayDistances = (records: RunningRecord[]) => {
+  const today = new Date();
+
+  return Array.from({ length: 7 }, (_, index): DailyDistance => {
+    const date = new Date(today);
+    date.setDate(today.getDate() - (6 - index));
+    date.setHours(0, 0, 0, 0);
+
+    const dateKey = getDateKey(date);
+    const distanceKm = records
+      .filter((record) => getDateKey(new Date(record.runDate)) === dateKey)
+      .reduce((sum, record) => sum + record.distanceKm, 0);
+
+    return {
+      date: dateKey,
+      label: date.toLocaleDateString('ko-KR', { weekday: 'short' }),
+      distanceKm,
+    };
+  });
+};
+
+const getMonthlyDistance = (records: RunningRecord[]) => {
+  const now = new Date();
+
+  return records
+    .filter((record) => {
+      const runDate = new Date(record.runDate);
+
+      return runDate.getFullYear() === now.getFullYear() && runDate.getMonth() === now.getMonth();
+    })
+    .reduce((sum, record) => sum + record.distanceKm, 0);
+};
+
+const getPaceTrendItems = (records: RunningRecord[]) => {
+  return [...records]
+    .sort((firstRecord, secondRecord) => new Date(firstRecord.runDate).getTime() - new Date(secondRecord.runDate).getTime())
+    .slice(-5)
+    .map((record): PaceTrendItem => {
+      const date = new Date(record.runDate);
+
+      return {
+        id: record.id,
+        label: date.toLocaleDateString('ko-KR', { month: 'numeric', day: 'numeric' }),
+        paceSecPerKm: record.paceSecPerKm,
+      };
+    });
+};
+
+const SevenDayDistanceChart = ({ data }: { data: DailyDistance[] }) => {
+  const maxDistanceKm = Math.max(...data.map((item) => item.distanceKm), 1);
+
+  return (
+    <section className="rounded-lg border border-slate-800 bg-slate-900 p-6">
+      <div className="flex flex-col gap-1 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <p className="text-sm font-semibold text-blue-400">7-Day Distance</p>
+          <h2 className="mt-2 text-xl font-bold">최근 7일 거리</h2>
+        </div>
+        <p className="text-sm text-slate-400">일별 러닝 거리 합계</p>
+      </div>
+
+      <div className="mt-6 grid h-48 grid-cols-7 items-end gap-2">
+        {data.map((item) => {
+          const barHeight = item.distanceKm === 0 ? 8 : Math.max((item.distanceKm / maxDistanceKm) * 100, 12);
+
+          return (
+            <div key={item.date} className="flex h-full min-w-0 flex-col justify-end">
+              <div className="mb-2 truncate text-center text-xs text-slate-400">{formatDistance(item.distanceKm)}</div>
+              <div
+                className="rounded-t bg-blue-500"
+                style={{ height: `${barHeight}%` }}
+                aria-label={`${item.date} ${formatDistance(item.distanceKm)}`}
+              />
+              <div className="mt-2 text-center text-xs text-slate-500">{item.label}</div>
+            </div>
+          );
+        })}
+      </div>
+    </section>
+  );
+};
+
+const PaceTrend = ({ items }: { items: PaceTrendItem[] }) => {
+  if (items.length === 0) {
+    return (
+      <section className="rounded-lg border border-slate-800 bg-slate-900 p-6">
+        <p className="text-sm font-semibold text-blue-400">Pace Trend</p>
+        <h2 className="mt-2 text-xl font-bold">최근 페이스 추세</h2>
+        <p className="mt-4 text-sm text-slate-400">러닝 기록을 추가하면 최근 페이스 변화가 표시됩니다.</p>
+      </section>
+    );
+  }
+
+  const fastestPace = Math.min(...items.map((item) => item.paceSecPerKm));
+  const slowestPace = Math.max(...items.map((item) => item.paceSecPerKm));
+  const paceRange = Math.max(slowestPace - fastestPace, 1);
+  const latestPace = items[items.length - 1]?.paceSecPerKm ?? null;
+  const previousPace = items[items.length - 2]?.paceSecPerKm ?? null;
+  const trendMessage =
+    latestPace === null || previousPace === null
+      ? '페이스 비교를 위해 기록을 하나 더 추가해보세요.'
+      : latestPace < previousPace
+        ? '최근 기록의 페이스가 이전보다 빨라졌습니다.'
+        : latestPace > previousPace
+          ? '최근 기록의 페이스가 이전보다 느려졌습니다.'
+          : '최근 페이스가 이전 기록과 같습니다.';
+
+  return (
+    <section className="rounded-lg border border-slate-800 bg-slate-900 p-6">
+      <p className="text-sm font-semibold text-blue-400">Pace Trend</p>
+      <h2 className="mt-2 text-xl font-bold">최근 페이스 추세</h2>
+      <p className="mt-3 text-sm text-slate-400">{trendMessage}</p>
+
+      <div className="mt-5 space-y-3">
+        {items.map((item) => {
+          const progress = 100 - ((item.paceSecPerKm - fastestPace) / paceRange) * 70;
+
+          return (
+            <div key={item.id}>
+              <div className="mb-1 flex items-center justify-between text-xs text-slate-400">
+                <span>{item.label}</span>
+                <span>{formatPace(item.paceSecPerKm)}</span>
+              </div>
+              <div className="h-2 rounded bg-slate-800">
+                <div className="h-2 rounded bg-emerald-400" style={{ width: `${progress}%` }} />
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </section>
   );
 };
 
@@ -131,23 +285,23 @@ export default function DashboardPage() {
     const totalDistanceKm = records.reduce((sum, record) => sum + record.distanceKm, 0);
     const totalDurationSeconds = records.reduce((sum, record) => sum + record.durationSeconds, 0);
     const averagePaceSecPerKm = totalDistanceKm === 0 ? null : Math.floor(totalDurationSeconds / totalDistanceKm);
-    const sevenDaysAgo = new Date();
-    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 6);
-    sevenDaysAgo.setHours(0, 0, 0, 0);
-
-    const recentSevenDaysDistanceKm = records
-      .filter((record) => new Date(record.runDate) >= sevenDaysAgo)
-      .reduce((sum, record) => sum + record.distanceKm, 0);
-
+    const monthlyDistanceKm = getMonthlyDistance(records);
     return {
       totalDistanceKm,
       recordCount: records.length,
       averagePaceSecPerKm,
-      recentSevenDaysDistanceKm,
+      monthlyDistanceKm,
     };
   }, [records]);
 
-  const recentRecords = records.slice(0, 5);
+  const sortedRecords = useMemo(() => {
+    return [...records].sort(
+      (firstRecord, secondRecord) => new Date(secondRecord.runDate).getTime() - new Date(firstRecord.runDate).getTime(),
+    );
+  }, [records]);
+  const recentRecords = sortedRecords.slice(0, 5);
+  const sevenDayDistances = useMemo(() => getSevenDayDistances(records), [records]);
+  const paceTrendItems = useMemo(() => getPaceTrendItems(records), [records]);
   const hasRecords = records.length > 0;
 
   return (
@@ -187,7 +341,12 @@ export default function DashboardPage() {
                 <StatCard label="총 거리" value={formatDistance(stats.totalDistanceKm)} />
                 <StatCard label="러닝 횟수" value={`${stats.recordCount}회`} />
                 <StatCard label="평균 페이스" value={formatPace(stats.averagePaceSecPerKm)} />
-                <StatCard label="최근 7일 거리" value={formatDistance(stats.recentSevenDaysDistanceKm)} />
+                <StatCard label="이번 달 거리" value={formatDistance(stats.monthlyDistanceKm)} />
+              </div>
+
+              <div className="grid gap-6 lg:grid-cols-[1fr_320px]">
+                <SevenDayDistanceChart data={sevenDayDistances} />
+                <PaceTrend items={paceTrendItems} />
               </div>
 
               <div className="grid gap-6 lg:grid-cols-[1fr_320px]">
