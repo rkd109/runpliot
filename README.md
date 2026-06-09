@@ -104,7 +104,7 @@ pnpm dev
 - `pnpm build`: 전체 workspace 빌드
 - `pnpm build:web`: 웹 빌드
 - `pnpm build:api`: API 빌드
-- `pnpm lint`: 전체 workspace 타입 검사
+- `pnpm lint`: 전체 workspace 타입 검사(`pnpm -r lint`, 현재 ESLint가 아니라 `tsc --noEmit` 실행)
 - `pnpm db:up`: PostgreSQL 컨테이너 실행
 - `pnpm db:down`: PostgreSQL 컨테이너 종료
 

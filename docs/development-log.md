@@ -19,13 +19,12 @@ RunPilot은 러닝 기록 CRUD, Dashboard MVP, Rule-Based 훈련 계획 생성�
 
 ## Verification Notes
 
-- Web TypeScript check는 통과했다.
-- API TypeScript check는 현재 `@runpilot/shared` workspace module resolution 문제로 실패한다.
+- `pnpm -r lint` 기준 Web/API TypeScript check는 통과한다.
+- 이전에 기록된 API `@runpilot/shared` workspace module resolution 문제는 현재 재현되지 않는다.
 - Windows 환경에서 pnpm/Corepack과 node_modules 권한 문제가 있어 일부 검증은 승인 권한으로 수행했다.
 
 ## Known Follow-ups
 
-- API tsconfig / workspace package resolution 확인
 - RunningRecord UX 개선
 - Dashboard 차트 추가
 - docs에 시연 이미지 추가
