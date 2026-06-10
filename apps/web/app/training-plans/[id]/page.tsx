@@ -1,9 +1,10 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import { useParams } from 'next/navigation';
 
-import { ProtectedRoute } from '@/components/protected-route';
+import { LogoutButton, ProtectedRoute } from '@components';
 import { api, formatDate, formatPace } from '@/utils';
 
 type TrainingPlanItem = {
@@ -61,9 +62,13 @@ export default function TrainingPlanDetailPage() {
             <p className="text-slate-400">훈련 계획을 찾을 수 없습니다.</p>
           ) : (
             <>
-              <a href="/training-plans" className="text-sm text-blue-400">
-                ← 목록으로
-              </a>
+              <div className="flex items-center justify-between">
+                <Link href="/training-plans" className="text-sm text-blue-400">
+                  ← 목록으로
+                </Link>
+
+                <LogoutButton />
+              </div>
 
               <div className="mt-6 rounded-2xl border border-slate-800 bg-slate-900 p-6">
                 <p className="text-sm font-semibold text-blue-400">

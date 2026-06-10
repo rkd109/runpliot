@@ -1,7 +1,8 @@
 'use client';
 
-import { ProtectedRoute, StatusMessage } from '@components';
+import { LogoutButton, ProtectedRoute, StatusMessage } from '@components';
 import { useAuth } from '@contexts';
+import Link from 'next/link';
 import {
   formatDate,
   formatDistance,
@@ -226,12 +227,12 @@ const EmptyDashboard = () => {
       <p className="mt-2 text-sm text-slate-400">
         첫 기록을 추가하면 총 거리, 평균 페이스, 최근 7일 거리 요약이 채워집니다.
       </p>
-      <a
+      <Link
         href="/running-records"
         className="mt-6 inline-flex rounded-lg bg-blue-500 px-5 py-3 font-semibold text-white hover:bg-blue-400"
       >
         첫 기록 추가
-      </a>
+      </Link>
     </div>
   );
 };
@@ -247,12 +248,12 @@ const TrainingPlanCta = ({ hasRecords }: { hasRecords: boolean }) => {
           : '러닝 기록을 먼저 쌓으면 훈련 계획을 더 자연스럽게 생성할 수 있습니다.'}
       </p>
 
-      <a
+      <Link
         href={hasRecords ? '/training-plans' : '/running-records'}
         className="mt-6 block rounded-lg bg-blue-500 px-5 py-3 text-center font-semibold text-white hover:bg-blue-400"
       >
         {hasRecords ? '훈련 계획 보기' : '러닝 기록 추가'}
-      </a>
+      </Link>
     </aside>
   );
 };
@@ -316,18 +317,19 @@ export default function DashboardPage() {
             </div>
 
             <div className="flex flex-col gap-3 sm:flex-row">
-              <a
+              <Link
                 href="/running-records"
                 className="rounded-lg border border-slate-700 px-5 py-3 text-center font-semibold text-slate-200 hover:bg-slate-900"
               >
                 러닝 기록
-              </a>
-              <a
+              </Link>
+              <Link
                 href="/training-plans"
                 className="rounded-lg bg-blue-500 px-5 py-3 text-center font-semibold text-white hover:bg-blue-400"
               >
                 훈련 계획
-              </a>
+              </Link>
+              <LogoutButton />
             </div>
           </div>
 
@@ -354,9 +356,9 @@ export default function DashboardPage() {
                   <div className="mb-4 flex items-center justify-between">
                     <h2 className="text-xl font-bold">최근 러닝 기록</h2>
                     {hasRecords && (
-                      <a href="/running-records" className="text-sm font-semibold text-blue-400 hover:text-blue-300">
+                      <Link href="/running-records" className="text-sm font-semibold text-blue-400 hover:text-blue-300">
                         전체 보기
-                      </a>
+                      </Link>
                     )}
                   </div>
 

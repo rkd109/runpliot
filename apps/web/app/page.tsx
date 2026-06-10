@@ -1,8 +1,20 @@
 'use client';
 
-import { APP_NAME, HEALTH_STATUS } from "@runpilot/shared";
+import { useAuth } from '@contexts';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 
 export default function HomePage() {
+  const router = useRouter();
+  const { user } = useAuth();
+
+  useEffect(() => {
+    if (user) {
+      router.replace('/dashboard');
+    }
+  }, [router, user]);
+
   return (
     <main className="min-h-screen bg-slate-950 text-white">
       <section className="mx-auto flex min-h-screen max-w-5xl flex-col justify-center px-6">
@@ -22,26 +34,12 @@ export default function HomePage() {
         </p>
 
         <div className="mt-10 flex flex-col gap-3 sm:flex-row">
-          <a
+          <Link
             href="/login"
             className="rounded-xl bg-blue-500 px-6 py-3 text-center font-semibold text-white hover:bg-blue-400"
           >
             로그인하기
-          </a>
-
-          <a
-            href="/dashboard"
-            className="rounded-xl border border-slate-700 px-6 py-3 text-center font-semibold text-slate-200 hover:bg-slate-900"
-          >
-            대시보드 보기
-          </a>
-
-          <a
-            href="/training-plans"
-            className="rounded-xl border border-slate-700 px-6 py-3 text-center font-semibold text-slate-200 hover:bg-slate-900"
-          >
-            훈련 계획 보기
-          </a>
+          </Link>
         </div>
       </section>
     </main>

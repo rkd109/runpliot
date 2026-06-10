@@ -1,6 +1,7 @@
 'use client';
 
 import { SubmitEvent, useState } from 'react';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@contexts/auth-context';
 import { api, setAccessToken } from '@utils';
@@ -81,12 +82,12 @@ export default function LoginPage() {
                     </button>
                 </form>
 
-                <a
+                <Link
                     href="/"
                     className="mt-6 block text-center text-sm text-slate-400 hover:text-white"
                 >
                     홈으로 돌아가기
-                </a>
+                </Link>
             </section>
         </main>
     );

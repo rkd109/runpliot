@@ -12,6 +12,20 @@ export type TrainingPlan = {
   updatedAt: string;
 };
 
+export type TrainingPlanItem = {
+  id: number;
+  planDate: string;
+  workoutType: string;
+  distanceKm: number | null;
+  targetPaceSecPerKm: number | null;
+  description: string | null;
+  sortOrder: number;
+};
+
+export type TrainingPlanDetail = TrainingPlan & {
+  items: TrainingPlanItem[];
+};
+
 export type GenerateTrainingPlanPayload = {
   goal?: string;
 };
@@ -24,6 +38,12 @@ export const getMyTrainingPlans = async () => {
 
 export const generateTrainingPlan = async (payload: GenerateTrainingPlanPayload) => {
   const response = await api.post<ApiResponse<TrainingPlan>>('/training-plans/generate', payload);
+
+  return response.data.data;
+};
+
+export const getTrainingPlan = async (id: number) => {
+  const response = await api.get<ApiResponse<TrainingPlanDetail>>(`/training-plans/${id}`);
 
   return response.data.data;
 };

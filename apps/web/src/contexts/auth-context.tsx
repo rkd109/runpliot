@@ -19,7 +19,8 @@ type AuthUser = {
 type AuthContextValue = {
   user: AuthUser | null;
   setUser: (user: AuthUser | null) => void;
-  isInitializing : boolean
+  isInitializing : boolean;
+  logout: () => void;
 };
 
 const AuthContext = createContext<AuthContextValue | null>(null);
@@ -27,6 +28,11 @@ const AuthContext = createContext<AuthContextValue | null>(null);
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<AuthUser | null>(null);
   const [isInitializing, setIsInitializing] = useState(true);
+
+  const logout = () => {
+    removeAccessToken();
+    setUser(null);
+  };
 
   useEffect(() => {
     const restoreUser = async () => {
@@ -56,7 +62,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }
 
   return (
-    <AuthContext.Provider value={{ user, setUser, isInitializing }} >
+    <AuthContext.Provider value={{ user, setUser, isInitializing, logout }} >
       {children}
     </AuthContext.Provider>
   );
