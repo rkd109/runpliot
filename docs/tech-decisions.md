@@ -286,13 +286,21 @@ Dashboard MVP는 별도 통계 API 없이 `GET /running-records/me` 응답을 �
 - 총 러닝 거리
 - 러닝 횟수
 - 평균 페이스
-- 최근 7일 거리
+- 이번 달 거리
+- 최근 7일 거리 차트
+- 최근 pace 추세
 - 최근 러닝 기록
 
 ### 이유
 
 - MVP 단계에서 API 추가 없이 빠르게 검증 가능
 - 통계 요구사항이 안정화된 뒤 API 분리 여부를 결정할 수 있음
+
+### 현재 주의점
+
+`GET /running-records/me`는 pagination 응답으로 바뀌었기 때문에, 현재 Dashboard 집계는 기본 응답 20개 기준으로 계산될 수 있습니다.
+
+통계 정확도를 위해 향후 통계 전용 API 또는 Dashboard 전용 데이터 조회 전략을 분리해야 합니다.
 
 ## TrainingPlan Generation Strategy
 
@@ -317,13 +325,50 @@ Dashboard MVP는 별도 통계 API 없이 `GET /running-records/me` 응답을 �
 
 ### 결정
 
-훈련 계획 생성 화면에서 목표 입력, 생성 중 상태, 실패 메시지, 생성 후 상세 이동을 제공합니다.
+훈련 계획 생성 화면에서 목표 입력, 생성 중 상태, 실패 메시지를 제공합니다.
+
+생성 성공 시 상세 페이지로 이동하지 않고 목록을 갱신한 뒤 생성된 계획의 아코디언 상세를 펼칩니다.
+
+목록에서 `상세 보기`를 누르면 `GET /training-plans/:id`를 호출하고, 한 번에 하나의 계획 상세만 목록 안에서 노출합니다.
 
 ### 이유
 
 - 버튼만 누르는 흐름보다 서비스 사용 맥락이 분명해짐
-- 생성 결과를 즉시 확인할 수 있음
+- 목록 맥락을 유지한 채 생성 결과와 상세를 즉시 확인할 수 있음
 - 추후 목표 유형/거리/기간 입력으로 확장 가능
+
+## List Pagination Strategy
+
+### 결정
+
+RunningRecord와 TrainingPlan 목록 API는 `page`, `limit` query를 받는 pagination 응답을 사용합니다.
+
+```text
+GET /running-records/me?page=1&limit=20
+GET /training-plans/me?page=1&limit=20
+```
+
+응답 data:
+
+```ts
+{
+  items: T[];
+  meta: {
+    page: number;
+    limit: number;
+    total: number;
+    totalPages: number;
+    hasNextPage: boolean;
+    hasPreviousPage: boolean;
+  };
+}
+```
+
+### 이유
+
+- 기록/계획이 많아졌을 때 목록 API 응답 크기 제어
+- 프론트 pagination UI 확장 기반 마련
+- Swagger DTO로 목록 응답 구조를 명확히 표현
 
 ## Frontend Format Utility Strategy
 
@@ -391,11 +436,15 @@ Running Data
 → AI/LLM Expansion
 ```
 
-예정:
+완료:
 
 - RunningRecord pagination
+- TrainingPlan pagination
 - Dashboard chart
 - 월간 거리 분석
 - pace 추세 분석
+
+예정:
+
 - 과훈련 감지
 - AI/LLM 기반 훈련 계획 추천

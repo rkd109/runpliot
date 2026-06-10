@@ -13,8 +13,11 @@ RunPilot은 러닝 기록을 저장하고, 기록을 기반으로 현재 러닝 
 - Response DTO + mapper 기반 응답 분리
 - Global Response Interceptor / HttpExceptionFilter
 - RunningRecord pace 계산 및 응답 제공
-- Dashboard MVP
+- Dashboard 분석 MVP
+- 최근 7일 거리 차트 / 이번 달 거리 / pace 추세
 - Rule-Based TrainingPlan 생성
+- TrainingPlan 목록 아코디언 상세 UX
+- RunningRecord / TrainingPlan pagination
 - Swagger 기반 API 문서화
 
 ## Portfolio Value
@@ -31,13 +34,13 @@ Login
 → Dashboard 확인
 → RunningRecord 생성/수정
 → TrainingPlan 목표 입력 후 생성
-→ TrainingPlan 상세 확인
+→ TrainingPlan 목록에서 아코디언 상세 확인
 ```
 
 ## Next Steps
 
-- 러닝 기록 Form UX 개선
-- Dashboard chart/analysis 확장
-- 월간/주간 통계 추가
-- API pagination 및 예외 처리 보강
+- demo account / seed data 추가
+- Dashboard 통계 전용 API 검토
+- RunningRecord / TrainingPlan pagination UI 추가
+- Prisma 예외 처리 보강
 - README/docs에 스크린샷과 시연 가이드 추가

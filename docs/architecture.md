@@ -79,26 +79,33 @@ app/
 
 src/
   components/
+    logout-button.tsx
     protected-route.tsx
+    status-message.tsx
   contexts/
     auth-context.tsx
   utils/
     api.ts
     format.ts
+    running-records-api.ts
     session-storage.ts
+    training-plans-api.ts
 ```
 
 역할:
 
 ```text
 AuthProvider
-→ 로그인 사용자 상태와 초기화 상태 관리
+→ 로그인 사용자 상태, 초기화 상태, logout 관리
 
 ProtectedRoute
 → 보호 페이지 접근 제어
 
 Axios instance
 → Authorization Header 자동 주입
+
+feature API utils
+→ RunningRecord / TrainingPlan API 호출 분리
 
 format utils
 → 날짜, 거리, 시간, pace 표현 통일
@@ -126,22 +133,51 @@ sessionStorage accessToken 확인
 → 실패 시 token 제거
 ```
 
+로그아웃:
+
+```text
+LogoutButton
+→ AuthProvider.logout()
+→ sessionStorage accessToken 제거
+→ user null
+→ /login 이동
+```
+
+홈(`/`) 진입:
+
+```text
+AuthProvider user 확인
+→ 로그인 상태면 /dashboard 이동
+→ 비로그인 상태면 로그인 버튼만 노출
+```
+
 ### Dashboard
 
-Dashboard MVP는 별도 통계 API 없이 `GET /running-records/me` 응답을 프론트에서 집계합니다.
+Dashboard는 별도 통계 API 없이 `GET /running-records/me` 응답을 프론트에서 집계합니다.
 
 현재 지표:
 
 - 총 러닝 거리
 - 러닝 횟수
 - 평균 페이스
-- 최근 7일 거리
+- 이번 달 거리
+- 최근 7일 거리 차트
+- 최근 pace 추세
 - 최근 러닝 기록 5개
+
+주의:
+
+```text
+GET /running-records/me는 pagination 응답이다.
+현재 Dashboard 집계는 기본 page/limit 응답 기반이므로,
+기록이 20개를 넘으면 전체 통계와 차이가 날 수 있다.
+향후 통계 전용 API 도입이 우선 후보이다.
+```
 
 ### Running Records
 
 ```text
-GET /running-records/me
+GET /running-records/me?page=1&limit=20
 POST /running-records
 PATCH /running-records/:id
 DELETE /running-records/:id
@@ -149,10 +185,19 @@ DELETE /running-records/:id
 
 Frontend는 `durationSeconds`를 시/분/초 입력으로 변환해 다룹니다. pace 표시는 API 응답의 `paceSecPerKm`를 사용합니다.
 
+목록 응답은 paginated shape입니다.
+
+```ts
+{
+  items: RunningRecord[];
+  meta: PaginationMeta;
+}
+```
+
 ### Training Plans
 
 ```text
-GET /training-plans/me
+GET /training-plans/me?page=1&limit=20
 POST /training-plans/generate
 GET /training-plans/:id
 ```
@@ -163,9 +208,22 @@ GET /training-plans/:id
 goal 입력
 → 생성 중 상태 표시
 → POST /training-plans/generate
-→ 생성 성공 시 상세 페이지 이동
+→ 생성 성공 시 목록 갱신
+→ 생성된 계획 아코디언 상세 펼침
 → 실패 시 에러 메시지 표시
 ```
+
+상세 조회 UX:
+
+```text
+TrainingPlan 목록
+→ 상세 보기 클릭
+→ GET /training-plans/:id
+→ 목록 안에서 아코디언 상세 노출
+→ 한 계획이 열릴 때 다른 계획 상세는 숨김
+```
+
+`/training-plans/:id` 직접 상세 route는 남아 있지만, 기본 목록 UX는 아코디언 중심입니다.
 
 ## Backend Architecture
 
@@ -217,12 +275,12 @@ POST /auth/login
 GET /auth/me
 
 POST /running-records
-GET /running-records/me
+GET /running-records/me?page=1&limit=20
 PATCH /running-records/:id
 DELETE /running-records/:id
 
 POST /training-plans/generate
-GET /training-plans/me
+GET /training-plans/me?page=1&limit=20
 GET /training-plans/:id
 ```
 
