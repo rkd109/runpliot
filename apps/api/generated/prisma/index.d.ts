@@ -15,22 +15,27 @@ export type PrismaPromise<T> = $Public.PrismaPromise<T>
 
 /**
  * Model User
- * 
+ *
  */
 export type User = $Result.DefaultSelection<Prisma.$UserPayload>
 /**
+ * Model RunnerProfile
+ *
+ */
+export type RunnerProfile = $Result.DefaultSelection<Prisma.$RunnerProfilePayload>
+/**
  * Model RunningRecord
- * 
+ *
  */
 export type RunningRecord = $Result.DefaultSelection<Prisma.$RunningRecordPayload>
 /**
  * Model TrainingPlan
- * 
+ *
  */
 export type TrainingPlan = $Result.DefaultSelection<Prisma.$TrainingPlanPayload>
 /**
  * Model TrainingPlanItem
- * 
+ *
  */
 export type TrainingPlanItem = $Result.DefaultSelection<Prisma.$TrainingPlanItemPayload>
 
@@ -144,7 +149,7 @@ export class PrismaClient<
    *   prisma.user.create({ data: { name: 'Alice' } }),
    * ])
    * ```
-   * 
+   *
    * Read more in our [docs](https://www.prisma.io/docs/orm/prisma-client/queries/transactions).
    */
   $transaction<P extends Prisma.PrismaPromise<any>[]>(arg: [...P], options?: { maxWait?: number, timeout?: number, isolationLevel?: Prisma.TransactionIsolationLevel }): $Utils.JsPromise<runtime.Types.Utils.UnwrapTuple<P>>
@@ -164,6 +169,16 @@ export class PrismaClient<
     * ```
     */
   get user(): Prisma.UserDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.runnerProfile`: Exposes CRUD operations for the **RunnerProfile** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more RunnerProfiles
+    * const runnerProfiles = await prisma.runnerProfile.findMany()
+    * ```
+    */
+  get runnerProfile(): Prisma.RunnerProfileDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.runningRecord`: Exposes CRUD operations for the **RunningRecord** model.
@@ -629,6 +644,7 @@ export namespace Prisma {
 
   export const ModelName: {
     User: 'User',
+    RunnerProfile: 'RunnerProfile',
     RunningRecord: 'RunningRecord',
     TrainingPlan: 'TrainingPlan',
     TrainingPlanItem: 'TrainingPlanItem'
@@ -647,7 +663,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "runningRecord" | "trainingPlan" | "trainingPlanItem"
+      modelProps: "user" | "runnerProfile" | "runningRecord" | "trainingPlan" | "trainingPlanItem"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -722,6 +738,80 @@ export namespace Prisma {
           count: {
             args: Prisma.UserCountArgs<ExtArgs>
             result: $Utils.Optional<UserCountAggregateOutputType> | number
+          }
+        }
+      }
+      RunnerProfile: {
+        payload: Prisma.$RunnerProfilePayload<ExtArgs>
+        fields: Prisma.RunnerProfileFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.RunnerProfileFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RunnerProfilePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.RunnerProfileFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RunnerProfilePayload>
+          }
+          findFirst: {
+            args: Prisma.RunnerProfileFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RunnerProfilePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.RunnerProfileFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RunnerProfilePayload>
+          }
+          findMany: {
+            args: Prisma.RunnerProfileFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RunnerProfilePayload>[]
+          }
+          create: {
+            args: Prisma.RunnerProfileCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RunnerProfilePayload>
+          }
+          createMany: {
+            args: Prisma.RunnerProfileCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.RunnerProfileCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RunnerProfilePayload>[]
+          }
+          delete: {
+            args: Prisma.RunnerProfileDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RunnerProfilePayload>
+          }
+          update: {
+            args: Prisma.RunnerProfileUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RunnerProfilePayload>
+          }
+          deleteMany: {
+            args: Prisma.RunnerProfileDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.RunnerProfileUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.RunnerProfileUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RunnerProfilePayload>[]
+          }
+          upsert: {
+            args: Prisma.RunnerProfileUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RunnerProfilePayload>
+          }
+          aggregate: {
+            args: Prisma.RunnerProfileAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateRunnerProfile>
+          }
+          groupBy: {
+            args: Prisma.RunnerProfileGroupByArgs<ExtArgs>
+            result: $Utils.Optional<RunnerProfileGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.RunnerProfileCountArgs<ExtArgs>
+            result: $Utils.Optional<RunnerProfileCountAggregateOutputType> | number
           }
         }
       }
@@ -984,7 +1074,7 @@ export namespace Prisma {
      * ```
      * // Shorthand for `emit: 'stdout'`
      * log: ['query', 'info', 'warn', 'error']
-     * 
+     *
      * // Emit as events only
      * log: [
      *   { emit: 'event', level: 'query' },
@@ -992,14 +1082,14 @@ export namespace Prisma {
      *   { emit: 'event', level: 'warn' }
      *   { emit: 'event', level: 'error' }
      * ]
-     * 
+     *
      * / Emit as events and log to stdout
      * og: [
      *  { emit: 'stdout', level: 'query' },
      *  { emit: 'stdout', level: 'info' },
      *  { emit: 'stdout', level: 'warn' }
      *  { emit: 'stdout', level: 'error' }
-     * 
+     *
      * ```
      * Read more in our [docs](https://pris.ly/d/logging).
      */
@@ -1024,7 +1114,7 @@ export namespace Prisma {
     accelerateUrl?: string
     /**
      * Global configuration for omitting model fields by default.
-     * 
+     *
      * @example
      * ```
      * const prisma = new PrismaClient({
@@ -1040,7 +1130,7 @@ export namespace Prisma {
     /**
      * SQL commenter plugins that add metadata to SQL queries as comments.
      * Comments follow the sqlcommenter format: https://google.github.io/sqlcommenter/
-     * 
+     *
      * @example
      * ```
      * const prisma = new PrismaClient({
@@ -1056,6 +1146,7 @@ export namespace Prisma {
   }
   export type GlobalOmitConfig = {
     user?: UserOmit
+    runnerProfile?: RunnerProfileOmit
     runningRecord?: RunningRecordOmit
     trainingPlan?: TrainingPlanOmit
     trainingPlanItem?: TrainingPlanItemOmit
@@ -1301,55 +1392,55 @@ export namespace Prisma {
     where?: UserWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of Users to fetch.
      */
     orderBy?: UserOrderByWithRelationInput | UserOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the start position
      */
     cursor?: UserWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` Users from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` Users.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Count returned Users
     **/
     _count?: true | UserCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to average
     **/
     _avg?: UserAvgAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to sum
     **/
     _sum?: UserSumAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to find the minimum value
     **/
     _min?: UserMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to find the maximum value
     **/
     _max?: UserMaxAggregateInputType
@@ -1415,6 +1506,7 @@ export namespace Prisma {
     nickname?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    runnerProfile?: boolean | User$runnerProfileArgs<ExtArgs>
     runningRecords?: boolean | User$runningRecordsArgs<ExtArgs>
     trainingPlans?: boolean | User$trainingPlansArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
@@ -1449,6 +1541,7 @@ export namespace Prisma {
 
   export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "passwordHash" | "nickname" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    runnerProfile?: boolean | User$runnerProfileArgs<ExtArgs>
     runningRecords?: boolean | User$runningRecordsArgs<ExtArgs>
     trainingPlans?: boolean | User$trainingPlansArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
@@ -1459,6 +1552,7 @@ export namespace Prisma {
   export type $UserPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "User"
     objects: {
+      runnerProfile: Prisma.$RunnerProfilePayload<ExtArgs> | null
       runningRecords: Prisma.$RunningRecordPayload<ExtArgs>[]
       trainingPlans: Prisma.$TrainingPlanPayload<ExtArgs>[]
     }
@@ -1548,13 +1642,13 @@ export namespace Prisma {
      * @example
      * // Get all Users
      * const users = await prisma.user.findMany()
-     * 
+     *
      * // Get first 10 Users
      * const users = await prisma.user.findMany({ take: 10 })
-     * 
+     *
      * // Only select the `id`
      * const userWithIdOnly = await prisma.user.findMany({ select: { id: true } })
-     * 
+     *
      */
     findMany<T extends UserFindManyArgs>(args?: SelectSubset<T, UserFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
@@ -1568,7 +1662,7 @@ export namespace Prisma {
      *     // ... data to create a User
      *   }
      * })
-     * 
+     *
      */
     create<T extends UserCreateArgs>(args: SelectSubset<T, UserCreateArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -1582,7 +1676,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *     
+     *
      */
     createMany<T extends UserCreateManyArgs>(args?: SelectSubset<T, UserCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -1596,7 +1690,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     * 
+     *
      * // Create many Users and only return the `id`
      * const userWithIdOnly = await prisma.user.createManyAndReturn({
      *   select: { id: true },
@@ -1606,7 +1700,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * 
+     *
      */
     createManyAndReturn<T extends UserCreateManyAndReturnArgs>(args?: SelectSubset<T, UserCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
@@ -1620,7 +1714,7 @@ export namespace Prisma {
      *     // ... filter to delete one User
      *   }
      * })
-     * 
+     *
      */
     delete<T extends UserDeleteArgs>(args: SelectSubset<T, UserDeleteArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -1637,7 +1731,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     * 
+     *
      */
     update<T extends UserUpdateArgs>(args: SelectSubset<T, UserUpdateArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -1651,7 +1745,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     * 
+     *
      */
     deleteMany<T extends UserDeleteManyArgs>(args?: SelectSubset<T, UserDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -1670,7 +1764,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     * 
+     *
      */
     updateMany<T extends UserUpdateManyArgs>(args: SelectSubset<T, UserUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -1687,7 +1781,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     * 
+     *
      * // Update zero or more Users and only return the `id`
      * const userWithIdOnly = await prisma.user.updateManyAndReturn({
      *   select: { id: true },
@@ -1700,7 +1794,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * 
+     *
      */
     updateManyAndReturn<T extends UserUpdateManyAndReturnArgs>(args: SelectSubset<T, UserUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
@@ -1789,7 +1883,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     * 
+     *
     **/
     groupBy<
       T extends UserGroupByArgs,
@@ -1863,6 +1957,7 @@ export namespace Prisma {
    */
   export interface Prisma__UserClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    runnerProfile<T extends User$runnerProfileArgs<ExtArgs> = {}>(args?: Subset<T, User$runnerProfileArgs<ExtArgs>>): Prisma__RunnerProfileClient<$Result.GetResult<Prisma.$RunnerProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     runningRecords<T extends User$runningRecordsArgs<ExtArgs> = {}>(args?: Subset<T, User$runningRecordsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RunningRecordPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     trainingPlans<T extends User$trainingPlansArgs<ExtArgs> = {}>(args?: Subset<T, User$trainingPlansArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TrainingPlanPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
@@ -1901,7 +1996,7 @@ export namespace Prisma {
     readonly createdAt: FieldRef<"User", 'DateTime'>
     readonly updatedAt: FieldRef<"User", 'DateTime'>
   }
-    
+
 
   // Custom InputTypes
   /**
@@ -1970,31 +2065,31 @@ export namespace Prisma {
     where?: UserWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of Users to fetch.
      */
     orderBy?: UserOrderByWithRelationInput | UserOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for searching for Users.
      */
     cursor?: UserWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` Users from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` Users.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of Users.
      */
     distinct?: UserScalarFieldEnum | UserScalarFieldEnum[]
@@ -2022,31 +2117,31 @@ export namespace Prisma {
     where?: UserWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of Users to fetch.
      */
     orderBy?: UserOrderByWithRelationInput | UserOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for searching for Users.
      */
     cursor?: UserWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` Users from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` Users.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of Users.
      */
     distinct?: UserScalarFieldEnum | UserScalarFieldEnum[]
@@ -2074,31 +2169,31 @@ export namespace Prisma {
     where?: UserWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of Users to fetch.
      */
     orderBy?: UserOrderByWithRelationInput | UserOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for listing Users.
      */
     cursor?: UserWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` Users from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` Users.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of Users.
      */
     distinct?: UserScalarFieldEnum | UserScalarFieldEnum[]
@@ -2293,6 +2388,25 @@ export namespace Prisma {
   }
 
   /**
+   * User.runnerProfile
+   */
+  export type User$runnerProfileArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RunnerProfile
+     */
+    select?: RunnerProfileSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RunnerProfile
+     */
+    omit?: RunnerProfileOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RunnerProfileInclude<ExtArgs> | null
+    where?: RunnerProfileWhereInput
+  }
+
+  /**
    * User.runningRecords
    */
   export type User$runningRecordsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2356,6 +2470,1176 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: UserInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model RunnerProfile
+   */
+
+  export type AggregateRunnerProfile = {
+    _count: RunnerProfileCountAggregateOutputType | null
+    _avg: RunnerProfileAvgAggregateOutputType | null
+    _sum: RunnerProfileSumAggregateOutputType | null
+    _min: RunnerProfileMinAggregateOutputType | null
+    _max: RunnerProfileMaxAggregateOutputType | null
+  }
+
+  export type RunnerProfileAvgAggregateOutputType = {
+    id: number | null
+    userId: number | null
+    weeklyRunCount: number | null
+    comfortableDistanceKm: number | null
+  }
+
+  export type RunnerProfileSumAggregateOutputType = {
+    id: number | null
+    userId: number | null
+    weeklyRunCount: number | null
+    comfortableDistanceKm: number | null
+  }
+
+  export type RunnerProfileMinAggregateOutputType = {
+    id: number | null
+    userId: number | null
+    experienceLevel: string | null
+    weeklyRunCount: number | null
+    comfortableDistanceKm: number | null
+    goal: string | null
+    planStartDate: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type RunnerProfileMaxAggregateOutputType = {
+    id: number | null
+    userId: number | null
+    experienceLevel: string | null
+    weeklyRunCount: number | null
+    comfortableDistanceKm: number | null
+    goal: string | null
+    planStartDate: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type RunnerProfileCountAggregateOutputType = {
+    id: number
+    userId: number
+    experienceLevel: number
+    weeklyRunCount: number
+    comfortableDistanceKm: number
+    goal: number
+    planStartDate: number
+    preferredTrainingDays: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type RunnerProfileAvgAggregateInputType = {
+    id?: true
+    userId?: true
+    weeklyRunCount?: true
+    comfortableDistanceKm?: true
+  }
+
+  export type RunnerProfileSumAggregateInputType = {
+    id?: true
+    userId?: true
+    weeklyRunCount?: true
+    comfortableDistanceKm?: true
+  }
+
+  export type RunnerProfileMinAggregateInputType = {
+    id?: true
+    userId?: true
+    experienceLevel?: true
+    weeklyRunCount?: true
+    comfortableDistanceKm?: true
+    goal?: true
+    planStartDate?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type RunnerProfileMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    experienceLevel?: true
+    weeklyRunCount?: true
+    comfortableDistanceKm?: true
+    goal?: true
+    planStartDate?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type RunnerProfileCountAggregateInputType = {
+    id?: true
+    userId?: true
+    experienceLevel?: true
+    weeklyRunCount?: true
+    comfortableDistanceKm?: true
+    goal?: true
+    planStartDate?: true
+    preferredTrainingDays?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type RunnerProfileAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which RunnerProfile to aggregate.
+     */
+    where?: RunnerProfileWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of RunnerProfiles to fetch.
+     */
+    orderBy?: RunnerProfileOrderByWithRelationInput | RunnerProfileOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the start position
+     */
+    cursor?: RunnerProfileWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` RunnerProfiles from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` RunnerProfiles.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Count returned RunnerProfiles
+    **/
+    _count?: true | RunnerProfileCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to average
+    **/
+    _avg?: RunnerProfileAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to sum
+    **/
+    _sum?: RunnerProfileSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to find the minimum value
+    **/
+    _min?: RunnerProfileMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to find the maximum value
+    **/
+    _max?: RunnerProfileMaxAggregateInputType
+  }
+
+  export type GetRunnerProfileAggregateType<T extends RunnerProfileAggregateArgs> = {
+        [P in keyof T & keyof AggregateRunnerProfile]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateRunnerProfile[P]>
+      : GetScalarType<T[P], AggregateRunnerProfile[P]>
+  }
+
+
+
+
+  export type RunnerProfileGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RunnerProfileWhereInput
+    orderBy?: RunnerProfileOrderByWithAggregationInput | RunnerProfileOrderByWithAggregationInput[]
+    by: RunnerProfileScalarFieldEnum[] | RunnerProfileScalarFieldEnum
+    having?: RunnerProfileScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: RunnerProfileCountAggregateInputType | true
+    _avg?: RunnerProfileAvgAggregateInputType
+    _sum?: RunnerProfileSumAggregateInputType
+    _min?: RunnerProfileMinAggregateInputType
+    _max?: RunnerProfileMaxAggregateInputType
+  }
+
+  export type RunnerProfileGroupByOutputType = {
+    id: number
+    userId: number
+    experienceLevel: string
+    weeklyRunCount: number
+    comfortableDistanceKm: number
+    goal: string | null
+    planStartDate: Date | null
+    preferredTrainingDays: string[]
+    createdAt: Date
+    updatedAt: Date
+    _count: RunnerProfileCountAggregateOutputType | null
+    _avg: RunnerProfileAvgAggregateOutputType | null
+    _sum: RunnerProfileSumAggregateOutputType | null
+    _min: RunnerProfileMinAggregateOutputType | null
+    _max: RunnerProfileMaxAggregateOutputType | null
+  }
+
+  type GetRunnerProfileGroupByPayload<T extends RunnerProfileGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<RunnerProfileGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof RunnerProfileGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], RunnerProfileGroupByOutputType[P]>
+            : GetScalarType<T[P], RunnerProfileGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type RunnerProfileSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    experienceLevel?: boolean
+    weeklyRunCount?: boolean
+    comfortableDistanceKm?: boolean
+    goal?: boolean
+    planStartDate?: boolean
+    preferredTrainingDays?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["runnerProfile"]>
+
+  export type RunnerProfileSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    experienceLevel?: boolean
+    weeklyRunCount?: boolean
+    comfortableDistanceKm?: boolean
+    goal?: boolean
+    planStartDate?: boolean
+    preferredTrainingDays?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["runnerProfile"]>
+
+  export type RunnerProfileSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    experienceLevel?: boolean
+    weeklyRunCount?: boolean
+    comfortableDistanceKm?: boolean
+    goal?: boolean
+    planStartDate?: boolean
+    preferredTrainingDays?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["runnerProfile"]>
+
+  export type RunnerProfileSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    experienceLevel?: boolean
+    weeklyRunCount?: boolean
+    comfortableDistanceKm?: boolean
+    goal?: boolean
+    planStartDate?: boolean
+    preferredTrainingDays?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type RunnerProfileOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "experienceLevel" | "weeklyRunCount" | "comfortableDistanceKm" | "goal" | "planStartDate" | "preferredTrainingDays" | "createdAt" | "updatedAt", ExtArgs["result"]["runnerProfile"]>
+  export type RunnerProfileInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type RunnerProfileIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type RunnerProfileIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $RunnerProfilePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "RunnerProfile"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      userId: number
+      experienceLevel: string
+      weeklyRunCount: number
+      comfortableDistanceKm: number
+      goal: string | null
+      planStartDate: Date | null
+      preferredTrainingDays: string[]
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["runnerProfile"]>
+    composites: {}
+  }
+
+  type RunnerProfileGetPayload<S extends boolean | null | undefined | RunnerProfileDefaultArgs> = $Result.GetResult<Prisma.$RunnerProfilePayload, S>
+
+  type RunnerProfileCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<RunnerProfileFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: RunnerProfileCountAggregateInputType | true
+    }
+
+  export interface RunnerProfileDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['RunnerProfile'], meta: { name: 'RunnerProfile' } }
+    /**
+     * Find zero or one RunnerProfile that matches the filter.
+     * @param {RunnerProfileFindUniqueArgs} args - Arguments to find a RunnerProfile
+     * @example
+     * // Get one RunnerProfile
+     * const runnerProfile = await prisma.runnerProfile.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends RunnerProfileFindUniqueArgs>(args: SelectSubset<T, RunnerProfileFindUniqueArgs<ExtArgs>>): Prisma__RunnerProfileClient<$Result.GetResult<Prisma.$RunnerProfilePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one RunnerProfile that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {RunnerProfileFindUniqueOrThrowArgs} args - Arguments to find a RunnerProfile
+     * @example
+     * // Get one RunnerProfile
+     * const runnerProfile = await prisma.runnerProfile.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends RunnerProfileFindUniqueOrThrowArgs>(args: SelectSubset<T, RunnerProfileFindUniqueOrThrowArgs<ExtArgs>>): Prisma__RunnerProfileClient<$Result.GetResult<Prisma.$RunnerProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first RunnerProfile that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RunnerProfileFindFirstArgs} args - Arguments to find a RunnerProfile
+     * @example
+     * // Get one RunnerProfile
+     * const runnerProfile = await prisma.runnerProfile.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends RunnerProfileFindFirstArgs>(args?: SelectSubset<T, RunnerProfileFindFirstArgs<ExtArgs>>): Prisma__RunnerProfileClient<$Result.GetResult<Prisma.$RunnerProfilePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first RunnerProfile that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RunnerProfileFindFirstOrThrowArgs} args - Arguments to find a RunnerProfile
+     * @example
+     * // Get one RunnerProfile
+     * const runnerProfile = await prisma.runnerProfile.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends RunnerProfileFindFirstOrThrowArgs>(args?: SelectSubset<T, RunnerProfileFindFirstOrThrowArgs<ExtArgs>>): Prisma__RunnerProfileClient<$Result.GetResult<Prisma.$RunnerProfilePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more RunnerProfiles that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RunnerProfileFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all RunnerProfiles
+     * const runnerProfiles = await prisma.runnerProfile.findMany()
+     *
+     * // Get first 10 RunnerProfiles
+     * const runnerProfiles = await prisma.runnerProfile.findMany({ take: 10 })
+     *
+     * // Only select the `id`
+     * const runnerProfileWithIdOnly = await prisma.runnerProfile.findMany({ select: { id: true } })
+     *
+     */
+    findMany<T extends RunnerProfileFindManyArgs>(args?: SelectSubset<T, RunnerProfileFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RunnerProfilePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a RunnerProfile.
+     * @param {RunnerProfileCreateArgs} args - Arguments to create a RunnerProfile.
+     * @example
+     * // Create one RunnerProfile
+     * const RunnerProfile = await prisma.runnerProfile.create({
+     *   data: {
+     *     // ... data to create a RunnerProfile
+     *   }
+     * })
+     *
+     */
+    create<T extends RunnerProfileCreateArgs>(args: SelectSubset<T, RunnerProfileCreateArgs<ExtArgs>>): Prisma__RunnerProfileClient<$Result.GetResult<Prisma.$RunnerProfilePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many RunnerProfiles.
+     * @param {RunnerProfileCreateManyArgs} args - Arguments to create many RunnerProfiles.
+     * @example
+     * // Create many RunnerProfiles
+     * const runnerProfile = await prisma.runnerProfile.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *
+     */
+    createMany<T extends RunnerProfileCreateManyArgs>(args?: SelectSubset<T, RunnerProfileCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many RunnerProfiles and returns the data saved in the database.
+     * @param {RunnerProfileCreateManyAndReturnArgs} args - Arguments to create many RunnerProfiles.
+     * @example
+     * // Create many RunnerProfiles
+     * const runnerProfile = await prisma.runnerProfile.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *
+     * // Create many RunnerProfiles and only return the `id`
+     * const runnerProfileWithIdOnly = await prisma.runnerProfile.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     *
+     */
+    createManyAndReturn<T extends RunnerProfileCreateManyAndReturnArgs>(args?: SelectSubset<T, RunnerProfileCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RunnerProfilePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a RunnerProfile.
+     * @param {RunnerProfileDeleteArgs} args - Arguments to delete one RunnerProfile.
+     * @example
+     * // Delete one RunnerProfile
+     * const RunnerProfile = await prisma.runnerProfile.delete({
+     *   where: {
+     *     // ... filter to delete one RunnerProfile
+     *   }
+     * })
+     *
+     */
+    delete<T extends RunnerProfileDeleteArgs>(args: SelectSubset<T, RunnerProfileDeleteArgs<ExtArgs>>): Prisma__RunnerProfileClient<$Result.GetResult<Prisma.$RunnerProfilePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one RunnerProfile.
+     * @param {RunnerProfileUpdateArgs} args - Arguments to update one RunnerProfile.
+     * @example
+     * // Update one RunnerProfile
+     * const runnerProfile = await prisma.runnerProfile.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     *
+     */
+    update<T extends RunnerProfileUpdateArgs>(args: SelectSubset<T, RunnerProfileUpdateArgs<ExtArgs>>): Prisma__RunnerProfileClient<$Result.GetResult<Prisma.$RunnerProfilePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more RunnerProfiles.
+     * @param {RunnerProfileDeleteManyArgs} args - Arguments to filter RunnerProfiles to delete.
+     * @example
+     * // Delete a few RunnerProfiles
+     * const { count } = await prisma.runnerProfile.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     *
+     */
+    deleteMany<T extends RunnerProfileDeleteManyArgs>(args?: SelectSubset<T, RunnerProfileDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more RunnerProfiles.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RunnerProfileUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many RunnerProfiles
+     * const runnerProfile = await prisma.runnerProfile.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     *
+     */
+    updateMany<T extends RunnerProfileUpdateManyArgs>(args: SelectSubset<T, RunnerProfileUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more RunnerProfiles and returns the data updated in the database.
+     * @param {RunnerProfileUpdateManyAndReturnArgs} args - Arguments to update many RunnerProfiles.
+     * @example
+     * // Update many RunnerProfiles
+     * const runnerProfile = await prisma.runnerProfile.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *
+     * // Update zero or more RunnerProfiles and only return the `id`
+     * const runnerProfileWithIdOnly = await prisma.runnerProfile.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     *
+     */
+    updateManyAndReturn<T extends RunnerProfileUpdateManyAndReturnArgs>(args: SelectSubset<T, RunnerProfileUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RunnerProfilePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one RunnerProfile.
+     * @param {RunnerProfileUpsertArgs} args - Arguments to update or create a RunnerProfile.
+     * @example
+     * // Update or create a RunnerProfile
+     * const runnerProfile = await prisma.runnerProfile.upsert({
+     *   create: {
+     *     // ... data to create a RunnerProfile
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the RunnerProfile we want to update
+     *   }
+     * })
+     */
+    upsert<T extends RunnerProfileUpsertArgs>(args: SelectSubset<T, RunnerProfileUpsertArgs<ExtArgs>>): Prisma__RunnerProfileClient<$Result.GetResult<Prisma.$RunnerProfilePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of RunnerProfiles.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RunnerProfileCountArgs} args - Arguments to filter RunnerProfiles to count.
+     * @example
+     * // Count the number of RunnerProfiles
+     * const count = await prisma.runnerProfile.count({
+     *   where: {
+     *     // ... the filter for the RunnerProfiles we want to count
+     *   }
+     * })
+    **/
+    count<T extends RunnerProfileCountArgs>(
+      args?: Subset<T, RunnerProfileCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], RunnerProfileCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a RunnerProfile.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RunnerProfileAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends RunnerProfileAggregateArgs>(args: Subset<T, RunnerProfileAggregateArgs>): Prisma.PrismaPromise<GetRunnerProfileAggregateType<T>>
+
+    /**
+     * Group by RunnerProfile.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RunnerProfileGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     *
+    **/
+    groupBy<
+      T extends RunnerProfileGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: RunnerProfileGroupByArgs['orderBy'] }
+        : { orderBy?: RunnerProfileGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, RunnerProfileGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetRunnerProfileGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the RunnerProfile model
+   */
+  readonly fields: RunnerProfileFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for RunnerProfile.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__RunnerProfileClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the RunnerProfile model
+   */
+  interface RunnerProfileFieldRefs {
+    readonly id: FieldRef<"RunnerProfile", 'Int'>
+    readonly userId: FieldRef<"RunnerProfile", 'Int'>
+    readonly experienceLevel: FieldRef<"RunnerProfile", 'String'>
+    readonly weeklyRunCount: FieldRef<"RunnerProfile", 'Int'>
+    readonly comfortableDistanceKm: FieldRef<"RunnerProfile", 'Float'>
+    readonly goal: FieldRef<"RunnerProfile", 'String'>
+    readonly planStartDate: FieldRef<"RunnerProfile", 'DateTime'>
+    readonly preferredTrainingDays: FieldRef<"RunnerProfile", 'String[]'>
+    readonly createdAt: FieldRef<"RunnerProfile", 'DateTime'>
+    readonly updatedAt: FieldRef<"RunnerProfile", 'DateTime'>
+  }
+
+
+  // Custom InputTypes
+  /**
+   * RunnerProfile findUnique
+   */
+  export type RunnerProfileFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RunnerProfile
+     */
+    select?: RunnerProfileSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RunnerProfile
+     */
+    omit?: RunnerProfileOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RunnerProfileInclude<ExtArgs> | null
+    /**
+     * Filter, which RunnerProfile to fetch.
+     */
+    where: RunnerProfileWhereUniqueInput
+  }
+
+  /**
+   * RunnerProfile findUniqueOrThrow
+   */
+  export type RunnerProfileFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RunnerProfile
+     */
+    select?: RunnerProfileSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RunnerProfile
+     */
+    omit?: RunnerProfileOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RunnerProfileInclude<ExtArgs> | null
+    /**
+     * Filter, which RunnerProfile to fetch.
+     */
+    where: RunnerProfileWhereUniqueInput
+  }
+
+  /**
+   * RunnerProfile findFirst
+   */
+  export type RunnerProfileFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RunnerProfile
+     */
+    select?: RunnerProfileSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RunnerProfile
+     */
+    omit?: RunnerProfileOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RunnerProfileInclude<ExtArgs> | null
+    /**
+     * Filter, which RunnerProfile to fetch.
+     */
+    where?: RunnerProfileWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of RunnerProfiles to fetch.
+     */
+    orderBy?: RunnerProfileOrderByWithRelationInput | RunnerProfileOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the position for searching for RunnerProfiles.
+     */
+    cursor?: RunnerProfileWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` RunnerProfiles from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` RunnerProfiles.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     *
+     * Filter by unique combinations of RunnerProfiles.
+     */
+    distinct?: RunnerProfileScalarFieldEnum | RunnerProfileScalarFieldEnum[]
+  }
+
+  /**
+   * RunnerProfile findFirstOrThrow
+   */
+  export type RunnerProfileFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RunnerProfile
+     */
+    select?: RunnerProfileSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RunnerProfile
+     */
+    omit?: RunnerProfileOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RunnerProfileInclude<ExtArgs> | null
+    /**
+     * Filter, which RunnerProfile to fetch.
+     */
+    where?: RunnerProfileWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of RunnerProfiles to fetch.
+     */
+    orderBy?: RunnerProfileOrderByWithRelationInput | RunnerProfileOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the position for searching for RunnerProfiles.
+     */
+    cursor?: RunnerProfileWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` RunnerProfiles from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` RunnerProfiles.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     *
+     * Filter by unique combinations of RunnerProfiles.
+     */
+    distinct?: RunnerProfileScalarFieldEnum | RunnerProfileScalarFieldEnum[]
+  }
+
+  /**
+   * RunnerProfile findMany
+   */
+  export type RunnerProfileFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RunnerProfile
+     */
+    select?: RunnerProfileSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RunnerProfile
+     */
+    omit?: RunnerProfileOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RunnerProfileInclude<ExtArgs> | null
+    /**
+     * Filter, which RunnerProfiles to fetch.
+     */
+    where?: RunnerProfileWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of RunnerProfiles to fetch.
+     */
+    orderBy?: RunnerProfileOrderByWithRelationInput | RunnerProfileOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the position for listing RunnerProfiles.
+     */
+    cursor?: RunnerProfileWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` RunnerProfiles from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` RunnerProfiles.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     *
+     * Filter by unique combinations of RunnerProfiles.
+     */
+    distinct?: RunnerProfileScalarFieldEnum | RunnerProfileScalarFieldEnum[]
+  }
+
+  /**
+   * RunnerProfile create
+   */
+  export type RunnerProfileCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RunnerProfile
+     */
+    select?: RunnerProfileSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RunnerProfile
+     */
+    omit?: RunnerProfileOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RunnerProfileInclude<ExtArgs> | null
+    /**
+     * The data needed to create a RunnerProfile.
+     */
+    data: XOR<RunnerProfileCreateInput, RunnerProfileUncheckedCreateInput>
+  }
+
+  /**
+   * RunnerProfile createMany
+   */
+  export type RunnerProfileCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many RunnerProfiles.
+     */
+    data: RunnerProfileCreateManyInput | RunnerProfileCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * RunnerProfile createManyAndReturn
+   */
+  export type RunnerProfileCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RunnerProfile
+     */
+    select?: RunnerProfileSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the RunnerProfile
+     */
+    omit?: RunnerProfileOmit<ExtArgs> | null
+    /**
+     * The data used to create many RunnerProfiles.
+     */
+    data: RunnerProfileCreateManyInput | RunnerProfileCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RunnerProfileIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * RunnerProfile update
+   */
+  export type RunnerProfileUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RunnerProfile
+     */
+    select?: RunnerProfileSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RunnerProfile
+     */
+    omit?: RunnerProfileOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RunnerProfileInclude<ExtArgs> | null
+    /**
+     * The data needed to update a RunnerProfile.
+     */
+    data: XOR<RunnerProfileUpdateInput, RunnerProfileUncheckedUpdateInput>
+    /**
+     * Choose, which RunnerProfile to update.
+     */
+    where: RunnerProfileWhereUniqueInput
+  }
+
+  /**
+   * RunnerProfile updateMany
+   */
+  export type RunnerProfileUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update RunnerProfiles.
+     */
+    data: XOR<RunnerProfileUpdateManyMutationInput, RunnerProfileUncheckedUpdateManyInput>
+    /**
+     * Filter which RunnerProfiles to update
+     */
+    where?: RunnerProfileWhereInput
+    /**
+     * Limit how many RunnerProfiles to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * RunnerProfile updateManyAndReturn
+   */
+  export type RunnerProfileUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RunnerProfile
+     */
+    select?: RunnerProfileSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the RunnerProfile
+     */
+    omit?: RunnerProfileOmit<ExtArgs> | null
+    /**
+     * The data used to update RunnerProfiles.
+     */
+    data: XOR<RunnerProfileUpdateManyMutationInput, RunnerProfileUncheckedUpdateManyInput>
+    /**
+     * Filter which RunnerProfiles to update
+     */
+    where?: RunnerProfileWhereInput
+    /**
+     * Limit how many RunnerProfiles to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RunnerProfileIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * RunnerProfile upsert
+   */
+  export type RunnerProfileUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RunnerProfile
+     */
+    select?: RunnerProfileSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RunnerProfile
+     */
+    omit?: RunnerProfileOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RunnerProfileInclude<ExtArgs> | null
+    /**
+     * The filter to search for the RunnerProfile to update in case it exists.
+     */
+    where: RunnerProfileWhereUniqueInput
+    /**
+     * In case the RunnerProfile found by the `where` argument doesn't exist, create a new RunnerProfile with this data.
+     */
+    create: XOR<RunnerProfileCreateInput, RunnerProfileUncheckedCreateInput>
+    /**
+     * In case the RunnerProfile was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<RunnerProfileUpdateInput, RunnerProfileUncheckedUpdateInput>
+  }
+
+  /**
+   * RunnerProfile delete
+   */
+  export type RunnerProfileDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RunnerProfile
+     */
+    select?: RunnerProfileSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RunnerProfile
+     */
+    omit?: RunnerProfileOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RunnerProfileInclude<ExtArgs> | null
+    /**
+     * Filter which RunnerProfile to delete.
+     */
+    where: RunnerProfileWhereUniqueInput
+  }
+
+  /**
+   * RunnerProfile deleteMany
+   */
+  export type RunnerProfileDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which RunnerProfiles to delete
+     */
+    where?: RunnerProfileWhereInput
+    /**
+     * Limit how many RunnerProfiles to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * RunnerProfile without action
+   */
+  export type RunnerProfileDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RunnerProfile
+     */
+    select?: RunnerProfileSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RunnerProfile
+     */
+    omit?: RunnerProfileOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RunnerProfileInclude<ExtArgs> | null
   }
 
 
@@ -2485,55 +3769,55 @@ export namespace Prisma {
     where?: RunningRecordWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of RunningRecords to fetch.
      */
     orderBy?: RunningRecordOrderByWithRelationInput | RunningRecordOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the start position
      */
     cursor?: RunningRecordWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` RunningRecords from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` RunningRecords.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Count returned RunningRecords
     **/
     _count?: true | RunningRecordCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to average
     **/
     _avg?: RunningRecordAvgAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to sum
     **/
     _sum?: RunningRecordSumAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to find the minimum value
     **/
     _min?: RunningRecordMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to find the maximum value
     **/
     _max?: RunningRecordMaxAggregateInputType
@@ -2751,13 +4035,13 @@ export namespace Prisma {
      * @example
      * // Get all RunningRecords
      * const runningRecords = await prisma.runningRecord.findMany()
-     * 
+     *
      * // Get first 10 RunningRecords
      * const runningRecords = await prisma.runningRecord.findMany({ take: 10 })
-     * 
+     *
      * // Only select the `id`
      * const runningRecordWithIdOnly = await prisma.runningRecord.findMany({ select: { id: true } })
-     * 
+     *
      */
     findMany<T extends RunningRecordFindManyArgs>(args?: SelectSubset<T, RunningRecordFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RunningRecordPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
@@ -2771,7 +4055,7 @@ export namespace Prisma {
      *     // ... data to create a RunningRecord
      *   }
      * })
-     * 
+     *
      */
     create<T extends RunningRecordCreateArgs>(args: SelectSubset<T, RunningRecordCreateArgs<ExtArgs>>): Prisma__RunningRecordClient<$Result.GetResult<Prisma.$RunningRecordPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -2785,7 +4069,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *     
+     *
      */
     createMany<T extends RunningRecordCreateManyArgs>(args?: SelectSubset<T, RunningRecordCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -2799,7 +4083,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     * 
+     *
      * // Create many RunningRecords and only return the `id`
      * const runningRecordWithIdOnly = await prisma.runningRecord.createManyAndReturn({
      *   select: { id: true },
@@ -2809,7 +4093,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * 
+     *
      */
     createManyAndReturn<T extends RunningRecordCreateManyAndReturnArgs>(args?: SelectSubset<T, RunningRecordCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RunningRecordPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
@@ -2823,7 +4107,7 @@ export namespace Prisma {
      *     // ... filter to delete one RunningRecord
      *   }
      * })
-     * 
+     *
      */
     delete<T extends RunningRecordDeleteArgs>(args: SelectSubset<T, RunningRecordDeleteArgs<ExtArgs>>): Prisma__RunningRecordClient<$Result.GetResult<Prisma.$RunningRecordPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -2840,7 +4124,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     * 
+     *
      */
     update<T extends RunningRecordUpdateArgs>(args: SelectSubset<T, RunningRecordUpdateArgs<ExtArgs>>): Prisma__RunningRecordClient<$Result.GetResult<Prisma.$RunningRecordPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -2854,7 +4138,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     * 
+     *
      */
     deleteMany<T extends RunningRecordDeleteManyArgs>(args?: SelectSubset<T, RunningRecordDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -2873,7 +4157,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     * 
+     *
      */
     updateMany<T extends RunningRecordUpdateManyArgs>(args: SelectSubset<T, RunningRecordUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -2890,7 +4174,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     * 
+     *
      * // Update zero or more RunningRecords and only return the `id`
      * const runningRecordWithIdOnly = await prisma.runningRecord.updateManyAndReturn({
      *   select: { id: true },
@@ -2903,7 +4187,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * 
+     *
      */
     updateManyAndReturn<T extends RunningRecordUpdateManyAndReturnArgs>(args: SelectSubset<T, RunningRecordUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RunningRecordPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
@@ -2992,7 +4276,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     * 
+     *
     **/
     groupBy<
       T extends RunningRecordGroupByArgs,
@@ -3106,7 +4390,7 @@ export namespace Prisma {
     readonly createdAt: FieldRef<"RunningRecord", 'DateTime'>
     readonly updatedAt: FieldRef<"RunningRecord", 'DateTime'>
   }
-    
+
 
   // Custom InputTypes
   /**
@@ -3175,31 +4459,31 @@ export namespace Prisma {
     where?: RunningRecordWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of RunningRecords to fetch.
      */
     orderBy?: RunningRecordOrderByWithRelationInput | RunningRecordOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for searching for RunningRecords.
      */
     cursor?: RunningRecordWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` RunningRecords from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` RunningRecords.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of RunningRecords.
      */
     distinct?: RunningRecordScalarFieldEnum | RunningRecordScalarFieldEnum[]
@@ -3227,31 +4511,31 @@ export namespace Prisma {
     where?: RunningRecordWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of RunningRecords to fetch.
      */
     orderBy?: RunningRecordOrderByWithRelationInput | RunningRecordOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for searching for RunningRecords.
      */
     cursor?: RunningRecordWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` RunningRecords from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` RunningRecords.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of RunningRecords.
      */
     distinct?: RunningRecordScalarFieldEnum | RunningRecordScalarFieldEnum[]
@@ -3279,31 +4563,31 @@ export namespace Prisma {
     where?: RunningRecordWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of RunningRecords to fetch.
      */
     orderBy?: RunningRecordOrderByWithRelationInput | RunningRecordOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for listing RunningRecords.
      */
     cursor?: RunningRecordWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` RunningRecords from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` RunningRecords.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of RunningRecords.
      */
     distinct?: RunningRecordScalarFieldEnum | RunningRecordScalarFieldEnum[]
@@ -3644,55 +4928,55 @@ export namespace Prisma {
     where?: TrainingPlanWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of TrainingPlans to fetch.
      */
     orderBy?: TrainingPlanOrderByWithRelationInput | TrainingPlanOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the start position
      */
     cursor?: TrainingPlanWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` TrainingPlans from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` TrainingPlans.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Count returned TrainingPlans
     **/
     _count?: true | TrainingPlanCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to average
     **/
     _avg?: TrainingPlanAvgAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to sum
     **/
     _sum?: TrainingPlanSumAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to find the minimum value
     **/
     _min?: TrainingPlanMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to find the maximum value
     **/
     _max?: TrainingPlanMaxAggregateInputType
@@ -3921,13 +5205,13 @@ export namespace Prisma {
      * @example
      * // Get all TrainingPlans
      * const trainingPlans = await prisma.trainingPlan.findMany()
-     * 
+     *
      * // Get first 10 TrainingPlans
      * const trainingPlans = await prisma.trainingPlan.findMany({ take: 10 })
-     * 
+     *
      * // Only select the `id`
      * const trainingPlanWithIdOnly = await prisma.trainingPlan.findMany({ select: { id: true } })
-     * 
+     *
      */
     findMany<T extends TrainingPlanFindManyArgs>(args?: SelectSubset<T, TrainingPlanFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TrainingPlanPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
@@ -3941,7 +5225,7 @@ export namespace Prisma {
      *     // ... data to create a TrainingPlan
      *   }
      * })
-     * 
+     *
      */
     create<T extends TrainingPlanCreateArgs>(args: SelectSubset<T, TrainingPlanCreateArgs<ExtArgs>>): Prisma__TrainingPlanClient<$Result.GetResult<Prisma.$TrainingPlanPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -3955,7 +5239,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *     
+     *
      */
     createMany<T extends TrainingPlanCreateManyArgs>(args?: SelectSubset<T, TrainingPlanCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -3969,7 +5253,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     * 
+     *
      * // Create many TrainingPlans and only return the `id`
      * const trainingPlanWithIdOnly = await prisma.trainingPlan.createManyAndReturn({
      *   select: { id: true },
@@ -3979,7 +5263,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * 
+     *
      */
     createManyAndReturn<T extends TrainingPlanCreateManyAndReturnArgs>(args?: SelectSubset<T, TrainingPlanCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TrainingPlanPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
@@ -3993,7 +5277,7 @@ export namespace Prisma {
      *     // ... filter to delete one TrainingPlan
      *   }
      * })
-     * 
+     *
      */
     delete<T extends TrainingPlanDeleteArgs>(args: SelectSubset<T, TrainingPlanDeleteArgs<ExtArgs>>): Prisma__TrainingPlanClient<$Result.GetResult<Prisma.$TrainingPlanPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -4010,7 +5294,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     * 
+     *
      */
     update<T extends TrainingPlanUpdateArgs>(args: SelectSubset<T, TrainingPlanUpdateArgs<ExtArgs>>): Prisma__TrainingPlanClient<$Result.GetResult<Prisma.$TrainingPlanPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -4024,7 +5308,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     * 
+     *
      */
     deleteMany<T extends TrainingPlanDeleteManyArgs>(args?: SelectSubset<T, TrainingPlanDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -4043,7 +5327,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     * 
+     *
      */
     updateMany<T extends TrainingPlanUpdateManyArgs>(args: SelectSubset<T, TrainingPlanUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -4060,7 +5344,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     * 
+     *
      * // Update zero or more TrainingPlans and only return the `id`
      * const trainingPlanWithIdOnly = await prisma.trainingPlan.updateManyAndReturn({
      *   select: { id: true },
@@ -4073,7 +5357,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * 
+     *
      */
     updateManyAndReturn<T extends TrainingPlanUpdateManyAndReturnArgs>(args: SelectSubset<T, TrainingPlanUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TrainingPlanPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
@@ -4162,7 +5446,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     * 
+     *
     **/
     groupBy<
       T extends TrainingPlanGroupByArgs,
@@ -4278,7 +5562,7 @@ export namespace Prisma {
     readonly createdAt: FieldRef<"TrainingPlan", 'DateTime'>
     readonly updatedAt: FieldRef<"TrainingPlan", 'DateTime'>
   }
-    
+
 
   // Custom InputTypes
   /**
@@ -4347,31 +5631,31 @@ export namespace Prisma {
     where?: TrainingPlanWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of TrainingPlans to fetch.
      */
     orderBy?: TrainingPlanOrderByWithRelationInput | TrainingPlanOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for searching for TrainingPlans.
      */
     cursor?: TrainingPlanWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` TrainingPlans from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` TrainingPlans.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of TrainingPlans.
      */
     distinct?: TrainingPlanScalarFieldEnum | TrainingPlanScalarFieldEnum[]
@@ -4399,31 +5683,31 @@ export namespace Prisma {
     where?: TrainingPlanWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of TrainingPlans to fetch.
      */
     orderBy?: TrainingPlanOrderByWithRelationInput | TrainingPlanOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for searching for TrainingPlans.
      */
     cursor?: TrainingPlanWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` TrainingPlans from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` TrainingPlans.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of TrainingPlans.
      */
     distinct?: TrainingPlanScalarFieldEnum | TrainingPlanScalarFieldEnum[]
@@ -4451,31 +5735,31 @@ export namespace Prisma {
     where?: TrainingPlanWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of TrainingPlans to fetch.
      */
     orderBy?: TrainingPlanOrderByWithRelationInput | TrainingPlanOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for listing TrainingPlans.
      */
     cursor?: TrainingPlanWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` TrainingPlans from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` TrainingPlans.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of TrainingPlans.
      */
     distinct?: TrainingPlanScalarFieldEnum | TrainingPlanScalarFieldEnum[]
@@ -4840,55 +6124,55 @@ export namespace Prisma {
     where?: TrainingPlanItemWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of TrainingPlanItems to fetch.
      */
     orderBy?: TrainingPlanItemOrderByWithRelationInput | TrainingPlanItemOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the start position
      */
     cursor?: TrainingPlanItemWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` TrainingPlanItems from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` TrainingPlanItems.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Count returned TrainingPlanItems
     **/
     _count?: true | TrainingPlanItemCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to average
     **/
     _avg?: TrainingPlanItemAvgAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to sum
     **/
     _sum?: TrainingPlanItemSumAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to find the minimum value
     **/
     _min?: TrainingPlanItemMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to find the maximum value
     **/
     _max?: TrainingPlanItemMaxAggregateInputType
@@ -5100,13 +6384,13 @@ export namespace Prisma {
      * @example
      * // Get all TrainingPlanItems
      * const trainingPlanItems = await prisma.trainingPlanItem.findMany()
-     * 
+     *
      * // Get first 10 TrainingPlanItems
      * const trainingPlanItems = await prisma.trainingPlanItem.findMany({ take: 10 })
-     * 
+     *
      * // Only select the `id`
      * const trainingPlanItemWithIdOnly = await prisma.trainingPlanItem.findMany({ select: { id: true } })
-     * 
+     *
      */
     findMany<T extends TrainingPlanItemFindManyArgs>(args?: SelectSubset<T, TrainingPlanItemFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TrainingPlanItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
@@ -5120,7 +6404,7 @@ export namespace Prisma {
      *     // ... data to create a TrainingPlanItem
      *   }
      * })
-     * 
+     *
      */
     create<T extends TrainingPlanItemCreateArgs>(args: SelectSubset<T, TrainingPlanItemCreateArgs<ExtArgs>>): Prisma__TrainingPlanItemClient<$Result.GetResult<Prisma.$TrainingPlanItemPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -5134,7 +6418,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *     
+     *
      */
     createMany<T extends TrainingPlanItemCreateManyArgs>(args?: SelectSubset<T, TrainingPlanItemCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -5148,7 +6432,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     * 
+     *
      * // Create many TrainingPlanItems and only return the `id`
      * const trainingPlanItemWithIdOnly = await prisma.trainingPlanItem.createManyAndReturn({
      *   select: { id: true },
@@ -5158,7 +6442,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * 
+     *
      */
     createManyAndReturn<T extends TrainingPlanItemCreateManyAndReturnArgs>(args?: SelectSubset<T, TrainingPlanItemCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TrainingPlanItemPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
@@ -5172,7 +6456,7 @@ export namespace Prisma {
      *     // ... filter to delete one TrainingPlanItem
      *   }
      * })
-     * 
+     *
      */
     delete<T extends TrainingPlanItemDeleteArgs>(args: SelectSubset<T, TrainingPlanItemDeleteArgs<ExtArgs>>): Prisma__TrainingPlanItemClient<$Result.GetResult<Prisma.$TrainingPlanItemPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -5189,7 +6473,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     * 
+     *
      */
     update<T extends TrainingPlanItemUpdateArgs>(args: SelectSubset<T, TrainingPlanItemUpdateArgs<ExtArgs>>): Prisma__TrainingPlanItemClient<$Result.GetResult<Prisma.$TrainingPlanItemPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -5203,7 +6487,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     * 
+     *
      */
     deleteMany<T extends TrainingPlanItemDeleteManyArgs>(args?: SelectSubset<T, TrainingPlanItemDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -5222,7 +6506,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     * 
+     *
      */
     updateMany<T extends TrainingPlanItemUpdateManyArgs>(args: SelectSubset<T, TrainingPlanItemUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -5239,7 +6523,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     * 
+     *
      * // Update zero or more TrainingPlanItems and only return the `id`
      * const trainingPlanItemWithIdOnly = await prisma.trainingPlanItem.updateManyAndReturn({
      *   select: { id: true },
@@ -5252,7 +6536,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * 
+     *
      */
     updateManyAndReturn<T extends TrainingPlanItemUpdateManyAndReturnArgs>(args: SelectSubset<T, TrainingPlanItemUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TrainingPlanItemPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
@@ -5341,7 +6625,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     * 
+     *
     **/
     groupBy<
       T extends TrainingPlanItemGroupByArgs,
@@ -5454,7 +6738,7 @@ export namespace Prisma {
     readonly description: FieldRef<"TrainingPlanItem", 'String'>
     readonly sortOrder: FieldRef<"TrainingPlanItem", 'Int'>
   }
-    
+
 
   // Custom InputTypes
   /**
@@ -5523,31 +6807,31 @@ export namespace Prisma {
     where?: TrainingPlanItemWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of TrainingPlanItems to fetch.
      */
     orderBy?: TrainingPlanItemOrderByWithRelationInput | TrainingPlanItemOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for searching for TrainingPlanItems.
      */
     cursor?: TrainingPlanItemWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` TrainingPlanItems from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` TrainingPlanItems.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of TrainingPlanItems.
      */
     distinct?: TrainingPlanItemScalarFieldEnum | TrainingPlanItemScalarFieldEnum[]
@@ -5575,31 +6859,31 @@ export namespace Prisma {
     where?: TrainingPlanItemWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of TrainingPlanItems to fetch.
      */
     orderBy?: TrainingPlanItemOrderByWithRelationInput | TrainingPlanItemOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for searching for TrainingPlanItems.
      */
     cursor?: TrainingPlanItemWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` TrainingPlanItems from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` TrainingPlanItems.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of TrainingPlanItems.
      */
     distinct?: TrainingPlanItemScalarFieldEnum | TrainingPlanItemScalarFieldEnum[]
@@ -5627,31 +6911,31 @@ export namespace Prisma {
     where?: TrainingPlanItemWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of TrainingPlanItems to fetch.
      */
     orderBy?: TrainingPlanItemOrderByWithRelationInput | TrainingPlanItemOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for listing TrainingPlanItems.
      */
     cursor?: TrainingPlanItemWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` TrainingPlanItems from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` TrainingPlanItems.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of TrainingPlanItems.
      */
     distinct?: TrainingPlanItemScalarFieldEnum | TrainingPlanItemScalarFieldEnum[]
@@ -5898,6 +7182,22 @@ export namespace Prisma {
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
 
 
+  export const RunnerProfileScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    experienceLevel: 'experienceLevel',
+    weeklyRunCount: 'weeklyRunCount',
+    comfortableDistanceKm: 'comfortableDistanceKm',
+    goal: 'goal',
+    planStartDate: 'planStartDate',
+    preferredTrainingDays: 'preferredTrainingDays',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type RunnerProfileScalarFieldEnum = (typeof RunnerProfileScalarFieldEnum)[keyof typeof RunnerProfileScalarFieldEnum]
+
+
   export const RunningRecordScalarFieldEnum: {
     id: 'id',
     userId: 'userId',
@@ -5976,56 +7276,56 @@ export namespace Prisma {
    * Reference to a field of type 'Int'
    */
   export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
-    
+
 
 
   /**
    * Reference to a field of type 'Int[]'
    */
   export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
-    
+
 
 
   /**
    * Reference to a field of type 'String'
    */
   export type StringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'String'>
-    
+
 
 
   /**
    * Reference to a field of type 'String[]'
    */
   export type ListStringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'String[]'>
-    
+
 
 
   /**
    * Reference to a field of type 'DateTime'
    */
   export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
-    
+
 
 
   /**
    * Reference to a field of type 'DateTime[]'
    */
   export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
-    
+
 
 
   /**
    * Reference to a field of type 'Float'
    */
   export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
-    
+
 
 
   /**
    * Reference to a field of type 'Float[]'
    */
   export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
-    
+
   /**
    * Deep Input Types
    */
@@ -6041,6 +7341,7 @@ export namespace Prisma {
     nickname?: StringNullableFilter<"User"> | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
+    runnerProfile?: XOR<RunnerProfileNullableScalarRelationFilter, RunnerProfileWhereInput> | null
     runningRecords?: RunningRecordListRelationFilter
     trainingPlans?: TrainingPlanListRelationFilter
   }
@@ -6052,6 +7353,7 @@ export namespace Prisma {
     nickname?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    runnerProfile?: RunnerProfileOrderByWithRelationInput
     runningRecords?: RunningRecordOrderByRelationAggregateInput
     trainingPlans?: TrainingPlanOrderByRelationAggregateInput
   }
@@ -6066,6 +7368,7 @@ export namespace Prisma {
     passwordHash?: StringFilter<"User"> | string
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
+    runnerProfile?: XOR<RunnerProfileNullableScalarRelationFilter, RunnerProfileWhereInput> | null
     runningRecords?: RunningRecordListRelationFilter
     trainingPlans?: TrainingPlanListRelationFilter
   }, "id" | "email" | "nickname">
@@ -6094,6 +7397,88 @@ export namespace Prisma {
     nickname?: StringNullableWithAggregatesFilter<"User"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
+  }
+
+  export type RunnerProfileWhereInput = {
+    AND?: RunnerProfileWhereInput | RunnerProfileWhereInput[]
+    OR?: RunnerProfileWhereInput[]
+    NOT?: RunnerProfileWhereInput | RunnerProfileWhereInput[]
+    id?: IntFilter<"RunnerProfile"> | number
+    userId?: IntFilter<"RunnerProfile"> | number
+    experienceLevel?: StringFilter<"RunnerProfile"> | string
+    weeklyRunCount?: IntFilter<"RunnerProfile"> | number
+    comfortableDistanceKm?: FloatFilter<"RunnerProfile"> | number
+    goal?: StringNullableFilter<"RunnerProfile"> | string | null
+    planStartDate?: DateTimeNullableFilter<"RunnerProfile"> | Date | string | null
+    preferredTrainingDays?: StringNullableListFilter<"RunnerProfile">
+    createdAt?: DateTimeFilter<"RunnerProfile"> | Date | string
+    updatedAt?: DateTimeFilter<"RunnerProfile"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type RunnerProfileOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    experienceLevel?: SortOrder
+    weeklyRunCount?: SortOrder
+    comfortableDistanceKm?: SortOrder
+    goal?: SortOrderInput | SortOrder
+    planStartDate?: SortOrderInput | SortOrder
+    preferredTrainingDays?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type RunnerProfileWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    userId?: number
+    AND?: RunnerProfileWhereInput | RunnerProfileWhereInput[]
+    OR?: RunnerProfileWhereInput[]
+    NOT?: RunnerProfileWhereInput | RunnerProfileWhereInput[]
+    experienceLevel?: StringFilter<"RunnerProfile"> | string
+    weeklyRunCount?: IntFilter<"RunnerProfile"> | number
+    comfortableDistanceKm?: FloatFilter<"RunnerProfile"> | number
+    goal?: StringNullableFilter<"RunnerProfile"> | string | null
+    planStartDate?: DateTimeNullableFilter<"RunnerProfile"> | Date | string | null
+    preferredTrainingDays?: StringNullableListFilter<"RunnerProfile">
+    createdAt?: DateTimeFilter<"RunnerProfile"> | Date | string
+    updatedAt?: DateTimeFilter<"RunnerProfile"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id" | "userId">
+
+  export type RunnerProfileOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    experienceLevel?: SortOrder
+    weeklyRunCount?: SortOrder
+    comfortableDistanceKm?: SortOrder
+    goal?: SortOrderInput | SortOrder
+    planStartDate?: SortOrderInput | SortOrder
+    preferredTrainingDays?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: RunnerProfileCountOrderByAggregateInput
+    _avg?: RunnerProfileAvgOrderByAggregateInput
+    _max?: RunnerProfileMaxOrderByAggregateInput
+    _min?: RunnerProfileMinOrderByAggregateInput
+    _sum?: RunnerProfileSumOrderByAggregateInput
+  }
+
+  export type RunnerProfileScalarWhereWithAggregatesInput = {
+    AND?: RunnerProfileScalarWhereWithAggregatesInput | RunnerProfileScalarWhereWithAggregatesInput[]
+    OR?: RunnerProfileScalarWhereWithAggregatesInput[]
+    NOT?: RunnerProfileScalarWhereWithAggregatesInput | RunnerProfileScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"RunnerProfile"> | number
+    userId?: IntWithAggregatesFilter<"RunnerProfile"> | number
+    experienceLevel?: StringWithAggregatesFilter<"RunnerProfile"> | string
+    weeklyRunCount?: IntWithAggregatesFilter<"RunnerProfile"> | number
+    comfortableDistanceKm?: FloatWithAggregatesFilter<"RunnerProfile"> | number
+    goal?: StringNullableWithAggregatesFilter<"RunnerProfile"> | string | null
+    planStartDate?: DateTimeNullableWithAggregatesFilter<"RunnerProfile"> | Date | string | null
+    preferredTrainingDays?: StringNullableListFilter<"RunnerProfile">
+    createdAt?: DateTimeWithAggregatesFilter<"RunnerProfile"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"RunnerProfile"> | Date | string
   }
 
   export type RunningRecordWhereInput = {
@@ -6336,6 +7721,7 @@ export namespace Prisma {
     nickname?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    runnerProfile?: RunnerProfileCreateNestedOneWithoutUserInput
     runningRecords?: RunningRecordCreateNestedManyWithoutUserInput
     trainingPlans?: TrainingPlanCreateNestedManyWithoutUserInput
   }
@@ -6347,6 +7733,7 @@ export namespace Prisma {
     nickname?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    runnerProfile?: RunnerProfileUncheckedCreateNestedOneWithoutUserInput
     runningRecords?: RunningRecordUncheckedCreateNestedManyWithoutUserInput
     trainingPlans?: TrainingPlanUncheckedCreateNestedManyWithoutUserInput
   }
@@ -6357,6 +7744,7 @@ export namespace Prisma {
     nickname?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    runnerProfile?: RunnerProfileUpdateOneWithoutUserNestedInput
     runningRecords?: RunningRecordUpdateManyWithoutUserNestedInput
     trainingPlans?: TrainingPlanUpdateManyWithoutUserNestedInput
   }
@@ -6368,6 +7756,7 @@ export namespace Prisma {
     nickname?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    runnerProfile?: RunnerProfileUncheckedUpdateOneWithoutUserNestedInput
     runningRecords?: RunningRecordUncheckedUpdateManyWithoutUserNestedInput
     trainingPlans?: TrainingPlanUncheckedUpdateManyWithoutUserNestedInput
   }
@@ -6394,6 +7783,93 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
     nickname?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RunnerProfileCreateInput = {
+    experienceLevel: string
+    weeklyRunCount: number
+    comfortableDistanceKm: number
+    goal?: string | null
+    planStartDate?: Date | string | null
+    preferredTrainingDays?: RunnerProfileCreatepreferredTrainingDaysInput | string[]
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutRunnerProfileInput
+  }
+
+  export type RunnerProfileUncheckedCreateInput = {
+    id?: number
+    userId: number
+    experienceLevel: string
+    weeklyRunCount: number
+    comfortableDistanceKm: number
+    goal?: string | null
+    planStartDate?: Date | string | null
+    preferredTrainingDays?: RunnerProfileCreatepreferredTrainingDaysInput | string[]
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type RunnerProfileUpdateInput = {
+    experienceLevel?: StringFieldUpdateOperationsInput | string
+    weeklyRunCount?: IntFieldUpdateOperationsInput | number
+    comfortableDistanceKm?: FloatFieldUpdateOperationsInput | number
+    goal?: NullableStringFieldUpdateOperationsInput | string | null
+    planStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    preferredTrainingDays?: RunnerProfileUpdatepreferredTrainingDaysInput | string[]
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutRunnerProfileNestedInput
+  }
+
+  export type RunnerProfileUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    userId?: IntFieldUpdateOperationsInput | number
+    experienceLevel?: StringFieldUpdateOperationsInput | string
+    weeklyRunCount?: IntFieldUpdateOperationsInput | number
+    comfortableDistanceKm?: FloatFieldUpdateOperationsInput | number
+    goal?: NullableStringFieldUpdateOperationsInput | string | null
+    planStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    preferredTrainingDays?: RunnerProfileUpdatepreferredTrainingDaysInput | string[]
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RunnerProfileCreateManyInput = {
+    id?: number
+    userId: number
+    experienceLevel: string
+    weeklyRunCount: number
+    comfortableDistanceKm: number
+    goal?: string | null
+    planStartDate?: Date | string | null
+    preferredTrainingDays?: RunnerProfileCreatepreferredTrainingDaysInput | string[]
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type RunnerProfileUpdateManyMutationInput = {
+    experienceLevel?: StringFieldUpdateOperationsInput | string
+    weeklyRunCount?: IntFieldUpdateOperationsInput | number
+    comfortableDistanceKm?: FloatFieldUpdateOperationsInput | number
+    goal?: NullableStringFieldUpdateOperationsInput | string | null
+    planStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    preferredTrainingDays?: RunnerProfileUpdatepreferredTrainingDaysInput | string[]
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RunnerProfileUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    userId?: IntFieldUpdateOperationsInput | number
+    experienceLevel?: StringFieldUpdateOperationsInput | string
+    weeklyRunCount?: IntFieldUpdateOperationsInput | number
+    comfortableDistanceKm?: FloatFieldUpdateOperationsInput | number
+    goal?: NullableStringFieldUpdateOperationsInput | string | null
+    planStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    preferredTrainingDays?: RunnerProfileUpdatepreferredTrainingDaysInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -6694,6 +8170,11 @@ export namespace Prisma {
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
   }
 
+  export type RunnerProfileNullableScalarRelationFilter = {
+    is?: RunnerProfileWhereInput | null
+    isNot?: RunnerProfileWhereInput | null
+  }
+
   export type RunningRecordListRelationFilter = {
     every?: RunningRecordWhereInput
     some?: RunningRecordWhereInput
@@ -6831,9 +8312,109 @@ export namespace Prisma {
     not?: NestedFloatFilter<$PrismaModel> | number
   }
 
+  export type DateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
+  export type StringNullableListFilter<$PrismaModel = never> = {
+    equals?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    has?: string | StringFieldRefInput<$PrismaModel> | null
+    hasEvery?: string[] | ListStringFieldRefInput<$PrismaModel>
+    hasSome?: string[] | ListStringFieldRefInput<$PrismaModel>
+    isEmpty?: boolean
+  }
+
   export type UserScalarRelationFilter = {
     is?: UserWhereInput
     isNot?: UserWhereInput
+  }
+
+  export type RunnerProfileCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    experienceLevel?: SortOrder
+    weeklyRunCount?: SortOrder
+    comfortableDistanceKm?: SortOrder
+    goal?: SortOrder
+    planStartDate?: SortOrder
+    preferredTrainingDays?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type RunnerProfileAvgOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    weeklyRunCount?: SortOrder
+    comfortableDistanceKm?: SortOrder
+  }
+
+  export type RunnerProfileMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    experienceLevel?: SortOrder
+    weeklyRunCount?: SortOrder
+    comfortableDistanceKm?: SortOrder
+    goal?: SortOrder
+    planStartDate?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type RunnerProfileMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    experienceLevel?: SortOrder
+    weeklyRunCount?: SortOrder
+    comfortableDistanceKm?: SortOrder
+    goal?: SortOrder
+    planStartDate?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type RunnerProfileSumOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    weeklyRunCount?: SortOrder
+    comfortableDistanceKm?: SortOrder
+  }
+
+  export type FloatWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedFloatFilter<$PrismaModel>
+    _min?: NestedFloatFilter<$PrismaModel>
+    _max?: NestedFloatFilter<$PrismaModel>
+  }
+
+  export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
   export type RunningRecordCountOrderByAggregateInput = {
@@ -6886,22 +8467,6 @@ export namespace Prisma {
     distanceKm?: SortOrder
     durationSec?: SortOrder
     paceSecPerKm?: SortOrder
-  }
-
-  export type FloatWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel>
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatWithAggregatesFilter<$PrismaModel> | number
-    _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedFloatFilter<$PrismaModel>
-    _sum?: NestedFloatFilter<$PrismaModel>
-    _min?: NestedFloatFilter<$PrismaModel>
-    _max?: NestedFloatFilter<$PrismaModel>
   }
 
   export type TrainingPlanItemListRelationFilter = {
@@ -7071,6 +8636,12 @@ export namespace Prisma {
     _max?: NestedIntNullableFilter<$PrismaModel>
   }
 
+  export type RunnerProfileCreateNestedOneWithoutUserInput = {
+    create?: XOR<RunnerProfileCreateWithoutUserInput, RunnerProfileUncheckedCreateWithoutUserInput>
+    connectOrCreate?: RunnerProfileCreateOrConnectWithoutUserInput
+    connect?: RunnerProfileWhereUniqueInput
+  }
+
   export type RunningRecordCreateNestedManyWithoutUserInput = {
     create?: XOR<RunningRecordCreateWithoutUserInput, RunningRecordUncheckedCreateWithoutUserInput> | RunningRecordCreateWithoutUserInput[] | RunningRecordUncheckedCreateWithoutUserInput[]
     connectOrCreate?: RunningRecordCreateOrConnectWithoutUserInput | RunningRecordCreateOrConnectWithoutUserInput[]
@@ -7083,6 +8654,12 @@ export namespace Prisma {
     connectOrCreate?: TrainingPlanCreateOrConnectWithoutUserInput | TrainingPlanCreateOrConnectWithoutUserInput[]
     createMany?: TrainingPlanCreateManyUserInputEnvelope
     connect?: TrainingPlanWhereUniqueInput | TrainingPlanWhereUniqueInput[]
+  }
+
+  export type RunnerProfileUncheckedCreateNestedOneWithoutUserInput = {
+    create?: XOR<RunnerProfileCreateWithoutUserInput, RunnerProfileUncheckedCreateWithoutUserInput>
+    connectOrCreate?: RunnerProfileCreateOrConnectWithoutUserInput
+    connect?: RunnerProfileWhereUniqueInput
   }
 
   export type RunningRecordUncheckedCreateNestedManyWithoutUserInput = {
@@ -7109,6 +8686,16 @@ export namespace Prisma {
 
   export type DateTimeFieldUpdateOperationsInput = {
     set?: Date | string
+  }
+
+  export type RunnerProfileUpdateOneWithoutUserNestedInput = {
+    create?: XOR<RunnerProfileCreateWithoutUserInput, RunnerProfileUncheckedCreateWithoutUserInput>
+    connectOrCreate?: RunnerProfileCreateOrConnectWithoutUserInput
+    upsert?: RunnerProfileUpsertWithoutUserInput
+    disconnect?: RunnerProfileWhereInput | boolean
+    delete?: RunnerProfileWhereInput | boolean
+    connect?: RunnerProfileWhereUniqueInput
+    update?: XOR<XOR<RunnerProfileUpdateToOneWithWhereWithoutUserInput, RunnerProfileUpdateWithoutUserInput>, RunnerProfileUncheckedUpdateWithoutUserInput>
   }
 
   export type RunningRecordUpdateManyWithoutUserNestedInput = {
@@ -7147,6 +8734,16 @@ export namespace Prisma {
     divide?: number
   }
 
+  export type RunnerProfileUncheckedUpdateOneWithoutUserNestedInput = {
+    create?: XOR<RunnerProfileCreateWithoutUserInput, RunnerProfileUncheckedCreateWithoutUserInput>
+    connectOrCreate?: RunnerProfileCreateOrConnectWithoutUserInput
+    upsert?: RunnerProfileUpsertWithoutUserInput
+    disconnect?: RunnerProfileWhereInput | boolean
+    delete?: RunnerProfileWhereInput | boolean
+    connect?: RunnerProfileWhereUniqueInput
+    update?: XOR<XOR<RunnerProfileUpdateToOneWithWhereWithoutUserInput, RunnerProfileUpdateWithoutUserInput>, RunnerProfileUncheckedUpdateWithoutUserInput>
+  }
+
   export type RunningRecordUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<RunningRecordCreateWithoutUserInput, RunningRecordUncheckedCreateWithoutUserInput> | RunningRecordCreateWithoutUserInput[] | RunningRecordUncheckedCreateWithoutUserInput[]
     connectOrCreate?: RunningRecordCreateOrConnectWithoutUserInput | RunningRecordCreateOrConnectWithoutUserInput[]
@@ -7175,9 +8772,13 @@ export namespace Prisma {
     deleteMany?: TrainingPlanScalarWhereInput | TrainingPlanScalarWhereInput[]
   }
 
-  export type UserCreateNestedOneWithoutRunningRecordsInput = {
-    create?: XOR<UserCreateWithoutRunningRecordsInput, UserUncheckedCreateWithoutRunningRecordsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutRunningRecordsInput
+  export type RunnerProfileCreatepreferredTrainingDaysInput = {
+    set: string[]
+  }
+
+  export type UserCreateNestedOneWithoutRunnerProfileInput = {
+    create?: XOR<UserCreateWithoutRunnerProfileInput, UserUncheckedCreateWithoutRunnerProfileInput>
+    connectOrCreate?: UserCreateOrConnectWithoutRunnerProfileInput
     connect?: UserWhereUniqueInput
   }
 
@@ -7187,6 +8788,29 @@ export namespace Prisma {
     decrement?: number
     multiply?: number
     divide?: number
+  }
+
+  export type NullableDateTimeFieldUpdateOperationsInput = {
+    set?: Date | string | null
+  }
+
+  export type RunnerProfileUpdatepreferredTrainingDaysInput = {
+    set?: string[]
+    push?: string | string[]
+  }
+
+  export type UserUpdateOneRequiredWithoutRunnerProfileNestedInput = {
+    create?: XOR<UserCreateWithoutRunnerProfileInput, UserUncheckedCreateWithoutRunnerProfileInput>
+    connectOrCreate?: UserCreateOrConnectWithoutRunnerProfileInput
+    upsert?: UserUpsertWithoutRunnerProfileInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutRunnerProfileInput, UserUpdateWithoutRunnerProfileInput>, UserUncheckedUpdateWithoutRunnerProfileInput>
+  }
+
+  export type UserCreateNestedOneWithoutRunningRecordsInput = {
+    create?: XOR<UserCreateWithoutRunningRecordsInput, UserUncheckedCreateWithoutRunningRecordsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutRunningRecordsInput
+    connect?: UserWhereUniqueInput
   }
 
   export type UserUpdateOneRequiredWithoutRunningRecordsNestedInput = {
@@ -7419,6 +9043,17 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
+  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
   export type NestedFloatWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | FloatFieldRefInput<$PrismaModel>
     in?: number[] | ListFloatFieldRefInput<$PrismaModel>
@@ -7433,6 +9068,20 @@ export namespace Prisma {
     _sum?: NestedFloatFilter<$PrismaModel>
     _min?: NestedFloatFilter<$PrismaModel>
     _max?: NestedFloatFilter<$PrismaModel>
+  }
+
+  export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
   export type NestedFloatNullableFilter<$PrismaModel = never> = {
@@ -7476,6 +9125,34 @@ export namespace Prisma {
     _sum?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedIntNullableFilter<$PrismaModel>
     _max?: NestedIntNullableFilter<$PrismaModel>
+  }
+
+  export type RunnerProfileCreateWithoutUserInput = {
+    experienceLevel: string
+    weeklyRunCount: number
+    comfortableDistanceKm: number
+    goal?: string | null
+    planStartDate?: Date | string | null
+    preferredTrainingDays?: RunnerProfileCreatepreferredTrainingDaysInput | string[]
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type RunnerProfileUncheckedCreateWithoutUserInput = {
+    id?: number
+    experienceLevel: string
+    weeklyRunCount: number
+    comfortableDistanceKm: number
+    goal?: string | null
+    planStartDate?: Date | string | null
+    preferredTrainingDays?: RunnerProfileCreatepreferredTrainingDaysInput | string[]
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type RunnerProfileCreateOrConnectWithoutUserInput = {
+    where: RunnerProfileWhereUniqueInput
+    create: XOR<RunnerProfileCreateWithoutUserInput, RunnerProfileUncheckedCreateWithoutUserInput>
   }
 
   export type RunningRecordCreateWithoutUserInput = {
@@ -7544,6 +9221,40 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type RunnerProfileUpsertWithoutUserInput = {
+    update: XOR<RunnerProfileUpdateWithoutUserInput, RunnerProfileUncheckedUpdateWithoutUserInput>
+    create: XOR<RunnerProfileCreateWithoutUserInput, RunnerProfileUncheckedCreateWithoutUserInput>
+    where?: RunnerProfileWhereInput
+  }
+
+  export type RunnerProfileUpdateToOneWithWhereWithoutUserInput = {
+    where?: RunnerProfileWhereInput
+    data: XOR<RunnerProfileUpdateWithoutUserInput, RunnerProfileUncheckedUpdateWithoutUserInput>
+  }
+
+  export type RunnerProfileUpdateWithoutUserInput = {
+    experienceLevel?: StringFieldUpdateOperationsInput | string
+    weeklyRunCount?: IntFieldUpdateOperationsInput | number
+    comfortableDistanceKm?: FloatFieldUpdateOperationsInput | number
+    goal?: NullableStringFieldUpdateOperationsInput | string | null
+    planStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    preferredTrainingDays?: RunnerProfileUpdatepreferredTrainingDaysInput | string[]
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RunnerProfileUncheckedUpdateWithoutUserInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    experienceLevel?: StringFieldUpdateOperationsInput | string
+    weeklyRunCount?: IntFieldUpdateOperationsInput | number
+    comfortableDistanceKm?: FloatFieldUpdateOperationsInput | number
+    goal?: NullableStringFieldUpdateOperationsInput | string | null
+    planStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    preferredTrainingDays?: RunnerProfileUpdatepreferredTrainingDaysInput | string[]
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type RunningRecordUpsertWithWhereUniqueWithoutUserInput = {
     where: RunningRecordWhereUniqueInput
     update: XOR<RunningRecordUpdateWithoutUserInput, RunningRecordUncheckedUpdateWithoutUserInput>
@@ -7607,12 +9318,71 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"TrainingPlan"> | Date | string
   }
 
+  export type UserCreateWithoutRunnerProfileInput = {
+    email: string
+    passwordHash: string
+    nickname?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    runningRecords?: RunningRecordCreateNestedManyWithoutUserInput
+    trainingPlans?: TrainingPlanCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutRunnerProfileInput = {
+    id?: number
+    email: string
+    passwordHash: string
+    nickname?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    runningRecords?: RunningRecordUncheckedCreateNestedManyWithoutUserInput
+    trainingPlans?: TrainingPlanUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutRunnerProfileInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutRunnerProfileInput, UserUncheckedCreateWithoutRunnerProfileInput>
+  }
+
+  export type UserUpsertWithoutRunnerProfileInput = {
+    update: XOR<UserUpdateWithoutRunnerProfileInput, UserUncheckedUpdateWithoutRunnerProfileInput>
+    create: XOR<UserCreateWithoutRunnerProfileInput, UserUncheckedCreateWithoutRunnerProfileInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutRunnerProfileInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutRunnerProfileInput, UserUncheckedUpdateWithoutRunnerProfileInput>
+  }
+
+  export type UserUpdateWithoutRunnerProfileInput = {
+    email?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    nickname?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    runningRecords?: RunningRecordUpdateManyWithoutUserNestedInput
+    trainingPlans?: TrainingPlanUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutRunnerProfileInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    email?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    nickname?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    runningRecords?: RunningRecordUncheckedUpdateManyWithoutUserNestedInput
+    trainingPlans?: TrainingPlanUncheckedUpdateManyWithoutUserNestedInput
+  }
+
   export type UserCreateWithoutRunningRecordsInput = {
     email: string
     passwordHash: string
     nickname?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    runnerProfile?: RunnerProfileCreateNestedOneWithoutUserInput
     trainingPlans?: TrainingPlanCreateNestedManyWithoutUserInput
   }
 
@@ -7623,6 +9393,7 @@ export namespace Prisma {
     nickname?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    runnerProfile?: RunnerProfileUncheckedCreateNestedOneWithoutUserInput
     trainingPlans?: TrainingPlanUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -7648,6 +9419,7 @@ export namespace Prisma {
     nickname?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    runnerProfile?: RunnerProfileUpdateOneWithoutUserNestedInput
     trainingPlans?: TrainingPlanUpdateManyWithoutUserNestedInput
   }
 
@@ -7658,6 +9430,7 @@ export namespace Prisma {
     nickname?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    runnerProfile?: RunnerProfileUncheckedUpdateOneWithoutUserNestedInput
     trainingPlans?: TrainingPlanUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -7667,6 +9440,7 @@ export namespace Prisma {
     nickname?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    runnerProfile?: RunnerProfileCreateNestedOneWithoutUserInput
     runningRecords?: RunningRecordCreateNestedManyWithoutUserInput
   }
 
@@ -7677,6 +9451,7 @@ export namespace Prisma {
     nickname?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    runnerProfile?: RunnerProfileUncheckedCreateNestedOneWithoutUserInput
     runningRecords?: RunningRecordUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -7731,6 +9506,7 @@ export namespace Prisma {
     nickname?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    runnerProfile?: RunnerProfileUpdateOneWithoutUserNestedInput
     runningRecords?: RunningRecordUpdateManyWithoutUserNestedInput
   }
 
@@ -7741,6 +9517,7 @@ export namespace Prisma {
     nickname?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    runnerProfile?: RunnerProfileUncheckedUpdateOneWithoutUserNestedInput
     runningRecords?: RunningRecordUncheckedUpdateManyWithoutUserNestedInput
   }
 

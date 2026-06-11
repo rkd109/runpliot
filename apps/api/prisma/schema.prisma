@@ -8,56 +8,72 @@ datasource db {
 }
 
 model User {
-  id            Int      @id @default(autoincrement())
-  email         String   @unique
-  passwordHash  String
-  nickname      String?  @unique
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  id           Int      @id @default(autoincrement())
+  email        String   @unique
+  passwordHash String
+  nickname     String?  @unique
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 
+  runnerProfile  RunnerProfile?
   runningRecords RunningRecord[]
   trainingPlans  TrainingPlan[]
 }
 
+model RunnerProfile {
+  id                    Int       @id @default(autoincrement())
+  userId                Int       @unique
+  experienceLevel       String
+  weeklyRunCount        Int
+  comfortableDistanceKm Float
+  goal                  String?
+  planStartDate         DateTime?
+  preferredTrainingDays String[]  @default([])
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
 model RunningRecord {
-  id              Int      @id @default(autoincrement())
-  userId          Int
-  distanceKm      Float
-  durationSec     Int
-  paceSecPerKm    Int
-  runDate         DateTime
-  memo            String?
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  id           Int      @id @default(autoincrement())
+  userId       Int
+  distanceKm   Float
+  durationSec  Int
+  paceSecPerKm Int
+  runDate      DateTime
+  memo         String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 
   user User @relation(fields: [userId], references: [id])
 }
 
 model TrainingPlan {
-  id          Int      @id @default(autoincrement())
-  userId      Int
-  title       String
-  goalType    String
-  level       String
-  startDate   DateTime
-  endDate     DateTime
-  sourceType  String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id         Int      @id @default(autoincrement())
+  userId     Int
+  title      String
+  goalType   String
+  level      String
+  startDate  DateTime
+  endDate    DateTime
+  sourceType String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 
-  user  User @relation(fields: [userId], references: [id])
+  user  User               @relation(fields: [userId], references: [id])
   items TrainingPlanItem[]
 }
 
 model TrainingPlanItem {
-  id                    Int      @id @default(autoincrement())
-  trainingPlanId        Int
-  planDate              DateTime
-  workoutType           String
-  distanceKm            Float?
-  targetPaceSecPerKm    Int?
-  description           String?
-  sortOrder             Int
+  id                 Int      @id @default(autoincrement())
+  trainingPlanId     Int
+  planDate           DateTime
+  workoutType        String
+  distanceKm         Float?
+  targetPaceSecPerKm Int?
+  description        String?
+  sortOrder          Int
 
   trainingPlan TrainingPlan @relation(fields: [trainingPlanId], references: [id])
 }

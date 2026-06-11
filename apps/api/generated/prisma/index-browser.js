@@ -129,6 +129,19 @@ exports.Prisma.UserScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.RunnerProfileScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  experienceLevel: 'experienceLevel',
+  weeklyRunCount: 'weeklyRunCount',
+  comfortableDistanceKm: 'comfortableDistanceKm',
+  goal: 'goal',
+  planStartDate: 'planStartDate',
+  preferredTrainingDays: 'preferredTrainingDays',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.RunningRecordScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
@@ -183,6 +196,7 @@ exports.Prisma.NullsOrder = {
 
 exports.Prisma.ModelName = {
   User: 'User',
+  RunnerProfile: 'RunnerProfile',
   RunningRecord: 'RunningRecord',
   TrainingPlan: 'TrainingPlan',
   TrainingPlanItem: 'TrainingPlanItem'
