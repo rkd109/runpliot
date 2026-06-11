@@ -1,5 +1,6 @@
 'use client';
 
+import { AppLoading } from '@components/app-loading';
 import { api, getAccessToken, removeAccessToken } from '@utils';
 import {
   createContext,
@@ -19,7 +20,7 @@ type AuthUser = {
 type AuthContextValue = {
   user: AuthUser | null;
   setUser: (user: AuthUser | null) => void;
-  isInitializing : boolean;
+  isInitializing: boolean;
   logout: () => void;
 };
 
@@ -44,7 +45,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       }
 
       try {
-        const response = await api.get('/auth/me');
+        const response = await api.get('/auth/me', { timeout: 5000 });
         setUser(response.data.data);
       } catch {
         removeAccessToken();
@@ -57,13 +58,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     restoreUser();
   }, []);
 
-  if (isInitializing) {
-    return <div>loading...</div>;
-  }
-
   return (
-    <AuthContext.Provider value={{ user, setUser, isInitializing, logout }} >
-      {children}
+    <AuthContext.Provider value={{ user, setUser, isInitializing, logout }}>
+      {isInitializing ? <AppLoading /> : children}
     </AuthContext.Provider>
   );
 };

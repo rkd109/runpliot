@@ -1,10 +1,9 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import Link from 'next/link';
 import { useParams } from 'next/navigation';
 
-import { LogoutButton, ProtectedRoute } from '@components';
+import { ProtectedPageLayout } from '@components';
 import { api, formatDate, formatPace } from '@/utils';
 
 type TrainingPlanItem = {
@@ -53,24 +52,17 @@ export default function TrainingPlanDetailPage() {
   }, [params.id]);
 
   return (
-    <ProtectedRoute>
-      <main className="min-h-screen bg-slate-950 px-6 py-10 text-white">
-        <section className="mx-auto max-w-4xl">
+    <ProtectedPageLayout
+      title="훈련 계획 상세"
+      description="생성된 훈련 계획의 일자별 운동을 확인하세요."
+    >
           {isLoading ? (
             <p className="text-slate-400">불러오는 중...</p>
           ) : !plan ? (
             <p className="text-slate-400">훈련 계획을 찾을 수 없습니다.</p>
           ) : (
             <>
-              <div className="flex items-center justify-between">
-                <Link href="/training-plans" className="text-sm text-blue-400">
-                  ← 목록으로
-                </Link>
-
-                <LogoutButton />
-              </div>
-
-              <div className="mt-6 rounded-2xl border border-slate-800 bg-slate-900 p-6">
+              <div className="rounded-2xl border border-slate-800 bg-slate-900 p-6">
                 <p className="text-sm font-semibold text-blue-400">
                   {plan.level}
                 </p>
@@ -129,8 +121,6 @@ export default function TrainingPlanDetailPage() {
               </div>
             </>
           )}
-        </section>
-      </main>
-    </ProtectedRoute>
+    </ProtectedPageLayout>
   );
 }

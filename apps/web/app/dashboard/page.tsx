@@ -1,6 +1,6 @@
 'use client';
 
-import { LogoutButton, ProtectedRoute, StatusMessage } from '@components';
+import { ProtectedPageLayout, StatusMessage } from '@components';
 import { useAuth } from '@contexts';
 import Link from 'next/link';
 import {
@@ -306,33 +306,11 @@ export default function DashboardPage() {
   const hasRecords = records.length > 0;
 
   return (
-    <ProtectedRoute>
-      <main className="min-h-screen bg-slate-950 px-6 py-10 text-white">
-        <section className="mx-auto max-w-5xl">
-          <div className="mb-8 flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
-            <div>
-              <p className="text-sm font-semibold text-blue-400">RunPilot</p>
-              <h1 className="mt-2 text-4xl font-bold">대시보드</h1>
-              <p className="mt-3 text-slate-400">최근 러닝 기록을 기반으로 현재 상태를 확인하세요.</p>
-            </div>
-
-            <div className="flex flex-col gap-3 sm:flex-row">
-              <Link
-                href="/running-records"
-                className="rounded-lg border border-slate-700 px-5 py-3 text-center font-semibold text-slate-200 hover:bg-slate-900"
-              >
-                러닝 기록
-              </Link>
-              <Link
-                href="/training-plans"
-                className="rounded-lg bg-blue-500 px-5 py-3 text-center font-semibold text-white hover:bg-blue-400"
-              >
-                훈련 계획
-              </Link>
-              <LogoutButton />
-            </div>
-          </div>
-
+    <ProtectedPageLayout
+      title="대시보드"
+      description="최근 러닝 기록을 기반으로 현재 상태를 확인하세요."
+      maxWidthClassName="max-w-5xl"
+    >
           {isLoading ? (
             <DashboardSkeleton />
           ) : (
@@ -393,8 +371,6 @@ export default function DashboardPage() {
               </div>
             </div>
           )}
-        </section>
-      </main>
-    </ProtectedRoute>
+    </ProtectedPageLayout>
   );
 }

@@ -4,6 +4,7 @@ import { useAuth } from '@contexts';
 import { useRouter } from 'next/navigation';
 import { ReactNode, useEffect } from 'react';
 
+import { AppLoading } from './app-loading';
 
 export const ProtectedRoute = ({ children }: { children: ReactNode }) => {
   const router = useRouter();
@@ -16,7 +17,7 @@ export const ProtectedRoute = ({ children }: { children: ReactNode }) => {
   }, [isInitializing, user, router]);
 
   if (isInitializing) {
-    return <div>loading...</div>;
+    return <AppLoading />;
   }
 
   if (!user) {

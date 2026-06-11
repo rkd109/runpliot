@@ -1,8 +1,7 @@
 'use client';
 
-import { LogoutButton, ProtectedRoute, StatusMessage } from '@components';
+import { ProtectedPageLayout, StatusMessage } from '@components';
 import { useAuth } from '@contexts';
-import Link from 'next/link';
 import {
   createRunningRecord,
   deleteRunningRecord,
@@ -227,29 +226,10 @@ export default function RunningRecordsPage() {
   };
 
   return (
-    <ProtectedRoute>
-      <main className="min-h-screen bg-slate-950 px-6 py-10 text-white">
-        <section className="mx-auto max-w-4xl">
-          <div className="mb-8 flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
-            <div>
-              <p className="text-sm font-semibold text-blue-400">RunPilot</p>
-
-              <h1 className="mt-2 text-4xl font-bold text-white">러닝 기록</h1>
-
-              <p className="mt-3 text-slate-400">나의 러닝 데이터를 기록하고 관리하세요.</p>
-            </div>
-
-            <div className="flex gap-2">
-              <Link
-                href="/dashboard"
-                className="rounded-lg border border-slate-700 px-4 py-2 text-sm font-semibold text-slate-200 hover:bg-slate-900"
-              >
-                대시보드
-              </Link>
-              <LogoutButton />
-            </div>
-          </div>
-
+    <ProtectedPageLayout
+      title="러닝 기록"
+      description="나의 러닝 데이터를 기록하고 관리하세요."
+    >
           <form
             onSubmit={handleCreateRecord}
             className="mb-8 rounded-lg border border-slate-800 bg-slate-900 p-6"
@@ -520,8 +500,6 @@ export default function RunningRecordsPage() {
               )
             )}
           </div>
-        </section>
-      </main>
-    </ProtectedRoute>
+    </ProtectedPageLayout>
   );
 }
