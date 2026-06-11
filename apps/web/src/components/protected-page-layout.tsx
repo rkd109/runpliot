@@ -18,6 +18,7 @@ const navigationItems = [
   { href: '/dashboard', label: '대시보드' },
   { href: '/running-records', label: '러닝 기록' },
   { href: '/training-plans', label: '훈련 계획' },
+  { href: '/runner-profile/setup', label: '러닝 프로필' },
 ];
 
 const getIsActive = (pathname: string, href: string) => {

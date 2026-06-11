@@ -33,7 +33,7 @@ export default function SignupPage() {
 
       const user = await getMe();
       setUser(user);
-      router.push('/dashboard');
+      router.push('/runner-profile/setup');
     } catch (error) {
       setErrorMessage(getApiErrorMessage(error, '회원가입에 실패했습니다. 입력한 정보를 확인해주세요.'));
     } finally {

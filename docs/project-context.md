@@ -60,6 +60,7 @@
 /                  Login entry / authenticated redirect
 /login             Login
 /signup            Signup
+/runner-profile/setup Runner profile setup
 /dashboard         Running summary dashboard
 /running-records   RunningRecord CRUD
 /training-plans    TrainingPlan list/generate
@@ -67,6 +68,7 @@
 ```
 
 `/`는 비로그인 상태에서 회원가입/로그인 버튼을 노출하고, 로그인 상태에서는 `/dashboard`로 이동한다.
+회원가입 성공 후에는 `/runner-profile/setup`으로 이동해 기본 운동 능력과 선호 훈련 요일을 입력받는다.
 
 현재 Dashboard MVP:
 
@@ -223,7 +225,7 @@ GET /training-plans/:id
 
 - 기본 운동 능력 입력 화면 추가
 - `GET /runner-profile/me`, `PUT /runner-profile/me` API 기반 프로필 조회/저장
-- 훈련 계획 생성 전 프로필 미입력 사용자를 온보딩으로 유도
+- 훈련 계획 생성 전 프로필 미입력 사용자를 온보딩으로 유도하는 대시보드/계획 생성 분기 정리
 - RunnerProfile DTO / mapper / ownership check 적용
 
 ### 3. 훈련 계획 생성 시나리오 개선
