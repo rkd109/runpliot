@@ -5,9 +5,10 @@ import { PrismaModule } from "./prisma/prisma.module";
 import { AuthModule } from './auth/auth.module';
 import { RunningRecordsModule } from './running-records/running-records.module';
 import { TrainingPlansModule } from './training-plans/training-plans.module';
+import { RunnerProfilesModule } from './runner-profiles/runner-profiles.module';
 
 @Module({
-  imports: [PrismaModule, AuthModule, RunningRecordsModule, TrainingPlansModule],
+  imports: [PrismaModule, AuthModule, RunningRecordsModule, TrainingPlansModule, RunnerProfilesModule],
   controllers: [AppController],
   providers: [AppService]
 })

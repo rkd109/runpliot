@@ -250,6 +250,55 @@ Response `data`:
 
 ---
 
+## Runner Profile
+
+러너 프로필 API는 모두 인증이 필요합니다.
+
+### GET /runner-profile/me
+
+내 기본 러닝 프로필을 조회합니다. 아직 프로필이 없으면 `data`는 `null`입니다.
+
+Auth: Required
+
+Response `data`:
+
+```json
+{
+  "id": 1,
+  "experienceLevel": "BEGINNER",
+  "weeklyRunCount": 3,
+  "comfortableDistanceKm": 5,
+  "goal": "10km 완주",
+  "planStartDate": "2026-06-15T00:00:00.000Z",
+  "preferredTrainingDays": ["MONDAY", "WEDNESDAY", "SATURDAY"],
+  "createdAt": "2026-06-11T00:00:00.000Z",
+  "updatedAt": "2026-06-11T00:00:00.000Z"
+}
+```
+
+### PUT /runner-profile/me
+
+내 기본 러닝 프로필을 생성하거나 수정합니다.
+
+Auth: Required
+
+Request:
+
+```json
+{
+  "experienceLevel": "BEGINNER",
+  "weeklyRunCount": 3,
+  "comfortableDistanceKm": 5,
+  "goal": "10km 완주",
+  "planStartDate": "2026-06-15",
+  "preferredTrainingDays": ["MONDAY", "WEDNESDAY", "SATURDAY"]
+}
+```
+
+Response `data`: `RunnerProfile`
+
+---
+
 ## Training Plans
 
 훈련 계획 API는 모두 인증이 필요합니다.

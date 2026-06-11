@@ -197,6 +197,9 @@ POST /auth/login
 ```http
 GET /auth/me
 
+GET /runner-profile/me
+PUT /runner-profile/me
+
 POST /running-records
 GET /running-records/me?page=1&limit=20
 PATCH /running-records/:id
@@ -219,7 +222,7 @@ GET /training-plans/:id
 ### 2. RunnerProfile / 온보딩
 
 - 기본 운동 능력 입력 화면 추가
-- RunnerProfile 저장 API 검토
+- `GET /runner-profile/me`, `PUT /runner-profile/me` API 기반 프로필 조회/저장
 - 훈련 계획 생성 전 프로필 미입력 사용자를 온보딩으로 유도
 - RunnerProfile DTO / mapper / ownership check 적용
 
