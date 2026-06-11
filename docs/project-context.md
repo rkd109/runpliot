@@ -186,6 +186,7 @@ SKIPPED
 ```http
 GET /
 GET /health
+POST /auth/signup
 POST /auth/login
 ```
 
@@ -209,7 +210,7 @@ GET /training-plans/:id
 ### 1. 사용자 진입 흐름 정리
 
 - 홈 화면에 회원가입 진입 추가
-- `POST /auth/signup` API 설계 및 구현 검토
+- `POST /auth/signup` API 기반 프론트 회원가입 흐름 연결
 - 회원가입 후 로그인/자동 로그인/온보딩 이동 흐름 결정
 - 기존 `UsersModule` 공개 라우트는 의도 없이 노출하지 않는다.
 

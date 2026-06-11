@@ -1,8 +1,9 @@
 import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
-import { ApiBearerAuth, ApiOkResponse, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiConflictResponse, ApiCreatedResponse, ApiOkResponse, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 import { LoginResponseDto } from './dto/login-response.dto';
+import { SignupDto } from './dto/signup.dto';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { AuthenticatedRequest } from './types/authenticated-request.type';
 
@@ -10,6 +11,18 @@ import { AuthenticatedRequest } from './types/authenticated-request.type';
 @Controller('auth')
 export class AuthController {
     constructor(private readonly authService: AuthService){}
+
+    @Post('signup')
+    @ApiCreatedResponse({
+        type: LoginResponseDto,
+        description: '회원가입 성공'
+    })
+    @ApiConflictResponse({
+        description: '이미 사용 중인 이메일 또는 닉네임'
+    })
+    async signup(@Body() dto: SignupDto): Promise<LoginResponseDto>{
+        return this.authService.signup(dto);
+    }
 
     @Post('login')
     @ApiOkResponse({

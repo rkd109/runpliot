@@ -77,6 +77,32 @@ Response `data`:
 
 ## Auth
 
+### POST /auth/signup
+
+이메일과 비밀번호로 회원가입하고 JWT accessToken을 발급합니다.
+
+Request:
+
+```json
+{
+  "email": "runner@example.com",
+  "password": "password123",
+  "nickname": "runner"
+}
+```
+
+`nickname`은 선택 값입니다.
+
+Response `data`:
+
+```json
+{
+  "accessToken": "jwt-access-token"
+}
+```
+
+이미 사용 중인 이메일 또는 닉네임이면 `409 Conflict`를 반환합니다.
+
 ### POST /auth/login
 
 이메일과 비밀번호로 로그인하고 JWT accessToken을 발급합니다.
