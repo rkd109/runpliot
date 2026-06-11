@@ -29,16 +29,21 @@ export default function HomePage() {
         </h1>
 
         <p className="mt-6 max-w-2xl text-lg text-slate-300">
-          RunPilot은 러닝 기록을 저장하고, 기록을 기반으로 훈련 계획을
-          생성하는 러닝 포트폴리오 서비스입니다.
+          RunPilot은 러닝 기록을 저장하고, 기록을 기반으로 훈련 계획을 생성하는 러닝 포트폴리오 서비스입니다.
         </p>
 
         <div className="mt-10 flex flex-col gap-3 sm:flex-row">
           <Link
-            href="/login"
+            href="/signup"
             className="rounded-xl bg-blue-500 px-6 py-3 text-center font-semibold text-white hover:bg-blue-400"
           >
-            로그인하기
+            회원가입
+          </Link>
+          <Link
+            href="/login"
+            className="rounded-xl border border-slate-700 px-6 py-3 text-center font-semibold text-slate-200 hover:bg-slate-900"
+          >
+            로그인
           </Link>
         </div>
       </section>

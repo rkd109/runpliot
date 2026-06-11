@@ -26,6 +26,7 @@
 - Docker PostgreSQL 16 로컬 환경 구성
 - Prisma ORM 및 migration 구성
 - JWT 로그인 및 `/auth/me` 기반 사용자 상태 복구
+- `POST /auth/signup` 기반 회원가입 API 및 프론트 회원가입 화면
 - 로그아웃 및 보호 페이지 내 로그아웃 버튼
 - sessionStorage 기반 accessToken 저장
 - Axios Interceptor 기반 Authorization Header 처리
@@ -58,13 +59,14 @@
 ```text
 /                  Login entry / authenticated redirect
 /login             Login
+/signup            Signup
 /dashboard         Running summary dashboard
 /running-records   RunningRecord CRUD
 /training-plans    TrainingPlan list/generate
 /training-plans/:id TrainingPlan direct detail route
 ```
 
-`/`는 비로그인 상태에서 로그인 버튼만 노출하고, 로그인 상태에서는 `/dashboard`로 이동한다.
+`/`는 비로그인 상태에서 회원가입/로그인 버튼을 노출하고, 로그인 상태에서는 `/dashboard`로 이동한다.
 
 현재 Dashboard MVP:
 
@@ -210,7 +212,7 @@ GET /training-plans/:id
 ### 1. 사용자 진입 흐름 정리
 
 - 홈 화면에 회원가입 진입 추가
-- `POST /auth/signup` API 기반 프론트 회원가입 흐름 연결
+- `POST /auth/signup` API 기반 프론트 회원가입 흐름 연결 완료
 - 회원가입 후 로그인/자동 로그인/온보딩 이동 흐름 결정
 - 기존 `UsersModule` 공개 라우트는 의도 없이 노출하지 않는다.
 
