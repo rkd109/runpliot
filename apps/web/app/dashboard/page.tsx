@@ -309,7 +309,6 @@ export default function DashboardPage() {
     <ProtectedPageLayout
       title="대시보드"
       description="최근 러닝 기록을 기반으로 현재 상태를 확인하세요."
-      maxWidthClassName="max-w-5xl"
     >
           {isLoading ? (
             <DashboardSkeleton />

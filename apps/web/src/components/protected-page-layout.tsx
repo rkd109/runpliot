@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { ReactNode } from 'react';
 
+import { useAuth } from '@contexts';
 import { LogoutButton } from './logout-button';
 import { ProtectedRoute } from './protected-route';
 
@@ -33,22 +34,24 @@ export const ProtectedPageLayout = ({
   title,
   description,
   children,
-  maxWidthClassName = 'max-w-4xl',
+  maxWidthClassName = 'max-w-5xl',
 }: ProtectedPageLayoutProps) => {
   const pathname = usePathname();
+  const { user } = useAuth();
+  const displayName = user?.nickname || user?.email || 'Runner';
 
   return (
     <ProtectedRoute>
       <main className="min-h-screen bg-slate-950 px-6 py-10 text-white">
         <section className={`mx-auto ${maxWidthClassName}`}>
-          <header className="mb-8 flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
+          <header className="mb-8 flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
             <div>
               <p className="text-sm font-semibold text-blue-400">RunPilot</p>
               <h1 className="mt-2 text-4xl font-bold text-white">{title}</h1>
               <p className="mt-3 text-slate-400">{description}</p>
             </div>
 
-            <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+            <div className="flex flex-col gap-3 lg:items-end">
               <nav className="flex flex-wrap gap-2" aria-label="보호 페이지">
                 {navigationItems.map((item) => {
                   const isActive = getIsActive(pathname, item.href);
@@ -70,7 +73,13 @@ export const ProtectedPageLayout = ({
                 })}
               </nav>
 
-              <LogoutButton />
+              <div className="flex w-full flex-col gap-3 rounded-lg border border-slate-800 bg-slate-900 px-4 py-3 sm:w-auto sm:min-w-64 sm:flex-row sm:items-center sm:justify-between">
+                <div className="min-w-0">
+                  <p className="text-xs font-semibold uppercase text-slate-500">Signed in</p>
+                  <p className="mt-1 truncate text-sm font-semibold text-slate-200">{displayName}</p>
+                </div>
+                <LogoutButton />
+              </div>
             </div>
           </header>
 
