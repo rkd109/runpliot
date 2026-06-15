@@ -12,6 +12,7 @@ import {
   TrainingPlan,
   TrainingPlanDetail,
 } from '@utils';
+import { useRouter } from 'next/navigation';
 import { FormEvent, useEffect, useState } from 'react';
 
 const workoutTypeLabels: Record<string, string> = {
@@ -60,6 +61,7 @@ const TrainingPlanAccordion = ({ plan }: { plan: TrainingPlanDetail }) => {
 
 export default function TrainingPlansPage() {
   const { user } = useAuth();
+  const router = useRouter();
   const [plans, setPlans] = useState<TrainingPlan[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isGenerating, setIsGenerating] = useState(false);
@@ -121,6 +123,19 @@ export default function TrainingPlansPage() {
       await fetchPlans();
       await openPlanDetail(createdPlan.id);
     } catch (error) {
+      const message = getApiErrorMessage(error, '');
+
+      if (message === 'RUNNER_PROFILE_REQUIRED') {
+        setErrorMessage('훈련 계획을 만들기 전에 러닝 프로필을 먼저 입력해주세요.');
+        router.push('/runner-profile/setup');
+        return;
+      }
+
+      if (message === 'TRAINING_PLAN_ALREADY_EXISTS') {
+        setErrorMessage('이미 다음 주 훈련 계획이 있습니다. 기존 계획을 확인해주세요.');
+        return;
+      }
+
       setErrorMessage(getApiErrorMessage(error, '훈련 계획을 생성하지 못했습니다. 잠시 후 다시 시도해주세요.'));
     } finally {
       setIsGenerating(false);
