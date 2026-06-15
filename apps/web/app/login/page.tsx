@@ -2,7 +2,7 @@
 
 import { StatusMessage } from '@components';
 import { useAuth } from '@contexts/auth-context';
-import { getApiErrorMessage, getMe, login, setAccessToken } from '@utils';
+import { getApiErrorMessage, getMe, getPostAuthRedirectPath, login, setAccessToken } from '@utils';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { FormEvent, useState } from 'react';
@@ -31,7 +31,8 @@ export default function LoginPage() {
 
       const user = await getMe();
       setUser(user);
-      router.push('/dashboard');
+      const redirectPath = await getPostAuthRedirectPath();
+      router.push(redirectPath);
     } catch (error) {
       setErrorMessage(getApiErrorMessage(error, '로그인에 실패했습니다. 이메일과 비밀번호를 확인해주세요.'));
     } finally {
