@@ -305,7 +305,7 @@ Response `data`: `RunnerProfile`
 
 ### POST /training-plans/generate
 
-최근 러닝 기록을 기반으로 Rule-Based 훈련 계획을 생성합니다.
+RunnerProfile과 최근 러닝 기록을 기반으로 다음 주 Rule-Based 훈련 계획을 생성합니다.
 
 Auth: Required
 
@@ -318,6 +318,12 @@ Request:
 ```
 
 `goal`은 선택 값입니다.
+
+주의:
+
+- RunnerProfile이 없으면 `400 Bad Request`와 `RUNNER_PROFILE_REQUIRED` 메시지를 반환합니다.
+- 다음 주 기간에 이미 겹치는 훈련 계획이 있으면 `409 Conflict`와 `TRAINING_PLAN_ALREADY_EXISTS` 메시지를 반환합니다.
+- 생성 기간은 다음 주 월요일부터 일요일까지입니다.
 
 Response `data`:
 

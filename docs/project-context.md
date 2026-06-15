@@ -156,9 +156,10 @@ MVP에서는 `experienceLevel`, `weeklyRunCount`, `comfortableDistanceKm`, `pref
 
 ### Training Plan Generation
 
-- 훈련 계획 생성 시 목표뿐 아니라 시작일과 기간을 명시적으로 입력받는 방향을 검토한다.
-- 생성 기준은 RunnerProfile과 최근 RunningRecord를 함께 사용한다.
-- 새 계획 기간이 기존 계획 기간과 겹치면 생성하지 않는다.
+- 훈련 계획 생성은 RunnerProfile과 최근 RunningRecord를 함께 사용한다.
+- 생성 시 RunnerProfile이 없으면 `RUNNER_PROFILE_REQUIRED`를 반환하고 프로필 입력으로 유도한다.
+- 현재 생성 기간은 다음 주 월요일부터 일요일까지다.
+- 새 계획 기간이 기존 계획 기간과 겹치면 `TRAINING_PLAN_ALREADY_EXISTS`로 생성하지 않는다.
 - 기간 겹침 조건:
 
 ```text
@@ -166,7 +167,7 @@ existing.startDate <= newEndDate
 AND existing.endDate >= newStartDate
 ```
 
-- 중복 계획이 있으면 `409 Conflict` 성격의 에러를 반환하고, 프론트에서는 기존 계획 보기 또는 다른 시작일 선택을 유도한다.
+- 생성 로직은 향후 local LLM으로 교체하기 쉽도록 RunnerProfile/RunningRecord 기반 요약 데이터 생성과 rule-based item 생성을 분리한다.
 
 ### Training Execution
 
@@ -231,8 +232,8 @@ GET /training-plans/:id
 ### 3. 훈련 계획 생성 시나리오 개선
 
 - 목표, 시작일, 기간 기반 TrainingPlan 생성 UX 정리
-- RunnerProfile과 최근 RunningRecord를 함께 사용하는 rule-based 생성 로직 개선
-- 같은 기간에 중복 계획이 생성되지 않도록 서버에서 기간 겹침 검증
+- RunnerProfile과 최근 RunningRecord를 함께 사용하는 rule-based 생성 로직 적용
+- 같은 기간에 중복 계획이 생성되지 않도록 서버에서 기간 겹침 검증 적용
 - 중복 계획 발생 시 프론트에서 기존 계획 보기 또는 다른 시작일 선택 유도
 
 ### 4. 훈련 이행 관리
