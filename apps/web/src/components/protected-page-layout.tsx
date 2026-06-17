@@ -83,7 +83,7 @@ export const ProtectedPageLayout = ({
 
           <div className="flex-1">{children}</div>
 
-          <footer className="mt-14 border-t border-slate-800 py-8 text-center text-xs text-slate-500 sm:mt-16">
+          <footer className="mt-20 border-t border-slate-800 py-12 text-center text-sm text-slate-500 sm:mt-24 sm:py-14">
             RunPilot
           </footer>
         </section>
