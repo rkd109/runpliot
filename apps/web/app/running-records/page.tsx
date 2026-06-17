@@ -12,6 +12,7 @@ import {
   RunningRecord,
   updateRunningRecord,
 } from '@utils';
+import { useRouter } from 'next/navigation';
 import { FormEvent, useEffect, useState } from 'react';
 
 type RecordFormState = {
@@ -110,6 +111,7 @@ const hasErrors = (errors: RecordFormErrors) => Object.keys(errors).length > 0;
 
 export default function RunningRecordsPage() {
   const { user } = useAuth();
+  const router = useRouter();
   const [records, setRecords] = useState<RunningRecord[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [listErrorMessage, setListErrorMessage] = useState('');
@@ -118,6 +120,7 @@ export default function RunningRecordsPage() {
   const [createErrors, setCreateErrors] = useState<RecordFormErrors>({});
   const [createErrorMessage, setCreateErrorMessage] = useState('');
   const [trainingPrefillMessage, setTrainingPrefillMessage] = useState('');
+  const [shouldReturnToDashboard, setShouldReturnToDashboard] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
 
   const [editingRecordId, setEditingRecordId] = useState<number | null>(null);
@@ -154,6 +157,7 @@ export default function RunningRecordsPage() {
     }
 
     setCreateForm((currentForm) => getTrainingPrefillForm(currentForm, params));
+    setShouldReturnToDashboard(true);
     setTrainingPrefillMessage('오늘 훈련 내용을 기준으로 기록 입력값을 미리 채웠습니다.');
   }, []);
 
@@ -193,6 +197,12 @@ export default function RunningRecordsPage() {
       setCreateForm(getEmptyForm());
       setTrainingPrefillMessage('');
       window.history.replaceState(null, '', '/running-records');
+
+      if (shouldReturnToDashboard) {
+        router.push('/dashboard');
+        return;
+      }
+
       await fetchRecords();
     } catch (error) {
       setCreateErrorMessage(getApiErrorMessage(error, '러닝 기록을 저장하지 못했습니다.'));
