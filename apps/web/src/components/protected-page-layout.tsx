@@ -42,45 +42,47 @@ export const ProtectedPageLayout = ({
 
   return (
     <ProtectedRoute>
-      <main className="min-h-screen bg-slate-950 px-6 py-10 text-white">
+      <main className="min-h-screen bg-slate-950 px-5 py-8 text-white sm:px-6 sm:py-10">
         <section className={`mx-auto ${maxWidthClassName}`}>
-          <header className="mb-8 flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
-            <div>
+          <header className="mb-8 space-y-5">
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
               <p className="text-sm font-semibold text-blue-400">RunPilot</p>
-              <h1 className="mt-2 text-4xl font-bold text-white">{title}</h1>
-              <p className="mt-3 text-slate-400">{description}</p>
-            </div>
-
-            <div className="flex flex-col gap-3 lg:items-end">
-              <nav className="flex flex-wrap gap-2" aria-label="보호 페이지">
-                {navigationItems.map((item) => {
-                  const isActive = getIsActive(pathname, item.href);
-
-                  return (
-                    <Link
-                      key={item.href}
-                      href={item.href}
-                      aria-current={isActive ? 'page' : undefined}
-                      className={
-                        isActive
-                          ? 'rounded-lg bg-blue-500 px-4 py-2 text-sm font-semibold text-white'
-                          : 'rounded-lg border border-slate-700 px-4 py-2 text-sm font-semibold text-slate-200 hover:bg-slate-900'
-                      }
-                    >
-                      {item.label}
-                    </Link>
-                  );
-                })}
-              </nav>
-
-              <div className="flex w-full flex-col gap-3 rounded-lg border border-slate-800 bg-slate-900 px-4 py-3 sm:w-auto sm:min-w-64 sm:flex-row sm:items-center sm:justify-between">
-                <div className="min-w-0">
-                  <p className="text-xs font-semibold uppercase text-slate-500">Signed in</p>
-                  <p className="mt-1 truncate text-sm font-semibold text-slate-200">{displayName}</p>
-                </div>
+              <div className="flex items-center justify-between gap-3 sm:justify-end">
+                <p className="min-w-0 truncate text-sm text-slate-300">
+                  안녕하세요, <span className="font-semibold text-white">{displayName}</span>님
+                </p>
                 <LogoutButton />
               </div>
             </div>
+
+            <div>
+              <h1 className="text-4xl font-bold text-white sm:text-5xl">{title}</h1>
+              <p className="mt-3 text-slate-400">{description}</p>
+            </div>
+
+            <nav
+              className="-mx-5 flex gap-2 overflow-x-auto px-5 pb-1 sm:mx-0 sm:px-0"
+              aria-label="보호 페이지"
+            >
+              {navigationItems.map((item) => {
+                const isActive = getIsActive(pathname, item.href);
+
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    aria-current={isActive ? 'page' : undefined}
+                    className={
+                      isActive
+                        ? 'shrink-0 whitespace-nowrap rounded-lg bg-blue-500 px-4 py-2 text-sm font-semibold text-white'
+                        : 'shrink-0 whitespace-nowrap rounded-lg border border-slate-700 px-4 py-2 text-sm font-semibold text-slate-200 hover:bg-slate-900'
+                    }
+                  >
+                    {item.label}
+                  </Link>
+                );
+              })}
+            </nav>
           </header>
 
           {children}
