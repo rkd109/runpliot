@@ -240,8 +240,8 @@ const SevenDayDistanceChart = ({ data }: { data: DailyDistance[] }) => {
 
           return (
             <div key={item.date} className="flex h-full min-w-0 flex-col justify-end">
-              <div className={hasDistance ? 'mb-2 truncate text-center text-xs text-slate-400' : 'mb-2 truncate text-center text-xs text-slate-600'}>
-                {hasDistance ? formatDistance(item.distanceKm) : '기록 없음'}
+              <div className="mb-2 h-4 truncate text-center text-xs text-slate-400">
+                {hasDistance ? formatDistance(item.distanceKm) : ''}
               </div>
               <div
                 className={hasDistance ? 'rounded-t bg-blue-500' : 'rounded-t border border-dashed border-slate-700 bg-slate-900'}
