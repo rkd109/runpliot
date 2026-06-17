@@ -12,7 +12,8 @@
     "build:api": "pnpm --filter @runpilot/api build",
     "lint": "pnpm -r lint",
     "db:up": "docker compose -f infra/docker/docker-compose.yml up -d",
-    "db:down": "docker compose -f infra/docker/docker-compose.yml down"
+    "db:down": "docker compose -f infra/docker/docker-compose.yml down",
+    "db:seed": "pnpm --filter @runpilot/api db:seed"
   },
   "devDependencies": {
     "@types/node": "^20.17.10",
