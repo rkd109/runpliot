@@ -9,38 +9,46 @@ RunPilot은 러닝 기록을 저장하고, 기록을 기반으로 현재 러닝 
 - NestJS 백엔드 API
 - PostgreSQL 16 + Prisma ORM
 - JWT 기반 인증 흐름
+- 회원가입 후 러너 프로필 온보딩
 - 사용자별 RunningRecord / TrainingPlan 데이터 보호
 - Response DTO + mapper 기반 응답 분리
 - Global Response Interceptor / HttpExceptionFilter
 - RunningRecord pace 계산 및 응답 제공
 - Dashboard 분석 MVP
 - 최근 7일 거리 차트 / 이번 달 거리 / pace 추세
-- Rule-Based TrainingPlan 생성
+- RunnerProfile + 최근 기록 기반 Rule-Based TrainingPlan 생성
+- 다음 주 훈련 계획 생성 및 기간 중복 방지
+- 오늘의 훈련 / 이번 주 이행률 Dashboard 표시
+- RunningRecord 기반 TrainingPlanItem 이행 상태 계산
 - TrainingPlan 목록 아코디언 상세 UX
 - RunningRecord / TrainingPlan pagination
+- demo seed script
 - Swagger 기반 API 문서화
 
 ## Portfolio Value
 
 - 단순 CRUD를 넘어 인증, 인가, 데이터 보호, 도메인 로직 흐름을 포함한다.
-- 러닝 기록 → 요약 지표 → 훈련 계획 생성으로 이어지는 서비스 흐름이 있다.
+- 회원가입 → 러너 프로필 → 기록 입력 → 대시보드 → 훈련 계획 → 실제 기록 반영으로 이어지는 서비스 흐름이 있다.
 - AI/LLM 추천으로 확장하기 전 Rule-Based 도메인 로직을 먼저 구축했다.
 - 프론트와 백엔드를 분리해 API 기반 애플리케이션 구조를 경험한다.
 
 ## Current Demo Flow
 
 ```text
-Login
+Signup or Login
+→ RunnerProfile 입력
 → Dashboard 확인
-→ RunningRecord 생성/수정
+→ RunningRecord 생성
 → TrainingPlan 목표 입력 후 생성
-→ TrainingPlan 목록에서 아코디언 상세 확인
+→ 오늘 훈련 확인
+→ 훈련 날짜의 RunningRecord 입력
+→ Dashboard와 TrainingPlan 상세에서 완료 상태 확인
 ```
 
 ## Next Steps
 
-- demo account / seed data 추가
 - Dashboard 통계 전용 API 검토
 - RunningRecord / TrainingPlan pagination UI 추가
+- 명시적 훈련 건너뜀/부분 완료 처리 API 검토
 - Prisma 예외 처리 보강
 - README/docs에 스크린샷과 시연 가이드 추가

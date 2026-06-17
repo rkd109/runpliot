@@ -2,7 +2,7 @@
 
 ## Current Snapshot
 
-RunPilot은 인증/인가, 러닝 기록 CRUD, Dashboard 분석 MVP, Rule-Based 훈련 계획 생성/목록 아코디언 상세까지 연결된 상태입니다.
+RunPilot은 회원가입, 러너 프로필 온보딩, 러닝 기록 CRUD, Dashboard 분석 MVP, RunnerProfile 기반 Rule-Based 훈련 계획 생성, 오늘 훈련/이행 상태 표시까지 연결된 상태입니다.
 
 ## Recent Changes
 
@@ -27,19 +27,32 @@ RunPilot은 인증/인가, 러닝 기록 CRUD, Dashboard 분석 MVP, Rule-Based 
 - 로그아웃 기능 및 보호 페이지 로그아웃 버튼 추가
 - TrainingPlan 상세 보기를 목록 내 아코디언으로 변경
 - 주요 내부 이동을 Next `Link` 기반으로 변경
+- `POST /auth/signup` 기반 회원가입 흐름 추가
+- RunnerProfile API와 온보딩 화면 추가
+- 회원가입 후 `/runner-profile/setup` 이동
+- 훈련 계획 생성 시 RunnerProfile과 최근 RunningRecord 반영
+- 다음 주 훈련 계획 생성 및 기간 중복 방지
+- `GET /training-plans/today` 추가
+- 같은 날짜 RunningRecord 기반 훈련 이행 상태 계산
+- Dashboard 오늘 훈련 카드 및 이번 주 이행률 카드 추가
+- 오늘 훈련에서 러닝 기록 입력 후 Dashboard로 복귀
+- TrainingPlan 목록/상세에 이행 상태와 실제 기록 표시
+- demo seed script 추가
+- 보호 페이지 공통 GNB, 로그인 정보, 푸터 레이아웃 정리
+- 모바일 GNB와 Safari date input UI 보정
 
 ## Verification Notes
 
-- `pnpm -r lint` 기준 Web/API TypeScript check는 통과한다.
-- 최근 검증에서 `pnpm build:api`, `pnpm build:web`도 통과했다.
+- Web `next build`는 최근 UI/흐름 변경 후 통과했다.
+- Web/API TypeScript check와 build는 주요 백엔드/프론트 변경 시점에 통과했다.
 - 이전에 기록된 API `@runpilot/shared` workspace module resolution 문제는 현재 재현되지 않는다.
 - Windows 환경에서 pnpm/Corepack과 node_modules 권한 문제가 있어 일부 검증은 승인 권한으로 수행했다.
 
 ## Known Follow-ups
 
-- demo user / seed data 추가
 - pagination UI 추가
 - Dashboard 통계가 paginated 목록 20개 기준으로 계산될 수 있는 문제 해결
 - 통계 전용 API 검토
+- 명시적 훈련 건너뜀/부분 완료 처리 API 검토
 - TrainingPlan 생성 시작일/기간 정책은 local LLM 연동 방향과 함께 재검토
 - docs에 시연 이미지 추가

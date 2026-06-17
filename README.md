@@ -1,24 +1,31 @@
 # RunPilot
 
-RunPilot은 러닝 기록을 기반으로 현재 러닝 상태를 확인하고, Rule-Based 훈련 계획을 생성하는 포트폴리오 프로젝트입니다.
+RunPilot은 러닝 기록을 기반으로 현재 러닝 상태를 확인하고, 개인 러닝 프로필과 실제 기록을 반영해 Rule-Based 훈련 계획을 생성하는 포트폴리오 프로젝트입니다.
 
 Next.js 프론트엔드와 NestJS 백엔드를 분리한 TypeScript 모노레포로 구성되어 있으며, 인증/인가, 사용자별 데이터 보호, Prisma 기반 도메인 모델링, Swagger 문서화, 대시보드 MVP까지 구현되어 있습니다.
 
 ## 주요 기능
 
-- JWT 기반 로그인 및 로그인 상태 복구
+- JWT 기반 회원가입, 로그인 및 로그인 상태 복구
 - 보호 페이지 접근 제어
+- 회원가입 후 러너 프로필 입력 온보딩
 - 러닝 기록 생성, 조회, 수정, 삭제
 - 러닝 기록 기반 pace 계산 및 응답 제공
 - 대시보드 MVP
   - 총 러닝 거리
   - 러닝 횟수
   - 평균 페이스
+  - 이번 달 거리
   - 최근 7일 거리
+  - 최근 페이스 추세
   - 최근 러닝 기록
-- Rule-Based 훈련 계획 생성
+- 오늘의 훈련 카드 및 이번 주 이행률 표시
+- RunnerProfile과 최근 기록 기반 Rule-Based 훈련 계획 생성
 - 훈련 계획 목록 및 상세 조회
+- 훈련 계획 항목별 이행 상태 표시(`PLANNED`, `COMPLETED`, `MISSED`)
+- 같은 날짜 러닝 기록 기반 실제 수행 기록 연결
 - 목표 입력 기반 훈련 계획 생성 UX
+- 데모 사용자/러닝 기록/훈련 계획 seed script
 - Swagger 기반 API 확인
 - 공통 성공/실패 응답 구조
 
@@ -83,6 +90,18 @@ pnpm --filter @runpilot/api prisma generate
 pnpm --filter @runpilot/api prisma migrate dev
 ```
 
+데모 데이터를 넣으려면 다음 명령을 실행합니다.
+
+```bash
+pnpm db:seed
+```
+
+기본 데모 계정:
+
+```text
+demo@example.com / password123
+```
+
 웹과 API를 각각 실행합니다.
 
 ```bash
@@ -107,6 +126,7 @@ pnpm dev
 - `pnpm lint`: 전체 workspace 타입 검사(`pnpm -r lint`, 현재 ESLint가 아니라 `tsc --noEmit` 실행)
 - `pnpm db:up`: PostgreSQL 컨테이너 실행
 - `pnpm db:down`: PostgreSQL 컨테이너 종료
+- `pnpm db:seed`: 데모 사용자, 러너 프로필, 러닝 기록, 훈련 계획 seed 생성
 
 ## Database
 
@@ -154,15 +174,20 @@ apps/api/generated/prisma
 
 ```http
 POST /auth/login
+POST /auth/signup
 GET  /auth/me
 
+GET  /runner-profile/me
+PUT  /runner-profile/me
+
 POST   /running-records
-GET    /running-records/me
+GET    /running-records/me?page=1&limit=20
 PATCH  /running-records/:id
 DELETE /running-records/:id
 
 POST /training-plans/generate
-GET  /training-plans/me
+GET  /training-plans/me?page=1&limit=20
+GET  /training-plans/today
 GET  /training-plans/:id
 ```
 
@@ -173,17 +198,33 @@ GET  /training-plans/:id
 ```text
 /                  landing page
 /login             login
+/signup            signup
+/runner-profile/setup runner profile onboarding
 /dashboard         running summary dashboard
 /running-records   running record CRUD
 /training-plans    training plan list/generate
 /training-plans/:id training plan detail
 ```
 
+## User Flow
+
+```text
+회원가입
+→ 러너 프로필 입력
+→ 대시보드에서 현재 상태 확인
+→ 러닝 기록 추가
+→ 훈련 계획 생성
+→ 오늘의 훈련 확인
+→ 실제 러닝 기록 입력
+→ 대시보드와 훈련 계획 이행 상태에 반영
+```
+
 ## Current Notes
 
 - 공개 테스트용 Users API는 앱 모듈에서 제거되어 현재 라우트로 노출되지 않습니다.
-- 훈련 계획 생성은 현재 Rule-Based 방식입니다.
+- 훈련 계획 생성은 현재 Rule-Based 방식이며, 향후 local LLM 추천 로직으로 교체하기 쉽도록 요약 데이터 생성과 item 생성 로직을 분리했습니다.
 - Dashboard MVP는 별도 통계 API 없이 `GET /running-records/me` 응답을 프론트에서 집계합니다.
+- Dashboard의 훈련 이행 상태는 API의 `actualRecord`를 우선 사용하고, 프론트가 이미 가진 같은 날짜 러닝 기록도 보조적으로 활용합니다.
 - 날짜, 거리, 시간, pace 표현은 `apps/web/src/utils/format.ts`에서 공통 관리합니다.
 
 ## Docs

@@ -7,24 +7,24 @@ RunPilot Frontend는 Tailwind CSS 기반 다크 테마 러닝 앱 스타일을 �
 ## Base Style
 
 - Background: `bg-slate-950`
-- Card: `bg-slate-900 border border-slate-800 rounded-2xl`
+- Card: `bg-slate-900 border border-slate-800 rounded-lg`
 - Primary Color: `blue-500 / blue-400`
 - Text Primary: `text-white`
 - Text Secondary: `text-slate-400`
-- Input: `bg-slate-950 border border-slate-700 rounded-xl`
-- Button: `rounded-xl font-semibold`
+- Input: `bg-slate-950 border border-slate-700 rounded-lg`
+- Button: `rounded-lg` 또는 pill navigation은 `rounded-full`
 
 ## Layout
 
-- Page wrapper: `min-h-screen bg-slate-950 px-6 py-10 text-white`
+- Page wrapper: `min-h-screen bg-slate-950 px-5 pt-5 text-white sm:px-6 sm:pt-6`
 - Main content width: `mx-auto max-w-4xl`
 - Dashboard content width: `mx-auto max-w-5xl`
 - Card spacing: `space-y-4`
-- Form card: `rounded-2xl border border-slate-800 bg-slate-900 p-6`
+- Form card: `rounded-lg border border-slate-800 bg-slate-900 p-6`
 
 ## Typography
 
-- Main title: `text-4xl font-bold`
+- Protected page title: 현재 GNB 활성 상태로 대체하며 별도 `h1`은 노출하지 않는다.
 - Section title: `text-xl font-bold`
 - Description: `text-slate-400`
 - Small label: `text-sm font-semibold text-blue-400`
@@ -51,7 +51,9 @@ text-center
 
 ## UI Pattern
 
-- 상단에는 `RunPilot` label + 큰 제목 + 설명 문구
+- 보호 페이지 상단에는 `RunPilot` label + 로그인 사용자 인사/로그아웃 + pill GNB + 설명 문구
+- GNB는 모바일에서도 한 줄 유지가 우선이며, 현재 라벨은 `대시보드 / 기록 / 계획 / 프로필`
+- Footer는 `footer > div > p` 구조로 분리하고, footer 위 여백과 내부 여백을 별도로 제어한다.
 - 주요 데이터는 카드 형태로 표시
 - Empty state는 dashed border 카드 사용
 - 입력 폼은 카드 형태로 상단에 배치
@@ -60,10 +62,11 @@ text-center
 
 ## Current Pages
 
-- `/dashboard`: 요약 카드 + 최근 러닝 기록 + 훈련 계획 CTA
+- `/dashboard`: 요약 카드 + 오늘 훈련 + 최근 7일/pace 추세 + 최근 러닝 기록 + 이행률/훈련 계획 CTA
 - `/running-records`: 입력 폼 + 기록 카드 리스트 + inline edit
 - `/training-plans`: 목표 입력 폼 + 계획 카드 리스트
 - `/training-plans/[id]`: 계획 헤더 + TrainingPlanItem 카드 리스트
+- `/runner-profile/setup`: 러너 프로필 입력 폼
 
 ## Shared Formatting
 

@@ -14,7 +14,8 @@
 ```text
 러닝 기록 저장
 → 러닝 상태 요약
-→ Rule-Based 훈련 계획 생성
+→ RunnerProfile 기반 Rule-Based 훈련 계획 생성
+→ 실제 기록 기반 훈련 이행 상태 계산
 → 향후 분석/AI 추천 구조 확장
 ```
 
@@ -27,20 +28,30 @@
 - Prisma ORM 및 migration 구성
 - JWT 로그인 및 `/auth/me` 기반 사용자 상태 복구
 - `POST /auth/signup` 기반 회원가입 API 및 프론트 회원가입 화면
+- 회원가입 후 RunnerProfile 온보딩 화면 연결
+- `GET /runner-profile/me`, `PUT /runner-profile/me` 기반 러너 프로필 조회/저장
 - 로그아웃 및 보호 페이지 내 로그아웃 버튼
 - sessionStorage 기반 accessToken 저장
 - Axios Interceptor 기반 Authorization Header 처리
 - ProtectedRoute 기반 보호 페이지
+- 보호 페이지 공통 레이아웃/GNB/푸터 정리
 - RunningRecord CRUD
 - RunningRecord `paceSecPerKm` 계산 및 응답 제공
 - Dashboard MVP
 - Dashboard loading/empty 상태 개선
 - Dashboard 최근 7일 거리 차트, 이번 달 거리, 최근 pace 추세
+- Dashboard 오늘 훈련 카드, 이번 주 이행률 카드
+- Dashboard 훈련 기록 입력 후 완료 상태 반영
 - TrainingPlan Rule-Based 생성
+- TrainingPlan 생성 시 RunnerProfile과 최근 RunningRecord 반영
+- TrainingPlan 다음 주 생성 및 기간 중복 방지
 - TrainingPlan 목록/상세 조회
 - TrainingPlan 목록 내 아코디언 상세 조회
+- TrainingPlan 상세/목록 이행 상태 및 실제 기록 표시
+- `GET /training-plans/today` 기반 오늘 훈련 조회
 - 목표 입력 기반 TrainingPlan 생성 UX
 - RunningRecord / TrainingPlan 목록 pagination
+- demo user / RunnerProfile / RunningRecord / TrainingPlan seed script
 - Swagger 연동
 - Response DTO / mapper 적용
 - Global Response Interceptor 적용
@@ -109,15 +120,11 @@
 
 현재 남은 UX/설계 이슈:
 
-- 홈 화면은 로그인 진입만 제공하며, 신규 사용자를 위한 회원가입 흐름이 없다.
-- 회원가입 이후 훈련 계획을 생성하기 전에 사용자의 기본 운동 능력/러너 프로필을 입력받는 onboarding 흐름이 필요하다.
-- RunningRecord, Dashboard, TrainingPlan 기능은 구현되어 있지만 "기록 입력 → 상태 확인 → 계획 생성 → 훈련 이행 → 실제 기록 반영" 흐름이 아직 하나의 시나리오로 연결되지 않는다.
-- TrainingPlan 생성 시 같은 기간에 중복 계획이 만들어지지 않도록 기간 겹침 검증이 필요하다.
-- 생성된 TrainingPlanItem에 대해 완료/건너뜀 등 이행 여부와 실제 수행 기록을 관리할 수 있어야 한다.
 - pagination 도입 후 Dashboard 통계가 기본 목록 응답 20개 기준으로 계산될 수 있다.
 - RunningRecord / TrainingPlan 목록 UI에는 아직 다음/이전 페이지 조작이 없다.
 - 통계 전용 API 또는 프론트의 전체 데이터 fetch 전략을 정해야 한다.
-- 계획 생성 시작일은 아직 오늘 기준 7일이며, 향후 local LLM 추천 구조와 함께 재검토한다.
+- 훈련 이행 상태는 현재 같은 날짜 RunningRecord 기반 자동 계산이며, 명시적 건너뜀/완료 처리 API는 아직 없다.
+- 계획 생성은 다음 주 월요일부터 일요일까지 고정이며, 향후 local LLM 추천 구조와 함께 시작일/기간 정책을 재검토한다.
 
 ## Target User Flow
 
@@ -226,39 +233,37 @@ GET /training-plans/:id
 
 - 홈 화면에 회원가입 진입 추가
 - `POST /auth/signup` API 기반 프론트 회원가입 흐름 연결 완료
-- 회원가입 후 로그인/자동 로그인/온보딩 이동 흐름 결정
+- 회원가입 후 러너 프로필 온보딩 이동 흐름 연결 완료
 - 기존 `UsersModule` 공개 라우트는 의도 없이 노출하지 않는다.
 
 ### 2. RunnerProfile / 온보딩
 
 - 기본 운동 능력 입력 화면 추가
-- `GET /runner-profile/me`, `PUT /runner-profile/me` API 기반 프로필 조회/저장
-- 훈련 계획 생성 전 프로필 미입력 사용자를 온보딩으로 유도하는 대시보드/계획 생성 분기 정리
+- `GET /runner-profile/me`, `PUT /runner-profile/me` API 기반 프로필 조회/저장 완료
+- 훈련 계획 생성 전 프로필 미입력 사용자를 온보딩으로 유도하는 분기 정리
 - RunnerProfile DTO / mapper / ownership check 적용
 
 ### 3. 훈련 계획 생성 시나리오 개선
 
-- 목표, 시작일, 기간 기반 TrainingPlan 생성 UX 정리
-- RunnerProfile과 최근 RunningRecord를 함께 사용하는 rule-based 생성 로직 적용
-- 같은 기간에 중복 계획이 생성되지 않도록 서버에서 기간 겹침 검증 적용
-- 중복 계획 발생 시 프론트에서 기존 계획 보기 또는 다른 시작일 선택 유도
+- 목표 기반 TrainingPlan 생성 UX 정리
+- RunnerProfile과 최근 RunningRecord를 함께 사용하는 rule-based 생성 로직 적용 완료
+- 같은 기간에 중복 계획이 생성되지 않도록 서버에서 기간 겹침 검증 적용 완료
+- 중복 계획 발생 시 프론트에서 기존 계획 확인을 유도
 
 ### 4. 훈련 이행 관리
 
-- TrainingPlanItem 이행 상태 추가
-- 완료/건너뜀 처리 API 검토
-- 완료 시 실제 거리/시간/메모 입력
-- 실제 수행 기록과 RunningRecord 연결 또는 생성 흐름 정리
-- Dashboard에 오늘의 훈련/이번 주 이행률 반영 검토
+- TrainingPlanItem 이행 상태 계산 적용
+- 같은 날짜 RunningRecord 기반 실제 수행 기록 연결 적용
+- Dashboard에 오늘의 훈련/이번 주 이행률 반영
+- 향후 명시적 건너뜀 처리 API 검토
 
 ### 5. 테스트/데모 데이터
 
-- demo user seed
-- RunnerProfile seed
-- 최근 7일 / 이번 달 / 이전 달 러닝 기록 seed
-- pagination 확인용 20개 초과 러닝 기록 seed
-- 훈련 계획 seed 또는 생성 시나리오 정리
-- 훈련 이행 상태 seed
+- demo user seed 완료
+- RunnerProfile seed 완료
+- 최근 7일 / 이번 달 / 이전 달 러닝 기록 seed 완료
+- 훈련 계획 및 이행 상태 확인용 seed 완료
+- pagination 확인용 20개 초과 데이터는 필요 시 확장
 
 ### 6. Dashboard 통계 정확도
 

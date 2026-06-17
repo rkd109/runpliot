@@ -5,7 +5,8 @@ RunPilot은 러닝 기록 기반 상태 확인 및 훈련 계획 생성 서비�
 ```text
 RunningRecord
 → Dashboard summary
-→ Rule-Based TrainingPlan
+→ RunnerProfile + Rule-Based TrainingPlan
+→ Training execution from actual records
 → Future analytics / AI recommendation
 ```
 
@@ -73,6 +74,8 @@ docs/
 app/
   dashboard/
   login/
+  signup/
+  runner-profile/
   running-records/
   training-plans/
     [id]/
@@ -80,14 +83,18 @@ app/
 src/
   components/
     logout-button.tsx
+    protected-page-layout.tsx
     protected-route.tsx
+    runner-profile-form-fields.tsx
     status-message.tsx
+    training-plan-item-card.tsx
   contexts/
     auth-context.tsx
   utils/
     api.ts
     format.ts
     running-records-api.ts
+    runner-profile-api.ts
     session-storage.ts
     training-plans-api.ts
 ```
@@ -148,7 +155,25 @@ LogoutButton
 ```text
 AuthProvider user 확인
 → 로그인 상태면 /dashboard 이동
-→ 비로그인 상태면 로그인 버튼만 노출
+→ 비로그인 상태면 로그인/회원가입 진입 노출
+```
+
+회원가입:
+
+```text
+Signup
+→ POST /auth/signup
+→ accessToken sessionStorage 저장
+→ /runner-profile/setup 이동
+```
+
+러너 프로필 온보딩:
+
+```text
+GET /runner-profile/me
+→ 기존 프로필이 있으면 form prefill
+→ PUT /runner-profile/me
+→ /dashboard 이동
 ```
 
 ### Dashboard
@@ -164,6 +189,8 @@ Dashboard는 별도 통계 API 없이 `GET /running-records/me` 응답을 프론
 - 최근 7일 거리 차트
 - 최근 pace 추세
 - 최근 러닝 기록 5개
+- 오늘의 훈련
+- 이번 주 훈련 이행률
 
 주의:
 
@@ -185,6 +212,8 @@ DELETE /running-records/:id
 
 Frontend는 `durationSeconds`를 시/분/초 입력으로 변환해 다룹니다. pace 표시는 API 응답의 `paceSecPerKm`를 사용합니다.
 
+Dashboard 또는 오늘 훈련 카드에서 진입한 기록 입력은 query string으로 날짜, 목표 거리, 메모를 prefill하고 저장 후 `/dashboard`로 돌아갑니다.
+
 목록 응답은 paginated shape입니다.
 
 ```ts
@@ -199,13 +228,15 @@ Frontend는 `durationSeconds`를 시/분/초 입력으로 변환해 다룹니다
 ```text
 GET /training-plans/me?page=1&limit=20
 POST /training-plans/generate
+GET /training-plans/today
 GET /training-plans/:id
 ```
 
 생성 UX:
 
 ```text
-goal 입력
+RunnerProfile + 최근 RunningRecord 요약
+→ goal 입력
 → 생성 중 상태 표시
 → POST /training-plans/generate
 → 생성 성공 시 목록 갱신
@@ -267,12 +298,16 @@ src/
 GET /
 GET /health
 POST /auth/login
+POST /auth/signup
 ```
 
 ### Protected APIs
 
 ```http
 GET /auth/me
+
+GET /runner-profile/me
+PUT /runner-profile/me
 
 POST /running-records
 GET /running-records/me?page=1&limit=20
@@ -281,6 +316,7 @@ DELETE /running-records/:id
 
 POST /training-plans/generate
 GET /training-plans/me?page=1&limit=20
+GET /training-plans/today
 GET /training-plans/:id
 ```
 
@@ -385,12 +421,14 @@ where: {
 
 ## TrainingPlan Domain
 
-현재 생성 방식은 Rule-Based입니다.
+현재 생성 방식은 RunnerProfile과 최근 RunningRecord 요약을 사용하는 Rule-Based입니다.
 
 ```text
-최근 RunningRecord 조회
-→ 평균 거리 계산
-→ level 분류
+RunnerProfile 조회
+→ 최근 RunningRecord 조회
+→ 요약 데이터 생성
+→ 다음 주 월요일~일요일 기간 산정
+→ 기간 중복 검증
 → 주간 TrainingPlanItem 생성
 → nested create 저장
 ```
@@ -412,6 +450,16 @@ TEMPO_RUN
 LONG_RUN
 RECOVERY_RUN
 ```
+
+훈련 이행 상태는 별도 상태 컬럼 없이 같은 날짜의 RunningRecord를 기준으로 계산합니다.
+
+```text
+같은 날짜 RunningRecord 있음 → COMPLETED
+계획일 지남 + 기록 없음 → MISSED
+오늘 또는 미래 + 기록 없음 → PLANNED
+```
+
+같은 날짜 기록이 여러 개면 가장 긴 거리의 기록을 대표 `actualRecord`로 사용합니다.
 
 ## Security Strategy
 

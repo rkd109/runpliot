@@ -26,26 +26,29 @@
 - RunningRecord pagination
 - TrainingPlan pagination
 - API spec / README 최신화
+- 회원가입 API 및 프론트 회원가입 화면
+- 회원가입 후 RunnerProfile 온보딩
+- RunnerProfile 조회/저장 API
+- 훈련 계획 생성에 RunnerProfile/최근 기록 반영
+- 다음 주 훈련 계획 생성 및 기간 중복 방지
+- `GET /training-plans/today`
+- TrainingPlanItem 이행 상태 계산(`PLANNED`, `COMPLETED`, `MISSED`)
+- 실제 RunningRecord 기반 `actualRecord` 표시
+- Dashboard 오늘 훈련 카드
+- Dashboard 이번 주 이행률 카드
+- 보호 페이지 공통 GNB/로그인 정보/푸터 레이아웃 정리
+- Safari date input 크기 보정
+- demo user / RunnerProfile / RunningRecord / TrainingPlan seed script
 
 ## Next
-
-### Test / Demo Data
-
-- demo user seed
-- RunningRecord seed data
-  - 최근 7일 데이터
-  - 이번 달 데이터
-  - 이전 달 데이터
-  - pagination 확인용 20개 초과 데이터
-- TrainingPlan 생성/상세 시연 데이터
-- 로컬 테스트 시나리오 문서화
 
 ### Frontend UX
 
 - RunningRecord / TrainingPlan pagination UI
-- 보호 페이지 공통 레이아웃 검토
 - AuthProvider 초기화 중 전체 앱 `loading...` 대체 방식 개선
 - 내부 링크/라우팅 UX 추가 점검
+- 모바일/데스크톱 주요 화면 스크린샷 정리
+- 로컬 테스트 시나리오 문서화
 
 ### Analytics
 
@@ -58,11 +61,11 @@
 - Prisma error handling 정리
 - 통계 전용 API 도입 여부 검토
 - Swagger response schema 고도화
+- 명시적 훈련 건너뜀/완료 처리 API 도입 여부 검토
 
 ### Portfolio
 
 - README screenshot 추가
-- demo account/seed data 정리
 - 배포 방식 정리
 - 시연 플로우 문서화
 

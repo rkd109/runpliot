@@ -346,7 +346,9 @@ Response `data`:
       "distanceKm": 4,
       "targetPaceSecPerKm": null,
       "description": "이지런",
-      "sortOrder": 2
+      "sortOrder": 2,
+      "executionStatus": "PLANNED",
+      "actualRecord": null
     }
   ]
 }
@@ -441,6 +443,8 @@ Response `data`:
   }
 }
 ```
+
+오늘 훈련 날짜에 RunningRecord가 있으면 `executionStatus`는 `COMPLETED`가 되고 `actualRecord`에 대표 기록이 포함됩니다.
 
 ### GET /training-plans/:id
 

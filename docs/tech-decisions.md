@@ -152,16 +152,21 @@ REST API 기반 구조를 사용한다.
 현재 API:
 
 ```http
+POST /auth/signup
 POST /auth/login
 GET  /auth/me
 
+GET /runner-profile/me
+PUT /runner-profile/me
+
 POST   /running-records
-GET    /running-records/me
+GET    /running-records/me?page=1&limit=20
 PATCH  /running-records/:id
 DELETE /running-records/:id
 
 POST /training-plans/generate
-GET  /training-plans/me
+GET  /training-plans/me?page=1&limit=20
+GET  /training-plans/today
 GET  /training-plans/:id
 ```
 
@@ -289,10 +294,12 @@ Dashboard MVP는 별도 통계 API 없이 `GET /running-records/me` 응답의 �
 - 총 러닝 거리
 - 러닝 횟수
 - 평균 페이스
-- 이번 주 거리
+- 이번 달 거리
 - 최근 7일 거리 차트
 - 최근 pace 추세
 - 최근 러닝 기록
+- 오늘의 훈련
+- 이번 주 훈련 이행률
 
 ### Reason
 
@@ -309,12 +316,14 @@ Dashboard MVP는 별도 통계 API 없이 `GET /running-records/me` 응답의 �
 
 ### Decision
 
-초기 버전은 Rule-Based 생성 로직을 사용한다.
+초기 버전은 RunnerProfile과 최근 RunningRecord 요약 기반 Rule-Based 생성 로직을 사용한다.
 
 ```text
-최근 러닝 기록 조회
--> 평균 거리 계산
--> BEGINNER / INTERMEDIATE / ADVANCED 분류
+RunnerProfile 조회
+-> 최근 러닝 기록 조회
+-> 요약 데이터 생성
+-> 다음 주 월요일~일요일 기간 산정
+-> 기존 계획 기간 중복 검증
 -> 주간 TrainingPlanItem 생성
 -> nested create 저장
 ```
@@ -324,6 +333,31 @@ Dashboard MVP는 별도 통계 API 없이 `GET /running-records/me` 응답의 �
 - AI/LLM 도입 전 도메인 규칙을 먼저 검증한다.
 - 추천 흐름 MVP 구현 속도를 확보한다.
 - 데이터 구조를 안정화할 수 있다.
+- 향후 local LLM 연동 시 요약 데이터 생성과 item 생성 함수를 교체하기 쉽다.
+
+## Training Execution Strategy
+
+### Decision
+
+TrainingPlanItem에 별도 status 컬럼을 추가하지 않고, 같은 날짜의 RunningRecord를 기준으로 이행 상태를 계산한다.
+
+```text
+same date RunningRecord exists -> COMPLETED
+past plan date without record -> MISSED
+today/future plan date without record -> PLANNED
+```
+
+같은 날짜에 RunningRecord가 여러 개 있으면 가장 긴 거리의 기록을 대표 `actualRecord`로 사용한다.
+
+### Reason
+
+- MVP 단계에서는 실제 러닝 기록을 단일 진실 공급원으로 유지할 수 있다.
+- 훈련 완료 여부가 기록 입력과 자연스럽게 연결된다.
+- 별도 완료 API 없이도 Dashboard와 TrainingPlan 상세에서 이행 상태를 보여줄 수 있다.
+
+### Current Limitation
+
+명시적인 건너뜀, 부분 완료, 계획 항목과 특정 기록의 수동 연결은 아직 지원하지 않는다.
 
 ## TrainingPlan UX Strategy
 
@@ -394,6 +428,24 @@ formatPace()
 - Dashboard, RunningRecord, TrainingPlan Detail에서 표시 규칙을 재사용한다.
 - 현재 단계에서는 컴포넌트 분리보다 utility 함수가 가볍고 충분하다.
 - 추후 UI 컴포넌트가 필요해지면 별도 컴포넌트로 확장할 수 있다.
+
+## Demo Seed Strategy
+
+### Decision
+
+`pnpm db:seed`로 데모 사용자, RunnerProfile, RunningRecord, TrainingPlan 데이터를 생성한다.
+
+기본 계정:
+
+```text
+demo@example.com / password123
+```
+
+### Reason
+
+- 배포 후 수동 입력 없이 주요 화면을 확인할 수 있다.
+- Dashboard 차트, 오늘 훈련, 이행 상태, 실제 기록 표시를 빠르게 검증할 수 있다.
+- 포트폴리오 시연 시 반복 가능한 초기 상태를 제공한다.
 
 ## Swagger Documentation Strategy
 
