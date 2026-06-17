@@ -41,8 +41,8 @@ export const ProtectedPageLayout = ({
 
   return (
     <ProtectedRoute>
-      <main className="min-h-screen bg-slate-950 px-5 text-white sm:px-6">
-        <section className={`mx-auto flex min-h-screen flex-col pt-6 sm:pt-8 ${maxWidthClassName}`}>
+      <main className="min-h-screen bg-slate-950 px-5 pt-5 text-white sm:px-6 sm:pt-6">
+        <section className={`mx-auto flex min-h-screen flex-col ${maxWidthClassName}`}>
           <header className="mb-8">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
               <p className="text-sm font-semibold text-blue-400">RunPilot</p>
