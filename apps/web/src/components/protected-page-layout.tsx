@@ -42,9 +42,9 @@ export const ProtectedPageLayout = ({
 
   return (
     <ProtectedRoute>
-      <main className="min-h-screen bg-slate-950 px-5 pb-24 pt-16 text-white sm:px-6 sm:pb-28 sm:pt-20">
-        <section className={`mx-auto ${maxWidthClassName}`}>
-          <header className="mb-8 space-y-5">
+      <main className="min-h-screen bg-slate-950 px-5 text-white sm:px-6">
+        <section className={`mx-auto flex min-h-screen flex-col ${maxWidthClassName}`}>
+          <header className="mb-8 pt-10 sm:pt-12">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
               <p className="text-sm font-semibold text-blue-400">RunPilot</p>
               <div className="flex items-center justify-between gap-3 sm:justify-end">
@@ -55,13 +55,13 @@ export const ProtectedPageLayout = ({
               </div>
             </div>
 
-            <div>
+            <div className="mt-5 flex min-h-32 flex-col justify-end sm:min-h-36">
               <h1 className="text-4xl font-bold text-white sm:text-5xl">{title}</h1>
-              <p className="mt-3 text-slate-400">{description}</p>
+              <p className="mt-3 max-w-2xl text-base leading-6 text-slate-400">{description}</p>
             </div>
 
             <nav
-              className="-mx-5 flex gap-2 overflow-x-auto px-5 pb-1 sm:mx-0 sm:px-0"
+              className="-mx-5 mt-5 flex min-h-12 gap-2 overflow-x-auto px-5 pb-1 sm:mx-0 sm:px-0"
               aria-label="보호 페이지"
             >
               {navigationItems.map((item) => {
@@ -74,8 +74,8 @@ export const ProtectedPageLayout = ({
                     aria-current={isActive ? 'page' : undefined}
                     className={
                       isActive
-                        ? 'shrink-0 whitespace-nowrap rounded-lg bg-blue-500 px-4 py-2 text-sm font-semibold text-white'
-                        : 'shrink-0 whitespace-nowrap rounded-lg border border-slate-700 px-4 py-2 text-sm font-semibold text-slate-200 hover:bg-slate-900'
+                        ? 'flex h-11 shrink-0 items-center whitespace-nowrap rounded-lg bg-blue-500 px-4 text-sm font-semibold text-white'
+                        : 'flex h-11 shrink-0 items-center whitespace-nowrap rounded-lg border border-slate-700 px-4 text-sm font-semibold text-slate-200 hover:bg-slate-900'
                     }
                   >
                     {item.label}
@@ -85,7 +85,11 @@ export const ProtectedPageLayout = ({
             </nav>
           </header>
 
-          {children}
+          <div className="flex-1">{children}</div>
+
+          <footer className="mt-14 border-t border-slate-800 py-8 text-center text-xs text-slate-500 sm:mt-16">
+            RunPilot
+          </footer>
         </section>
       </main>
     </ProtectedRoute>
