@@ -16,10 +16,10 @@ type ProtectedPageLayoutProps = {
 };
 
 const navigationItems = [
-  { href: '/dashboard', label: '대시보드', shortLabel: '홈' },
-  { href: '/running-records', label: '러닝 기록', shortLabel: '기록' },
-  { href: '/training-plans', label: '훈련 계획', shortLabel: '계획' },
-  { href: '/runner-profile/setup', label: '러닝 프로필', shortLabel: '프로필' },
+  { href: '/dashboard', label: '대시보드' },
+  { href: '/running-records', label: '기록' },
+  { href: '/training-plans', label: '계획' },
+  { href: '/runner-profile/setup', label: '프로필' },
 ];
 
 const getIsActive = (pathname: string, href: string) => {
@@ -56,7 +56,7 @@ export const ProtectedPageLayout = ({
             </div>
 
             <nav
-              className="mt-5 grid grid-cols-4 gap-1 rounded-full border border-slate-800 bg-slate-900/50 p-1 sm:inline-flex sm:w-auto"
+              className="mt-5 flex gap-2 overflow-x-auto pb-1"
               aria-label="보호 페이지"
             >
               {navigationItems.map((item) => {
@@ -69,12 +69,11 @@ export const ProtectedPageLayout = ({
                     aria-current={isActive ? 'page' : undefined}
                     className={
                       isActive
-                        ? 'flex h-9 min-w-0 items-center justify-center rounded-full bg-blue-500 px-2 text-xs font-semibold leading-none text-white shadow-sm shadow-blue-500/20 sm:min-w-max sm:px-4 sm:text-sm'
-                        : 'flex h-9 min-w-0 items-center justify-center rounded-full px-2 text-xs font-semibold leading-none text-slate-300 hover:bg-slate-800 hover:text-white sm:min-w-max sm:px-4 sm:text-sm'
+                        ? 'flex h-10 flex-1 shrink-0 items-center justify-center rounded-full bg-blue-500 px-3 text-sm font-semibold leading-none text-white shadow-sm shadow-blue-500/20 sm:flex-none sm:px-4'
+                        : 'flex h-10 flex-1 shrink-0 items-center justify-center rounded-full border border-slate-700/80 bg-slate-950/60 px-3 text-sm font-semibold leading-none text-slate-300 hover:border-slate-500 hover:bg-slate-900 hover:text-white sm:flex-none sm:px-4'
                     }
                   >
-                    <span className="whitespace-nowrap sm:hidden">{item.shortLabel}</span>
-                    <span className="hidden whitespace-nowrap sm:inline">{item.label}</span>
+                    <span className="whitespace-nowrap">{item.label}</span>
                   </Link>
                 );
               })}
