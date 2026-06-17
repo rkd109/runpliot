@@ -10,9 +10,11 @@ import {
   formatPace,
   getApiErrorMessage,
   getMyRunningRecords,
+  getMyTrainingPlans,
   getTodayTraining,
   RunningRecord,
   TodayTraining,
+  TrainingPlanDetail,
 } from '@utils';
 import { useEffect, useMemo, useState } from 'react';
 
@@ -33,6 +35,13 @@ type PaceTrendItem = {
   id: number;
   label: string;
   paceSecPerKm: number;
+};
+
+type WeeklyTrainingSummary = {
+  totalCount: number;
+  completedCount: number;
+  missedCount: number;
+  plannedCount: number;
 };
 
 const workoutTypeLabels: Record<string, string> = {
@@ -94,6 +103,53 @@ const getDateKey = (date: Date) => {
   const day = String(date.getDate()).padStart(2, '0');
 
   return `${year}-${month}-${day}`;
+};
+
+const getStartOfWeek = (date: Date) => {
+  const startDate = new Date(date);
+  const dayIndex = startDate.getDay();
+  const daysFromMonday = (dayIndex + 6) % 7;
+
+  startDate.setDate(startDate.getDate() - daysFromMonday);
+  startDate.setHours(0, 0, 0, 0);
+
+  return startDate;
+};
+
+const getEndOfWeek = (date: Date) => {
+  const endDate = getStartOfWeek(date);
+
+  endDate.setDate(endDate.getDate() + 6);
+  endDate.setHours(23, 59, 59, 999);
+
+  return endDate;
+};
+
+const getWeeklyTrainingSummary = (plans: TrainingPlanDetail[]): WeeklyTrainingSummary => {
+  const weekStart = getStartOfWeek(new Date());
+  const weekEnd = getEndOfWeek(new Date());
+  const weeklyItems = plans.flatMap((plan) =>
+    plan.items.filter((item) => {
+      const planDate = new Date(item.planDate);
+
+      return planDate >= weekStart && planDate <= weekEnd;
+    }),
+  );
+
+  return weeklyItems.reduce(
+    (summary, item) => ({
+      totalCount: summary.totalCount + 1,
+      completedCount: summary.completedCount + (item.executionStatus === 'COMPLETED' ? 1 : 0),
+      missedCount: summary.missedCount + (item.executionStatus === 'MISSED' ? 1 : 0),
+      plannedCount: summary.plannedCount + (item.executionStatus === 'PLANNED' ? 1 : 0),
+    }),
+    {
+      totalCount: 0,
+      completedCount: 0,
+      missedCount: 0,
+      plannedCount: 0,
+    },
+  );
 };
 
 const getTodayTrainingRecordUrl = (todayTraining: TodayTraining) => {
@@ -341,6 +397,46 @@ const TodayTrainingCard = ({ todayTraining }: { todayTraining: TodayTraining | n
   );
 };
 
+const WeeklyTrainingSummaryCard = ({ summary }: { summary: WeeklyTrainingSummary }) => {
+  const completionRate =
+    summary.totalCount === 0 ? 0 : Math.round((summary.completedCount / summary.totalCount) * 100);
+
+  return (
+    <aside className="rounded-lg border border-slate-800 bg-slate-900 p-6">
+      <p className="text-sm font-semibold text-violet-300">This Week</p>
+      <div className="mt-2 flex items-end justify-between gap-3">
+        <h2 className="text-xl font-bold">이번 주 이행률</h2>
+        <p className="text-3xl font-bold text-white">{completionRate}%</p>
+      </div>
+
+      <div className="mt-5 h-2 rounded bg-slate-800">
+        <div className="h-2 rounded bg-violet-400" style={{ width: `${completionRate}%` }} />
+      </div>
+
+      <div className="mt-5 grid grid-cols-3 gap-2 text-center text-sm">
+        <div className="rounded-lg bg-slate-950 p-3">
+          <p className="text-slate-500">완료</p>
+          <p className="mt-1 font-semibold text-emerald-300">{summary.completedCount}</p>
+        </div>
+        <div className="rounded-lg bg-slate-950 p-3">
+          <p className="text-slate-500">예정</p>
+          <p className="mt-1 font-semibold text-blue-300">{summary.plannedCount}</p>
+        </div>
+        <div className="rounded-lg bg-slate-950 p-3">
+          <p className="text-slate-500">놓침</p>
+          <p className="mt-1 font-semibold text-red-300">{summary.missedCount}</p>
+        </div>
+      </div>
+
+      {summary.totalCount === 0 && (
+        <p className="mt-4 text-sm leading-6 text-slate-400">
+          이번 주에 해당하는 훈련 계획이 아직 없습니다.
+        </p>
+      )}
+    </aside>
+  );
+};
+
 const TrainingPlanCta = ({ hasRecords }: { hasRecords: boolean }) => {
   return (
     <aside className="rounded-lg border border-slate-800 bg-slate-900 p-6">
@@ -366,6 +462,7 @@ export default function DashboardPage() {
   const { user } = useAuth();
   const [records, setRecords] = useState<RunningRecord[]>([]);
   const [todayTraining, setTodayTraining] = useState<TodayTraining | null>(null);
+  const [trainingPlans, setTrainingPlans] = useState<TrainingPlanDetail[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState('');
 
@@ -373,12 +470,14 @@ export default function DashboardPage() {
     const fetchDashboard = async () => {
       try {
         setErrorMessage('');
-        const [nextRecords, nextTodayTraining] = await Promise.all([
+        const [nextRecords, nextTodayTraining, nextTrainingPlans] = await Promise.all([
           getMyRunningRecords(),
           getTodayTraining(),
+          getMyTrainingPlans(),
         ]);
         setRecords(nextRecords);
         setTodayTraining(nextTodayTraining);
+        setTrainingPlans(nextTrainingPlans);
       } catch (error) {
         setErrorMessage(getApiErrorMessage(error, '대시보드 데이터를 불러오지 못했습니다.'));
       } finally {
@@ -412,6 +511,10 @@ export default function DashboardPage() {
   const recentRecords = sortedRecords.slice(0, 5);
   const sevenDayDistances = useMemo(() => getSevenDayDistances(records), [records]);
   const paceTrendItems = useMemo(() => getPaceTrendItems(records), [records]);
+  const weeklyTrainingSummary = useMemo(
+    () => getWeeklyTrainingSummary(trainingPlans),
+    [trainingPlans],
+  );
   const hasRecords = records.length > 0;
 
   return (
@@ -477,6 +580,7 @@ export default function DashboardPage() {
 
                 <div className="space-y-6">
                   <TodayTrainingCard todayTraining={todayTraining} />
+                  <WeeklyTrainingSummaryCard summary={weeklyTrainingSummary} />
                   <TrainingPlanCta hasRecords={hasRecords} />
                 </div>
               </div>

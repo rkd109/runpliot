@@ -44,7 +44,7 @@ export type GenerateTrainingPlanPayload = {
 };
 
 export const getMyTrainingPlans = async () => {
-  const response = await api.get<ApiResponse<PaginatedResponse<TrainingPlan>>>('/training-plans/me');
+  const response = await api.get<ApiResponse<PaginatedResponse<TrainingPlanDetail>>>('/training-plans/me');
 
   return response.data.data.items;
 };
