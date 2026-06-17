@@ -235,17 +235,22 @@ const SevenDayDistanceChart = ({ data }: { data: DailyDistance[] }) => {
 
       <div className="mt-6 grid h-48 grid-cols-7 items-end gap-2">
         {data.map((item) => {
+          const hasDistance = item.distanceKm > 0;
           const barHeight = item.distanceKm === 0 ? 8 : Math.max((item.distanceKm / maxDistanceKm) * 100, 12);
 
           return (
             <div key={item.date} className="flex h-full min-w-0 flex-col justify-end">
-              <div className="mb-2 truncate text-center text-xs text-slate-400">{formatDistance(item.distanceKm)}</div>
+              <div className={hasDistance ? 'mb-2 truncate text-center text-xs text-slate-400' : 'mb-2 truncate text-center text-xs text-slate-600'}>
+                {hasDistance ? formatDistance(item.distanceKm) : '기록 없음'}
+              </div>
               <div
-                className="rounded-t bg-blue-500"
+                className={hasDistance ? 'rounded-t bg-blue-500' : 'rounded-t border border-dashed border-slate-700 bg-slate-900'}
                 style={{ height: `${barHeight}%` }}
-                aria-label={`${item.date} ${formatDistance(item.distanceKm)}`}
+                aria-label={hasDistance ? `${item.date} ${formatDistance(item.distanceKm)}` : `${item.date} 기록 없음`}
               />
-              <div className="mt-2 text-center text-xs text-slate-500">{item.label}</div>
+              <div className={hasDistance ? 'mt-2 text-center text-xs text-slate-500' : 'mt-2 text-center text-xs text-slate-700'}>
+                {item.label}
+              </div>
             </div>
           );
         })}

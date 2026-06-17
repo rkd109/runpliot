@@ -42,7 +42,7 @@ export const ProtectedPageLayout = ({
 
   return (
     <ProtectedRoute>
-      <main className="min-h-screen bg-slate-950 px-5 py-8 text-white sm:px-6 sm:py-10">
+      <main className="min-h-screen bg-slate-950 px-5 pb-16 pt-12 text-white sm:px-6 sm:pb-20 sm:pt-14">
         <section className={`mx-auto ${maxWidthClassName}`}>
           <header className="mb-8 space-y-5">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
