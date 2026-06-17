@@ -328,7 +328,26 @@ const EmptyDashboard = () => {
   );
 };
 
-const TodayTrainingCard = ({ todayTraining }: { todayTraining: TodayTraining | null }) => {
+const getActualRecordForPlanDate = (records: RunningRecord[], planDate: string) => {
+  const planDateKey = getDateKey(new Date(planDate));
+  const sameDayRecords = records.filter((record) => getDateKey(new Date(record.runDate)) === planDateKey);
+
+  if (sameDayRecords.length === 0) {
+    return null;
+  }
+
+  return sameDayRecords.reduce((longestRecord, record) =>
+    record.distanceKm > longestRecord.distanceKm ? record : longestRecord,
+  );
+};
+
+const TodayTrainingCard = ({
+  records,
+  todayTraining,
+}: {
+  records: RunningRecord[];
+  todayTraining: TodayTraining | null;
+}) => {
   if (!todayTraining) {
     return (
       <aside className="rounded-lg border border-slate-800 bg-slate-900 p-6">
@@ -348,9 +367,9 @@ const TodayTrainingCard = ({ todayTraining }: { todayTraining: TodayTraining | n
   }
 
   const item = todayTraining.item;
-  const actualRecord = item.actualRecord;
+  const actualRecord = item.actualRecord ?? getActualRecordForPlanDate(records, item.planDate);
   const targetPace = item.targetPaceSecPerKm === null ? null : formatPace(item.targetPaceSecPerKm);
-  const isCompleted = item.executionStatus === 'COMPLETED';
+  const isCompleted = item.executionStatus === 'COMPLETED' || Boolean(actualRecord);
   const statusLabel =
     isCompleted
       ? '완료'
@@ -543,7 +562,7 @@ export default function DashboardPage() {
                 <StatCard label="이번 달 거리" value={formatDistance(stats.monthlyDistanceKm)} />
               </div>
 
-              <TodayTrainingCard todayTraining={todayTraining} />
+              <TodayTrainingCard records={records} todayTraining={todayTraining} />
 
               <div className="grid gap-6 lg:grid-cols-[1fr_320px]">
                 <SevenDayDistanceChart data={sevenDayDistances} />
