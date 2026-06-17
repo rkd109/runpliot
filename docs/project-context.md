@@ -171,6 +171,12 @@ AND existing.endDate >= newStartDate
 
 ### Training Execution
 
+- Current API direction: TrainingPlanItem execution is calculated from RunningRecord by calendar date first, without adding a database status column.
+- TrainingPlan item responses include `executionStatus` and `actualRecord`.
+- `executionStatus` values are `PLANNED`, `COMPLETED`, and `MISSED`.
+- If multiple RunningRecords exist on the same date, the longest distance record is used as the representative `actualRecord`.
+- `GET /training-plans/today` returns today's planned training item for Dashboard CTA usage, or `null` when there is no training today.
+
 - TrainingPlanItem은 단순 조회 대상이 아니라 사용자가 이행 상태를 관리하는 대상이 되어야 한다.
 - MVP에서는 TrainingPlanItem에 다음 상태를 우선 추가하는 방향을 검토한다.
 
@@ -210,6 +216,7 @@ DELETE /running-records/:id
 
 POST /training-plans/generate
 GET /training-plans/me?page=1&limit=20
+GET /training-plans/today
 GET /training-plans/:id
 ```
 

@@ -1,4 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
+import { RunningRecordResponseDto } from "../../running-records/dto/running-record-response.dto";
 
 export class TrainingPlanItemResponseDto {
   @ApiProperty()
@@ -27,4 +28,15 @@ export class TrainingPlanItemResponseDto {
 
   @ApiProperty()
   sortOrder!: number;
+
+  @ApiProperty({
+    enum: ['PLANNED', 'COMPLETED', 'MISSED'],
+  })
+  executionStatus!: string;
+
+  @ApiProperty({
+    type: RunningRecordResponseDto,
+    nullable: true,
+  })
+  actualRecord!: RunningRecordResponseDto | null;
 }

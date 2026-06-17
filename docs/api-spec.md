@@ -394,6 +394,54 @@ Response `data`:
 }
 ```
 
+각 `items[]`에는 훈련 이행 계산 필드가 포함됩니다.
+
+```json
+{
+  "executionStatus": "COMPLETED",
+  "actualRecord": {
+    "id": 10,
+    "runDate": "2026-06-15T00:00:00.000Z",
+    "distanceKm": 5,
+    "durationSeconds": 1800,
+    "paceSecPerKm": 360,
+    "memo": "계획대로 완료",
+    "createAt": "2026-06-15T00:00:00.000Z",
+    "updateAt": "2026-06-15T00:00:00.000Z"
+  }
+}
+```
+
+`executionStatus`는 같은 날짜의 RunningRecord가 있으면 `COMPLETED`, 계획일이 지났지만 기록이 없으면 `MISSED`, 오늘 또는 미래 일정이면 `PLANNED`입니다. 같은 날짜 기록이 여러 개면 가장 긴 거리의 기록을 대표 기록으로 사용합니다.
+
+### GET /training-plans/today
+
+오늘 날짜에 해당하는 훈련 항목을 조회합니다. 오늘 훈련이 없으면 `data`는 `null`입니다.
+
+Auth: Required
+
+Response `data`:
+
+```json
+{
+  "planId": 1,
+  "title": "10km 준비",
+  "startDate": "2026-06-15T00:00:00.000Z",
+  "endDate": "2026-06-21T23:59:59.999Z",
+  "item": {
+    "id": 3,
+    "planDate": "2026-06-15T00:00:00.000Z",
+    "workoutType": "EASY_RUN",
+    "distanceKm": 5,
+    "targetPaceSecPerKm": 360,
+    "description": "편안한 러닝",
+    "sortOrder": 1,
+    "executionStatus": "PLANNED",
+    "actualRecord": null
+  }
+}
+```
+
 ### GET /training-plans/:id
 
 내 훈련 계획 상세를 조회합니다.

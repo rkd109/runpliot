@@ -1,9 +1,14 @@
 import { BadRequestException, ConflictException, Injectable, NotFoundException } from '@nestjs/common';
-import { RunnerProfile, RunningRecord } from '../../generated/prisma';
+import { RunnerProfile, RunningRecord, TrainingPlan, TrainingPlanItem } from '../../generated/prisma';
 import { PaginationQueryDto } from '../common/dto/pagination-query.dto';
 import { PrismaService } from '../prisma/prisma.service';
 import { GenerateTrainingPlanDto } from './dto/generate-training-plan.dto';
-import { toTrainingPlanResponseDto } from './mappers/training-plan.mapper';
+import {
+  toTodayTrainingResponseDto,
+  toTrainingPlanResponseDto,
+  TrainingPlanItemExecutionStatus,
+  TrainingPlanWithItems,
+} from './mappers/training-plan.mapper';
 
 type TargetPeriod = {
   startDate: Date;
@@ -30,6 +35,10 @@ type TrainingPlanItemInput = {
   targetPaceSecPerKm: number | null;
   description: string;
   sortOrder: number;
+};
+
+type TrainingPlanWithPlainItems = TrainingPlan & {
+  items: TrainingPlanItem[];
 };
 
 const DAY_TO_INDEX: Record<string, number> = {
@@ -96,7 +105,9 @@ export class TrainingPlansService {
       },
     });
 
-    return toTrainingPlanResponseDto(plan);
+    const [planWithExecution] = await this.attachExecutionToPlans(userId, [plan]);
+
+    return toTrainingPlanResponseDto(planWithExecution);
   }
 
   async findMine(userId: number, query: PaginationQueryDto) {
@@ -125,9 +136,10 @@ export class TrainingPlansService {
       }),
     ]);
     const totalPages = Math.ceil(total / limit);
+    const plansWithExecution = await this.attachExecutionToPlans(userId, plans);
 
     return {
-      items: plans.map(toTrainingPlanResponseDto),
+      items: plansWithExecution.map(toTrainingPlanResponseDto),
       meta: {
         page,
         limit,
@@ -157,7 +169,130 @@ export class TrainingPlansService {
       throw new NotFoundException('training plan not found');
     }
 
-    return toTrainingPlanResponseDto(plan);
+    const [planWithExecution] = await this.attachExecutionToPlans(userId, [plan]);
+
+    return toTrainingPlanResponseDto(planWithExecution);
+  }
+
+  async findToday(userId: number) {
+    const todayStart = this.getStartOfDay(new Date());
+    const todayEnd = this.getEndOfDay(new Date());
+    const plan = await this.prisma.trainingPlan.findFirst({
+      where: {
+        userId,
+        items: {
+          some: {
+            planDate: {
+              gte: todayStart,
+              lte: todayEnd,
+            },
+          },
+        },
+      },
+      include: {
+        items: {
+          where: {
+            planDate: {
+              gte: todayStart,
+              lte: todayEnd,
+            },
+          },
+          orderBy: {
+            sortOrder: 'asc',
+          },
+        },
+      },
+      orderBy: {
+        startDate: 'desc',
+      },
+    });
+
+    if (!plan || plan.items.length === 0) {
+      return null;
+    }
+
+    const [planWithExecution] = await this.attachExecutionToPlans(userId, [plan]);
+
+    return toTodayTrainingResponseDto(planWithExecution, planWithExecution.items[0]);
+  }
+
+  private async attachExecutionToPlans(
+    userId: number,
+    plans: TrainingPlanWithPlainItems[],
+  ): Promise<TrainingPlanWithItems[]> {
+    if (plans.length === 0) {
+      return [];
+    }
+
+    const planDates = plans.flatMap((plan) => plan.items.map((item) => item.planDate));
+
+    if (planDates.length === 0) {
+      return plans;
+    }
+
+    const startDate = this.getStartOfDay(
+      new Date(Math.min(...planDates.map((planDate) => planDate.getTime()))),
+    );
+    const endDate = this.getEndOfDay(
+      new Date(Math.max(...planDates.map((planDate) => planDate.getTime()))),
+    );
+    const runningRecords = await this.prisma.runningRecord.findMany({
+      where: {
+        userId,
+        runDate: {
+          gte: startDate,
+          lte: endDate,
+        },
+      },
+      orderBy: {
+        runDate: 'asc',
+      },
+    });
+    const recordByDateKey = this.createRunningRecordByDateKey(runningRecords);
+    const todayStart = this.getStartOfDay(new Date());
+
+    return plans.map((plan) => ({
+      ...plan,
+      items: plan.items.map((item) => {
+        const actualRecord = recordByDateKey.get(this.getDateKey(item.planDate)) ?? null;
+        const executionStatus = this.getExecutionStatus(item.planDate, actualRecord, todayStart);
+
+        return {
+          ...item,
+          actualRecord,
+          executionStatus,
+        };
+      }),
+    }));
+  }
+
+  private createRunningRecordByDateKey(records: RunningRecord[]): Map<string, RunningRecord> {
+    return records.reduce((recordMap, record) => {
+      const dateKey = this.getDateKey(record.runDate);
+      const existingRecord = recordMap.get(dateKey);
+
+      if (!existingRecord || record.distanceKm > existingRecord.distanceKm) {
+        recordMap.set(dateKey, record);
+      }
+
+      return recordMap;
+    }, new Map<string, RunningRecord>());
+  }
+
+  private getExecutionStatus(
+    planDate: Date,
+    actualRecord: RunningRecord | null,
+    todayStart: Date,
+  ): TrainingPlanItemExecutionStatus {
+    if (actualRecord) {
+      return 'COMPLETED';
+    }
+
+    if (this.getStartOfDay(planDate).getTime() < todayStart.getTime()) {
+      return 'MISSED';
+    }
+
+    return 'PLANNED';
   }
 
   private buildTrainingPlanSummary(
@@ -350,6 +485,26 @@ export class TrainingPlansService {
     targetDate.setHours(0, 0, 0, 0);
 
     return targetDate;
+  }
+
+  private getStartOfDay(date: Date): Date {
+    const result = new Date(date);
+    result.setHours(0, 0, 0, 0);
+    return result;
+  }
+
+  private getEndOfDay(date: Date): Date {
+    const result = new Date(date);
+    result.setHours(23, 59, 59, 999);
+    return result;
+  }
+
+  private getDateKey(date: Date): string {
+    const year = date.getFullYear();
+    const month = `${date.getMonth() + 1}`.padStart(2, '0');
+    const day = `${date.getDate()}`.padStart(2, '0');
+
+    return `${year}-${month}-${day}`;
   }
 
   private addDays(date: Date, days: number): Date {
