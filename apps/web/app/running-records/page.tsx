@@ -36,6 +36,19 @@ const getEmptyForm = (): RecordFormState => ({
   memo: '',
 });
 
+const getTrainingPrefillForm = (currentForm: RecordFormState, params: URLSearchParams): RecordFormState => {
+  const runDate = params.get('runDate');
+  const distanceKm = params.get('distanceKm');
+  const memo = params.get('memo');
+
+  return {
+    ...currentForm,
+    ...(runDate ? { runDate } : {}),
+    ...(distanceKm ? { distanceKm } : {}),
+    ...(memo ? { memo: `훈련 계획: ${memo}` } : {}),
+  };
+};
+
 const getDurationSeconds = (form: RecordFormState) => {
   return (
     Number(form.durationHours || 0) * 3600 +
@@ -104,6 +117,7 @@ export default function RunningRecordsPage() {
   const [createForm, setCreateForm] = useState<RecordFormState>(() => getEmptyForm());
   const [createErrors, setCreateErrors] = useState<RecordFormErrors>({});
   const [createErrorMessage, setCreateErrorMessage] = useState('');
+  const [trainingPrefillMessage, setTrainingPrefillMessage] = useState('');
   const [isCreating, setIsCreating] = useState(false);
 
   const [editingRecordId, setEditingRecordId] = useState<number | null>(null);
@@ -131,6 +145,17 @@ export default function RunningRecordsPage() {
       fetchRecords();
     }
   }, [user]);
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+
+    if (params.get('source') !== 'training') {
+      return;
+    }
+
+    setCreateForm((currentForm) => getTrainingPrefillForm(currentForm, params));
+    setTrainingPrefillMessage('오늘 훈련 내용을 기준으로 기록 입력값을 미리 채웠습니다.');
+  }, []);
 
   const getPayload = (form: RecordFormState) => ({
     runDate: form.runDate,
@@ -166,6 +191,8 @@ export default function RunningRecordsPage() {
       setIsCreating(true);
       await createRunningRecord(getPayload(createForm));
       setCreateForm(getEmptyForm());
+      setTrainingPrefillMessage('');
+      window.history.replaceState(null, '', '/running-records');
       await fetchRecords();
     } catch (error) {
       setCreateErrorMessage(getApiErrorMessage(error, '러닝 기록을 저장하지 못했습니다.'));
@@ -230,6 +257,12 @@ export default function RunningRecordsPage() {
       title="러닝 기록"
       description="나의 러닝 데이터를 기록하고 관리하세요."
     >
+          {trainingPrefillMessage && (
+            <div className="mb-6">
+              <StatusMessage message={trainingPrefillMessage} tone="info" />
+            </div>
+          )}
+
           <form
             onSubmit={handleCreateRecord}
             className="mb-8 rounded-lg border border-slate-800 bg-slate-900 p-6"

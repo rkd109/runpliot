@@ -10,7 +10,9 @@ import {
   formatPace,
   getApiErrorMessage,
   getMyRunningRecords,
+  getTodayTraining,
   RunningRecord,
+  TodayTraining,
 } from '@utils';
 import { useEffect, useMemo, useState } from 'react';
 
@@ -31,6 +33,14 @@ type PaceTrendItem = {
   id: number;
   label: string;
   paceSecPerKm: number;
+};
+
+const workoutTypeLabels: Record<string, string> = {
+  REST: '휴식',
+  EASY_RUN: '이지런',
+  TEMPO_RUN: '템포런',
+  LONG_RUN: '롱런',
+  RECOVERY_RUN: '회복주',
 };
 
 const DashboardSkeleton = () => {
@@ -84,6 +94,26 @@ const getDateKey = (date: Date) => {
   const day = String(date.getDate()).padStart(2, '0');
 
   return `${year}-${month}-${day}`;
+};
+
+const getTodayTrainingRecordUrl = (todayTraining: TodayTraining) => {
+  const params = new URLSearchParams({
+    source: 'training',
+    planId: String(todayTraining.planId),
+    itemId: String(todayTraining.item.id),
+    workoutType: todayTraining.item.workoutType,
+    runDate: getDateKey(new Date(todayTraining.item.planDate)),
+  });
+
+  if (todayTraining.item.distanceKm !== null) {
+    params.set('distanceKm', String(todayTraining.item.distanceKm));
+  }
+
+  if (todayTraining.item.description) {
+    params.set('memo', todayTraining.item.description);
+  }
+
+  return `/running-records?${params.toString()}`;
 };
 
 const getSevenDayDistances = (records: RunningRecord[]) => {
@@ -237,6 +267,80 @@ const EmptyDashboard = () => {
   );
 };
 
+const TodayTrainingCard = ({ todayTraining }: { todayTraining: TodayTraining | null }) => {
+  if (!todayTraining) {
+    return (
+      <aside className="rounded-lg border border-slate-800 bg-slate-900 p-6">
+        <p className="text-sm font-semibold text-emerald-400">Today</p>
+        <h2 className="mt-2 text-xl font-bold">오늘 예정된 훈련이 없습니다</h2>
+        <p className="mt-3 text-sm leading-6 text-slate-400">
+          오늘은 기록을 쉬어가거나, 자유 러닝을 추가해 컨디션을 남겨둘 수 있습니다.
+        </p>
+        <Link
+          href="/running-records"
+          className="mt-6 block rounded-lg border border-slate-700 px-5 py-3 text-center font-semibold text-slate-200 hover:bg-slate-800"
+        >
+          러닝 기록 추가
+        </Link>
+      </aside>
+    );
+  }
+
+  const item = todayTraining.item;
+  const actualRecord = item.actualRecord;
+  const targetPace = item.targetPaceSecPerKm === null ? null : formatPace(item.targetPaceSecPerKm);
+  const statusLabel =
+    item.executionStatus === 'COMPLETED'
+      ? '완료'
+      : item.executionStatus === 'MISSED'
+        ? '놓친 훈련'
+        : '예정';
+
+  return (
+    <aside className="rounded-lg border border-slate-800 bg-slate-900 p-6">
+      <div className="flex items-start justify-between gap-3">
+        <div>
+          <p className="text-sm font-semibold text-emerald-400">Today</p>
+          <h2 className="mt-2 text-xl font-bold">{workoutTypeLabels[item.workoutType] ?? item.workoutType}</h2>
+        </div>
+        <span className="rounded-full border border-emerald-400/30 px-3 py-1 text-xs font-semibold text-emerald-300">
+          {statusLabel}
+        </span>
+      </div>
+
+      <p className="mt-3 text-sm text-slate-400">{todayTraining.title}</p>
+      {item.description && <p className="mt-3 text-sm leading-6 text-slate-300">{item.description}</p>}
+
+      <div className="mt-5 grid grid-cols-2 gap-3 text-sm">
+        <div className="rounded-lg bg-slate-950 p-3">
+          <p className="text-slate-500">목표 거리</p>
+          <p className="mt-1 font-semibold text-white">{item.distanceKm === null ? '-' : formatDistance(item.distanceKm)}</p>
+        </div>
+        <div className="rounded-lg bg-slate-950 p-3">
+          <p className="text-slate-500">목표 페이스</p>
+          <p className="mt-1 font-semibold text-white">{targetPace ?? '-'}</p>
+        </div>
+      </div>
+
+      {actualRecord ? (
+        <div className="mt-5 rounded-lg border border-emerald-500/30 bg-emerald-500/10 p-4 text-sm text-emerald-100">
+          <p className="font-semibold">기록 반영 완료</p>
+          <p className="mt-2">
+            {formatDistance(actualRecord.distanceKm)} · {formatDuration(actualRecord.durationSeconds)} · {formatPace(actualRecord.paceSecPerKm)}
+          </p>
+        </div>
+      ) : (
+        <Link
+          href={getTodayTrainingRecordUrl(todayTraining)}
+          className="mt-6 block rounded-lg bg-emerald-500 px-5 py-3 text-center font-semibold text-slate-950 hover:bg-emerald-400"
+        >
+          오늘 훈련 기록하기
+        </Link>
+      )}
+    </aside>
+  );
+};
+
 const TrainingPlanCta = ({ hasRecords }: { hasRecords: boolean }) => {
   return (
     <aside className="rounded-lg border border-slate-800 bg-slate-900 p-6">
@@ -261,15 +365,20 @@ const TrainingPlanCta = ({ hasRecords }: { hasRecords: boolean }) => {
 export default function DashboardPage() {
   const { user } = useAuth();
   const [records, setRecords] = useState<RunningRecord[]>([]);
+  const [todayTraining, setTodayTraining] = useState<TodayTraining | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
-    const fetchRecords = async () => {
+    const fetchDashboard = async () => {
       try {
         setErrorMessage('');
-        const nextRecords = await getMyRunningRecords();
+        const [nextRecords, nextTodayTraining] = await Promise.all([
+          getMyRunningRecords(),
+          getTodayTraining(),
+        ]);
         setRecords(nextRecords);
+        setTodayTraining(nextTodayTraining);
       } catch (error) {
         setErrorMessage(getApiErrorMessage(error, '대시보드 데이터를 불러오지 못했습니다.'));
       } finally {
@@ -278,7 +387,7 @@ export default function DashboardPage() {
     };
 
     if (user) {
-      fetchRecords();
+      fetchDashboard();
     }
   }, [user]);
 
@@ -366,7 +475,10 @@ export default function DashboardPage() {
                   )}
                 </section>
 
-                <TrainingPlanCta hasRecords={hasRecords} />
+                <div className="space-y-6">
+                  <TodayTrainingCard todayTraining={todayTraining} />
+                  <TrainingPlanCta hasRecords={hasRecords} />
+                </div>
               </div>
             </div>
           )}

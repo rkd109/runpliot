@@ -1,4 +1,7 @@
 import { api, ApiResponse, PaginatedResponse } from './api';
+import type { RunningRecord } from './running-records-api';
+
+export type TrainingPlanItemExecutionStatus = 'PLANNED' | 'COMPLETED' | 'MISSED';
 
 export type TrainingPlan = {
   id: number;
@@ -20,10 +23,20 @@ export type TrainingPlanItem = {
   targetPaceSecPerKm: number | null;
   description: string | null;
   sortOrder: number;
+  executionStatus: TrainingPlanItemExecutionStatus;
+  actualRecord: RunningRecord | null;
 };
 
 export type TrainingPlanDetail = TrainingPlan & {
   items: TrainingPlanItem[];
+};
+
+export type TodayTraining = {
+  planId: number;
+  title: string;
+  startDate: string;
+  endDate: string;
+  item: TrainingPlanItem;
 };
 
 export type GenerateTrainingPlanPayload = {
@@ -44,6 +57,12 @@ export const generateTrainingPlan = async (payload: GenerateTrainingPlanPayload)
 
 export const getTrainingPlan = async (id: number) => {
   const response = await api.get<ApiResponse<TrainingPlanDetail>>(`/training-plans/${id}`);
+
+  return response.data.data;
+};
+
+export const getTodayTraining = async () => {
+  const response = await api.get<ApiResponse<TodayTraining | null>>('/training-plans/today');
 
   return response.data.data;
 };
