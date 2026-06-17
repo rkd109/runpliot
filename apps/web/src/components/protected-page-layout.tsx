@@ -31,7 +31,6 @@ const getIsActive = (pathname: string, href: string) => {
 };
 
 export const ProtectedPageLayout = ({
-  title,
   description,
   children,
   maxWidthClassName = 'max-w-5xl',
@@ -43,7 +42,7 @@ export const ProtectedPageLayout = ({
   return (
     <ProtectedRoute>
       <main className="min-h-screen bg-slate-950 px-5 text-white sm:px-6">
-        <section className={`mx-auto flex min-h-screen flex-col pt-10 sm:pt-12 ${maxWidthClassName}`}>
+        <section className={`mx-auto flex min-h-screen flex-col pt-6 sm:pt-8 ${maxWidthClassName}`}>
           <header className="mb-8">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
               <p className="text-sm font-semibold text-blue-400">RunPilot</p>
@@ -79,10 +78,7 @@ export const ProtectedPageLayout = ({
               })}
             </nav>
 
-            <div className="mt-7">
-              <h1 className="text-3xl font-bold text-white sm:text-5xl">{title}</h1>
-              <p className="mt-3 max-w-2xl text-base leading-6 text-slate-400">{description}</p>
-            </div>
+            <p className="mt-4 max-w-2xl text-base leading-6 text-slate-400">{description}</p>
           </header>
 
           <div className="flex-1">{children}</div>
