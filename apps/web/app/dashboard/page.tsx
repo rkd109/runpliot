@@ -350,8 +350,9 @@ const TodayTrainingCard = ({ todayTraining }: { todayTraining: TodayTraining | n
   const item = todayTraining.item;
   const actualRecord = item.actualRecord;
   const targetPace = item.targetPaceSecPerKm === null ? null : formatPace(item.targetPaceSecPerKm);
+  const isCompleted = item.executionStatus === 'COMPLETED';
   const statusLabel =
-    item.executionStatus === 'COMPLETED'
+    isCompleted
       ? '완료'
       : item.executionStatus === 'MISSED'
         ? '놓친 훈련'
@@ -362,7 +363,9 @@ const TodayTrainingCard = ({ todayTraining }: { todayTraining: TodayTraining | n
       <div className="flex items-start justify-between gap-3">
         <div>
           <p className="text-sm font-semibold text-emerald-400">Today</p>
-          <h2 className="mt-2 text-xl font-bold">{workoutTypeLabels[item.workoutType] ?? item.workoutType}</h2>
+          <h2 className="mt-2 text-xl font-bold">
+            {isCompleted ? '오늘 러닝 완료' : (workoutTypeLabels[item.workoutType] ?? item.workoutType)}
+          </h2>
         </div>
         <span className="rounded-full border border-emerald-400/30 px-3 py-1 text-xs font-semibold text-emerald-300">
           {statusLabel}
@@ -385,7 +388,7 @@ const TodayTrainingCard = ({ todayTraining }: { todayTraining: TodayTraining | n
 
       {actualRecord ? (
         <div className="mt-5 rounded-lg border border-emerald-500/30 bg-emerald-500/10 p-4 text-sm text-emerald-100">
-          <p className="font-semibold">기록 반영 완료</p>
+          <p className="font-semibold">실제 러닝 기록</p>
           <p className="mt-2">
             {formatDistance(actualRecord.distanceKm)} · {formatDuration(actualRecord.durationSeconds)} · {formatPace(actualRecord.paceSecPerKm)}
           </p>
@@ -540,6 +543,8 @@ export default function DashboardPage() {
                 <StatCard label="이번 달 거리" value={formatDistance(stats.monthlyDistanceKm)} />
               </div>
 
+              <TodayTrainingCard todayTraining={todayTraining} />
+
               <div className="grid gap-6 lg:grid-cols-[1fr_320px]">
                 <SevenDayDistanceChart data={sevenDayDistances} />
                 <PaceTrend items={paceTrendItems} />
@@ -584,7 +589,6 @@ export default function DashboardPage() {
                 </section>
 
                 <div className="space-y-6">
-                  <TodayTrainingCard todayTraining={todayTraining} />
                   <WeeklyTrainingSummaryCard summary={weeklyTrainingSummary} />
                   <TrainingPlanCta hasRecords={hasRecords} />
                 </div>
