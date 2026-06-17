@@ -16,10 +16,10 @@ type ProtectedPageLayoutProps = {
 };
 
 const navigationItems = [
-  { href: '/dashboard', label: '대시보드' },
-  { href: '/running-records', label: '러닝 기록' },
-  { href: '/training-plans', label: '훈련 계획' },
-  { href: '/runner-profile/setup', label: '러닝 프로필' },
+  { href: '/dashboard', label: '대시보드', shortLabel: '홈' },
+  { href: '/running-records', label: '러닝 기록', shortLabel: '기록' },
+  { href: '/training-plans', label: '훈련 계획', shortLabel: '계획' },
+  { href: '/runner-profile/setup', label: '러닝 프로필', shortLabel: '프로필' },
 ];
 
 const getIsActive = (pathname: string, href: string) => {
@@ -56,7 +56,7 @@ export const ProtectedPageLayout = ({
             </div>
 
             <nav
-              className="-mx-5 mt-5 flex min-h-11 gap-2 overflow-x-auto px-5 pb-1 sm:mx-0 sm:px-0"
+              className="mt-5 grid grid-cols-4 gap-1 rounded-full border border-slate-800 bg-slate-900/50 p-1 sm:inline-flex sm:w-auto"
               aria-label="보호 페이지"
             >
               {navigationItems.map((item) => {
@@ -69,18 +69,19 @@ export const ProtectedPageLayout = ({
                     aria-current={isActive ? 'page' : undefined}
                     className={
                       isActive
-                        ? 'flex h-10 min-w-fit shrink-0 items-center rounded-full bg-blue-500 px-4 text-sm font-semibold leading-none text-white shadow-sm shadow-blue-500/20 [word-break:keep-all] whitespace-nowrap'
-                        : 'flex h-10 min-w-fit shrink-0 items-center rounded-full border border-slate-700/80 bg-slate-950/60 px-4 text-sm font-semibold leading-none text-slate-200 [word-break:keep-all] whitespace-nowrap hover:border-slate-500 hover:bg-slate-900'
+                        ? 'flex h-9 min-w-0 items-center justify-center rounded-full bg-blue-500 px-2 text-xs font-semibold leading-none text-white shadow-sm shadow-blue-500/20 sm:min-w-max sm:px-4 sm:text-sm'
+                        : 'flex h-9 min-w-0 items-center justify-center rounded-full px-2 text-xs font-semibold leading-none text-slate-300 hover:bg-slate-800 hover:text-white sm:min-w-max sm:px-4 sm:text-sm'
                     }
                   >
-                    {item.label}
+                    <span className="whitespace-nowrap sm:hidden">{item.shortLabel}</span>
+                    <span className="hidden whitespace-nowrap sm:inline">{item.label}</span>
                   </Link>
                 );
               })}
             </nav>
 
             <div className="mt-7">
-              <h1 className="text-4xl font-bold text-white sm:text-5xl">{title}</h1>
+              <h1 className="text-3xl font-bold text-white sm:text-5xl">{title}</h1>
               <p className="mt-3 max-w-2xl text-base leading-6 text-slate-400">{description}</p>
             </div>
           </header>
