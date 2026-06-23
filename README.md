@@ -89,6 +89,8 @@ pnpm db:up
 pnpm --filter @runpilot/api prisma generate
 pnpm --filter @runpilot/api prisma migrate dev
 ```
+⚠️ Prisma CLI는 .env.local을 읽지 않을 수 있으므로
+apps/api/.env 파일 생성이 필요합니다.
 
 데모 데이터를 넣으려면 다음 명령을 실행합니다.
 
