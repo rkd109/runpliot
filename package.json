@@ -16,7 +16,11 @@
     "db:seed": "pnpm --filter @runpilot/api db:seed",
     "local:up": "docker compose -f infra/docker/docker-compose.yml up -d --build api",
     "local:down": "docker compose -f infra/docker/docker-compose.yml rm -sf api",
-    "local:logs": "docker compose -f infra/docker/docker-compose.yml logs -f api"
+    "local:logs": "docker compose -f infra/docker/docker-compose.yml logs -f api",
+    "prod:image:build": "docker compose -f infra/docker/docker-compose.production.yml build",
+    "prod:local:up": "docker compose -f infra/docker/docker-compose.production.yml up -d --build",
+    "prod:local:down": "docker compose -f infra/docker/docker-compose.production.yml down",
+    "prod:local:logs": "docker compose -f infra/docker/docker-compose.production.yml logs -f api"
   },
   "devDependencies": {
     "@types/node": "^20.17.10",

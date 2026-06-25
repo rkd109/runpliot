@@ -1,0 +1,36 @@
+name: runpilot-production-local
+
+services:
+  migrate:
+    build:
+      context: ../..
+      dockerfile: apps/api/Dockerfile
+      target: migration
+    env_file:
+      - ../../apps/api/.env.local
+    environment:
+      DATABASE_URL: postgresql://runpilot:runpilot1234@host.docker.internal:15432/runpilot
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    restart: "no"
+
+  api:
+    build:
+      context: ../..
+      dockerfile: apps/api/Dockerfile
+      target: production
+    container_name: runpilot-api-production
+    restart: unless-stopped
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    env_file:
+      - ../../apps/api/.env.local
+    environment:
+      DATABASE_URL: postgresql://runpilot:runpilot1234@host.docker.internal:15432/runpilot
+      PORT: 3001
+      FRONT_BASE_URL: http://localhost:3000
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    ports:
+      - "3002:3001"

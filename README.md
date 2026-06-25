@@ -169,6 +169,45 @@ pnpm local:down
 
 API 컨테이너는 시작 시 shared build, Prisma Client 생성, `prisma migrate deploy`를 실행한 뒤 Nest watch 모드로 시작합니다.
 
+## Production Container
+
+같은 `apps/api/Dockerfile`에서 개발용과 운영용 이미지를 각각 빌드합니다.
+
+```text
+development → Nest watch + source bind mount
+migration   → prisma migrate deploy 전용
+production  → production dependency + dist/generated만 포함
+```
+
+운영 이미지 로컬 빌드:
+
+```bash
+pnpm prod:image:build
+```
+
+운영 구성을 로컬에서 실행:
+
+```bash
+pnpm prod:local:up
+```
+
+확인:
+
+```text
+Production API: http://localhost:3002
+Health: http://localhost:3002/health
+Swagger: http://localhost:3002/docs
+```
+
+로그와 종료:
+
+```bash
+pnpm prod:local:logs
+pnpm prod:local:down
+```
+
+`infra/docker/docker-compose.production.yml`은 AWS 배포 전에 production 이미지를 로컬 PostgreSQL로 검증하기 위한 구성입니다. AWS에서는 이미지에 `.env`를 포함하지 않고 `DATABASE_URL`, `JWT_SECRET`, `FRONT_BASE_URL`, `PORT`를 실행 환경에서 주입합니다.
+
 ## Scripts
 
 - `pnpm dev`: 전체 workspace 개발 서버 실행
@@ -184,6 +223,10 @@ API 컨테이너는 시작 시 shared build, Prisma Client 생성, `prisma migra
 - `pnpm local:up`: 기존 PostgreSQL에 연결할 API 컨테이너 빌드/실행
 - `pnpm local:down`: PostgreSQL은 유지하고 API 컨테이너만 종료
 - `pnpm local:logs`: API 컨테이너 로그 확인
+- `pnpm prod:image:build`: migration/production 이미지 빌드
+- `pnpm prod:local:up`: migration 실행 후 production API를 로컬 3002 포트에 실행
+- `pnpm prod:local:down`: 로컬 production 검증 컨테이너 종료
+- `pnpm prod:local:logs`: 로컬 production API 로그 확인
 
 ## Database
 
