@@ -208,6 +208,26 @@ pnpm prod:local:down
 
 `infra/docker/docker-compose.production.yml`은 AWS 배포 전에 production 이미지를 로컬 PostgreSQL로 검증하기 위한 구성입니다. AWS에서는 이미지에 `.env`를 포함하지 않고 `DATABASE_URL`, `JWT_SECRET`, `FRONT_BASE_URL`, `PORT`를 실행 환경에서 주입합니다.
 
+## GHCR Images
+
+`main` 브랜치에 API 관련 변경이 push되면 GitHub Actions가 다음 이미지를 GHCR에 게시합니다.
+
+```text
+ghcr.io/rkd109/runpliot-api:latest
+ghcr.io/rkd109/runpliot-api:<commit-sha>
+
+ghcr.io/rkd109/runpliot-api-migration:latest
+ghcr.io/rkd109/runpliot-api-migration:<commit-sha>
+```
+
+workflow:
+
+```text
+.github/workflows/publish-api-images.yml
+```
+
+최초 게시된 GHCR 패키지는 기본적으로 private입니다. 공개 이미지로 운영하려면 GitHub package settings에서 visibility를 `Public`으로 변경합니다. Private으로 유지할 경우 EC2에서 `read:packages` 권한이 있는 GitHub PAT로 `docker login ghcr.io`가 필요합니다.
+
 ## Scripts
 
 - `pnpm dev`: 전체 workspace 개발 서버 실행
