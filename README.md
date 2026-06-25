@@ -117,6 +117,58 @@ pnpm dev:api
 pnpm dev
 ```
 
+## Local Containers
+
+기존 로컬 PostgreSQL 컨테이너는 그대로 두고 NestJS API만 컨테이너로 실행할 수 있습니다.
+
+사전 준비:
+
+```text
+apps/api/.env.local
+```
+
+최소 환경변수:
+
+```env
+JWT_SECRET="replace-with-a-local-secret"
+FRONT_BASE_URL="http://localhost:3000"
+```
+
+`DATABASE_URL`과 `PORT`는 Docker Compose가 컨테이너 환경에 맞게 덮어씁니다. API 컨테이너는 호스트에 노출된 PostgreSQL `15432` 포트로 연결합니다.
+
+```text
+postgresql://runpilot:runpilot1234@host.docker.internal:15432/runpilot
+```
+
+실행:
+
+```bash
+pnpm local:up
+```
+
+확인:
+
+```text
+API: http://localhost:3001
+Health: http://localhost:3001/health
+Swagger: http://localhost:3001/docs
+PostgreSQL from host: localhost:15432
+```
+
+API 로그:
+
+```bash
+pnpm local:logs
+```
+
+API 컨테이너만 종료:
+
+```bash
+pnpm local:down
+```
+
+API 컨테이너는 시작 시 shared build, Prisma Client 생성, `prisma migrate deploy`를 실행한 뒤 Nest watch 모드로 시작합니다.
+
 ## Scripts
 
 - `pnpm dev`: 전체 workspace 개발 서버 실행
@@ -129,6 +181,9 @@ pnpm dev
 - `pnpm db:up`: PostgreSQL 컨테이너 실행
 - `pnpm db:down`: PostgreSQL 컨테이너 종료
 - `pnpm db:seed`: 데모 사용자, 러너 프로필, 러닝 기록, 훈련 계획 seed 생성
+- `pnpm local:up`: 기존 PostgreSQL에 연결할 API 컨테이너 빌드/실행
+- `pnpm local:down`: PostgreSQL은 유지하고 API 컨테이너만 종료
+- `pnpm local:logs`: API 컨테이너 로그 확인
 
 ## Database
 

@@ -11,9 +11,12 @@
     "build:web": "pnpm --filter @runpilot/web build",
     "build:api": "pnpm --filter @runpilot/api build",
     "lint": "pnpm -r lint",
-    "db:up": "docker compose -f infra/docker/docker-compose.yml up -d",
+    "db:up": "docker compose -f infra/docker/docker-compose.yml up -d postgres",
     "db:down": "docker compose -f infra/docker/docker-compose.yml down",
-    "db:seed": "pnpm --filter @runpilot/api db:seed"
+    "db:seed": "pnpm --filter @runpilot/api db:seed",
+    "local:up": "docker compose -f infra/docker/docker-compose.yml up -d --build api",
+    "local:down": "docker compose -f infra/docker/docker-compose.yml rm -sf api",
+    "local:logs": "docker compose -f infra/docker/docker-compose.yml logs -f api"
   },
   "devDependencies": {
     "@types/node": "^20.17.10",
